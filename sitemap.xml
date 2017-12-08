@@ -3,7 +3,12 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://jimmylin212.github.io/post/2017_11_27/</loc>
+    <loc>https://jimmylin212.github.io/post/2017_12_05_hugo_content_management_dir_structure/</loc>
+    <lastmod>2017-12-05T22:00:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jimmylin212.github.io/post/2017_11_27_create_hugo_and_deploy_on-github_page/</loc>
     <lastmod>2017-11-27T21:53:29+08:00</lastmod>
   </url>
   
@@ -19,13 +24,13 @@
   
   <url>
     <loc>https://jimmylin212.github.io/</loc>
-    <lastmod>2017-11-27T21:53:29+08:00</lastmod>
+    <lastmod>2017-12-05T22:00:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/post/</loc>
-    <lastmod>2017-11-27T21:53:29+08:00</lastmod>
+    <lastmod>2017-12-05T22:00:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -5,18 +5,31 @@
     <link>https://jimmylin212.github.io/</link>
     <description>Recent content on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-TW</language>
-    <lastBuildDate>Mon, 27 Nov 2017 21:53:29 +0800</lastBuildDate>
+    <language>zh</language>
+    <lastBuildDate>Tue, 05 Dec 2017 22:00:48 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Hugo 的文件管理 - 資料夾結構</title>
+      <link>https://jimmylin212.github.io/post/2017_12_05_hugo_content_management_dir_structure/</link>
+      <pubDate>Tue, 05 Dec 2017 22:00:48 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/post/2017_12_05_hugo_content_management_dir_structure/</guid>
+      <description>建立完個人網站之後，最重要的就是開始寫文章，或是讓充實網頁的內容，像是加上個人介紹頁面，或是為自己的網站建立一些基本部落格應該要有的功能，像是標籤，這些功能其實 Hugo 都已經有提供了，不過到底要怎麼用呢？那就要仔細閱讀一下 Hugo Content Management，這邊我就針對一些特定的功能紀錄一下，以後也方便參照。
+資料夾結構 每一個不同的 theme，會有不同的資料夾結構，不過大同小異，有些只會抓在 content/post 底的文章，有些只會抓 content/posts 下的文章，所以如果文章沒有出現，那要先去看一下 theme 的說明文件。
+在 Hugo 當中，把頁面分成兩種: List Page 以及 Single Page，另外有一個特殊的頁面 _index.md。簡介如下：
+ List Page: 列出所有在這個資料夾底下的所有 *.md 檔的頁面。 Single Page: 某一個特定的 *.md的頁面。 _index.md: 可用來控制以及增加一些特定的內容於 List Page 之頂端的頁面。  直接看官網所提供的例子
+. └── content └── about | └── _index.md // &amp;lt;- https://example.com/about ├── post // &amp;lt;- https://example.com/post | ├── _index.md | ├── a.md // &amp;lt;- https://example.com/post/a | ├── happy // &amp;lt;- https://example.</description>
+    </item>
+    
+    <item>
       <title>使用 Hugo 建立靜態網站，並部署在 Github Page</title>
-      <link>https://jimmylin212.github.io/post/2017_11_27/</link>
+      <link>https://jimmylin212.github.io/post/2017_11_27_create_hugo_and_deploy_on-github_page/</link>
       <pubDate>Mon, 27 Nov 2017 21:53:29 +0800</pubDate>
       
-      <guid>https://jimmylin212.github.io/post/2017_11_27/</guid>
+      <guid>https://jimmylin212.github.io/post/2017_11_27_create_hugo_and_deploy_on-github_page/</guid>
       <description>工作幾年了，下班之後會找些事情來做，寫一些小小的 side project，發現有時候要在網路上面找到中文的教學還挺難的。想要了解一些最新的技術也都只有英文的文件，不然就是簡體中文的，想一想既然都花時間讀了，也花時間搞懂，甚至實做出來了，那就順便寫個簡單的步驟或是翻譯。一方面自己可以更熟，另外一方面下次要找也可以直接從自己的文章當中找尋，比較省時間，所以，就來寫部落格吧。
 因為工作的關係，寫 Markdown 寫得很習慣了，搜尋了一下有沒有用可以 Markdown 編輯的部落格，發現有一些可以轉換，不過還是不夠直接，那乾脆就架一個吧。找過蠻多靜態網站產生器的，像是 Hexo、Jekyll 和 Hugo。Jekyll 是 Github 認證，不過因為對 Windows 環境不友善，又因為我家裡的電腦是 Windows，所以作罷；Hexo 蠻不錯的，不過看到有些文章說如果網站內文章過多，產生靜態網站的速度就慢很多；Hugo 是用 Golang 寫的，速度很快，操作方法還蠻直覺的，社區也很大，所以最後選擇使用 Hugo 來當我的部落格的 Framework。
 不過要架在哪裡？發現其實這些靜態網站都可以很聰明地部署到 Github Page，有自己的專屬域名，無限流量，自動備份，好移轉，就算之後想要換 Framework 或是移到其他部落格供應商，其實都有方法。所以這篇文章大概寫一下安裝以及架設的方法，之後應該會深入研究一下 Hugo 的一些功能，也會補上。
