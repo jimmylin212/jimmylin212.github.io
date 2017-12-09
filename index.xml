@@ -6,10 +6,19 @@
     <description>Recent content on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 05 Dec 2017 22:00:48 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 09 Dec 2017 09:51:03 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用 CircleCI 部署 Hugo 靜態網站</title>
+      <link>https://jimmylin212.github.io/post/2017_12_11_deploy_hugo_using_circleci/</link>
+      <pubDate>Sat, 09 Dec 2017 09:51:03 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/post/2017_12_11_deploy_hugo_using_circleci/</guid>
+      <description>參考資料:</description>
+    </item>
     
     <item>
       <title>Hugo 的文件管理 - 資料夾結構</title>
