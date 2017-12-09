@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 09 Dec 2017 09:51:03 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 09 Dec 2017 10:05:56 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>從 Nodejs 呼叫 C&#43;&#43;</title>
+      <link>https://jimmylin212.github.io/post/2017_12_20_call_c&#43;&#43;_from_nodejs/</link>
+      <pubDate>Sat, 09 Dec 2017 10:05:56 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/post/2017_12_20_call_c&#43;&#43;_from_nodejs/</guid>
+      <description>草稿</description>
+    </item>
     
     <item>
       <title>使用 CircleCI 部署 Hugo 靜態網站</title>
