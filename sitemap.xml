@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://jimmylin212.github.io/post/0003_deploy_hugo_using_circleci/</loc>
+    <lastmod>2017-12-09T09:51:03+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jimmylin212.github.io/post/0002_hugo_content_management_dir_structure/</loc>
     <lastmod>2017-12-05T22:00:48+08:00</lastmod>
   </url>
@@ -24,13 +29,13 @@
   
   <url>
     <loc>https://jimmylin212.github.io/</loc>
-    <lastmod>2017-12-05T22:00:48+08:00</lastmod>
+    <lastmod>2017-12-09T09:51:03+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/post/</loc>
-    <lastmod>2017-12-05T22:00:48+08:00</lastmod>
+    <lastmod>2017-12-09T09:51:03+08:00</lastmod>
     <priority>0</priority>
   </url>
   
