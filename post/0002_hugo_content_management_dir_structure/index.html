@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-tw">
 	<head>
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -22,11 +22,7 @@
 
 
 <meta property="og:title" content="Hugo 的文件管理 - 資料夾結構" />
-<meta property="og:description" content="建立完個人網站之後，最重要的就是開始寫文章，或是讓充實網頁的內容，像是加上個人介紹頁面，或是為自己的網站建立一些基本部落格應該要有的功能，像是標籤，這些功能其實 Hugo 都已經有提供了，不過到底要怎麼用呢？那就要仔細閱讀一下 Hugo Content Management，這邊我就針對一些特定的功能紀錄一下，以後也方便參照。
-資料夾結構 每一個不同的 theme，會有不同的資料夾結構，不過大同小異，有些只會抓在 content/post 底的文章，有些只會抓 content/posts 下的文章，所以如果文章沒有出現，那要先去看一下 theme 的說明文件。
-在 Hugo 當中，把頁面分成兩種: List Page 以及 Single Page，另外有一個特殊的頁面 _index.md。簡介如下：
- List Page: 列出所有在這個資料夾底下的所有 *.md 檔的頁面。 Single Page: 某一個特定的 *.md的頁面。 _index.md: 可用來控制以及增加一些特定的內容於 List Page 之頂端的頁面。  直接看官網所提供的例子
-. └── content └── about | └── _index.md // &lt;- https://example.com/about ├── post // &lt;- https://example.com/post | ├── _index.md | ├── a.md // &lt;- https://example.com/post/a | ├── happy // &lt;- https://example." />
+<meta property="og:description" content="建立完個人網站之後，最重要的就是開始寫文章，或是讓充實網頁的內容，像是加上個人介紹頁面，或是為自己的網站建立一些基本部落格應該要有的功能，像" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://jimmylin212.github.io/post/0002_hugo_content_management_dir_structure/" />
 
@@ -49,27 +45,19 @@
 
 
 <meta itemprop="name" content="Hugo 的文件管理 - 資料夾結構">
-<meta itemprop="description" content="建立完個人網站之後，最重要的就是開始寫文章，或是讓充實網頁的內容，像是加上個人介紹頁面，或是為自己的網站建立一些基本部落格應該要有的功能，像是標籤，這些功能其實 Hugo 都已經有提供了，不過到底要怎麼用呢？那就要仔細閱讀一下 Hugo Content Management，這邊我就針對一些特定的功能紀錄一下，以後也方便參照。
-資料夾結構 每一個不同的 theme，會有不同的資料夾結構，不過大同小異，有些只會抓在 content/post 底的文章，有些只會抓 content/posts 下的文章，所以如果文章沒有出現，那要先去看一下 theme 的說明文件。
-在 Hugo 當中，把頁面分成兩種: List Page 以及 Single Page，另外有一個特殊的頁面 _index.md。簡介如下：
- List Page: 列出所有在這個資料夾底下的所有 *.md 檔的頁面。 Single Page: 某一個特定的 *.md的頁面。 _index.md: 可用來控制以及增加一些特定的內容於 List Page 之頂端的頁面。  直接看官網所提供的例子
-. └── content └── about | └── _index.md // &lt;- https://example.com/about ├── post // &lt;- https://example.com/post | ├── _index.md | ├── a.md // &lt;- https://example.com/post/a | ├── happy // &lt;- https://example.">
+<meta itemprop="description" content="建立完個人網站之後，最重要的就是開始寫文章，或是讓充實網頁的內容，像是加上個人介紹頁面，或是為自己的網站建立一些基本部落格應該要有的功能，像">
 
 
 <meta itemprop="datePublished" content="2017-12-05T22:00:48&#43;08:00" />
 <meta itemprop="dateModified" content="2017-12-05T22:00:48&#43;08:00" />
-<meta itemprop="wordCount" content="233">
+<meta itemprop="wordCount" content="1059">
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="Hugo," />
 
 <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Hugo 的文件管理 - 資料夾結構"/>
-<meta name="twitter:description" content="建立完個人網站之後，最重要的就是開始寫文章，或是讓充實網頁的內容，像是加上個人介紹頁面，或是為自己的網站建立一些基本部落格應該要有的功能，像是標籤，這些功能其實 Hugo 都已經有提供了，不過到底要怎麼用呢？那就要仔細閱讀一下 Hugo Content Management，這邊我就針對一些特定的功能紀錄一下，以後也方便參照。
-資料夾結構 每一個不同的 theme，會有不同的資料夾結構，不過大同小異，有些只會抓在 content/post 底的文章，有些只會抓 content/posts 下的文章，所以如果文章沒有出現，那要先去看一下 theme 的說明文件。
-在 Hugo 當中，把頁面分成兩種: List Page 以及 Single Page，另外有一個特殊的頁面 _index.md。簡介如下：
- List Page: 列出所有在這個資料夾底下的所有 *.md 檔的頁面。 Single Page: 某一個特定的 *.md的頁面。 _index.md: 可用來控制以及增加一些特定的內容於 List Page 之頂端的頁面。  直接看官網所提供的例子
-. └── content └── about | └── _index.md // &lt;- https://example.com/about ├── post // &lt;- https://example.com/post | ├── _index.md | ├── a.md // &lt;- https://example.com/post/a | ├── happy // &lt;- https://example."/>
+<meta name="twitter:description" content="建立完個人網站之後，最重要的就是開始寫文章，或是讓充實網頁的內容，像是加上個人介紹頁面，或是為自己的網站建立一些基本部落格應該要有的功能，像"/>
 
 
     </head>
@@ -98,6 +86,12 @@
         <h2 class="headline">
         December 5, 2017
         <br>
+        
+        
+            
+                <a href="https://jimmylin212.github.io/tags/hugo">Hugo</a>
+            
+        
         
         </h2>
     </header>
@@ -138,22 +132,22 @@
 
 <p>連線至 <code>http://localhost:1313</code></p>
 
-<p><img src="/images/2017_12_05/home_directory.PNG" alt="" /></p>
+<p><img src="/images/0002/home_directory.PNG" alt="" /></p>
 
 <p>連線至 <code>http://localhost:1313/post/</code>
-<img src="/images/2017_12_05/post_directory.PNG" alt="" /></p>
+<img src="/images/0002/post_directory.PNG" alt="" /></p>
 
 <p>連線至 <code>http://localhost:1313/quote/</code>
-<img src="/images/2017_12_05/quote_directory.PNG" alt="" /></p>
+<img src="/images/0002/quote_directory.PNG" alt="" /></p>
 
 <p>值得注意的是 Hugo 建立 List Page 只會會抓第一層的資料夾，第二層不會抓，所以連到 <code>http://localhost:1313/post/happy</code> 是看不到東西的，這時候就要用手動的方式讓 Hugo 知道要來抓其他層的資料夾，怎麼做？我們可以用這個特殊的檔案 <code>_index.md</code> 來辦到。</p>
 
 <p>連線至 <code>http://localhost:1313/post/happy</code>
-<img src="/images/2017_12_05/post_happy_directory.PNG" alt="" /></p>
+<img src="/images/0002/post_happy_directory.PNG" alt="" /></p>
 
 <p>新增一篇 <code>_index.md</code> 再試試看，執行指令 <code>hugo new post/happy/_index.md</code>
 再次連線到 <code>http://localhost:1313/post/happy</code>
-<img src="/images/2017_12_05/post_happy_success.PNG" alt="" /></p>
+<img src="/images/0002/post_happy_success.PNG" alt="" /></p>
 
 <p>這個特別的檔案功能不只如此，我們可以利用這個檔案來設定針對個別的資料夾下的文章設定專屬的 template 或是 標籤，也可以加上一些專屬的文字於所有文章或是頁面最上面，像下面的例子。</p>
 
@@ -200,13 +194,13 @@ draft: true
 
 <p>再次執行 <code>hugo server -D</code>，看一下結果
 連線至 <code>http://localhost:1313/post/</code>
-<img src="/images/2017_12_05/post_index.PNG" alt="" /></p>
+<img src="/images/0002/post_index.PNG" alt="" /></p>
 
 <p>連線至 <code>http://localhost:1313/post/happy/</code>
-<img src="/images/2017_12_05/post_happy_index.PNG" alt="" /></p>
+<img src="/images/0002/post_happy_index.PNG" alt="" /></p>
 
 <p>連線至 <code>http://localhost:1313/quote/</code>
-<img src="/images/2017_12_05/quote_index.PNG" alt="" /></p>
+<img src="/images/0002/quote_index.PNG" alt="" /></p>
 
 <p>可以看到每一個 List Page 都被加上剛剛所編輯的文字，可以讓讀者更清楚現在的所在的位置，我相信 <code>_index.md</code> 應該有更多的用法，等我之後發現再來補。</p>
 

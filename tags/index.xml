@@ -5,10 +5,20 @@
     <link>https://jimmylin212.github.io/tags/</link>
     <description>Recent content in Tags on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
+    <language>zh-tw</language>
+    <lastBuildDate>Sat, 09 Dec 2017 09:51:03 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hugo</title>
+      <link>https://jimmylin212.github.io/tags/hugo/</link>
+      <pubDate>Sat, 09 Dec 2017 09:51:03 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/tags/hugo/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

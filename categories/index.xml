@@ -5,10 +5,19 @@
     <link>https://jimmylin212.github.io/categories/</link>
     <description>Recent content in Categories on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
+    <language>zh-tw</language>
     
 	<atom:link href="https://jimmylin212.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>網站開發</title>
+      <link>https://jimmylin212.github.io/categories/%E7%B6%B2%E7%AB%99%E9%96%8B%E7%99%BC/</link>
+      <pubDate>Sat, 09 Dec 2017 09:51:03 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/categories/%E7%B6%B2%E7%AB%99%E9%96%8B%E7%99%BC/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>
