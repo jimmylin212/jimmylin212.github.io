@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sat, 09 Dec 2017 09:51:03 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 22 Jan 2018 23:18:37 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hugo 其他使用方式以及 Cheat Sheet</title>
+      <link>https://jimmylin212.github.io/post/0004_hugo_other_and_cheat_sheet/</link>
+      <pubDate>Mon, 22 Jan 2018 23:18:37 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/post/0004_hugo_other_and_cheat_sheet/</guid>
+      <description>Hugo 上有很多方便的功能，有些蠻簡單易用的，就直接都整理在這邊。最後面附上常用到的指令，方便未來查詢。 文章標頭設定 插入標籤 文章標頭樣板 使用內建樣</description>
+    </item>
     
     <item>
       <title>使用 CircleCI 部署 Hugo 靜態網站</title>

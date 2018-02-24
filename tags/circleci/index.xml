@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Circleci on Jimmy Lin</title>
+    <link>https://jimmylin212.github.io/tags/circleci/</link>
+    <description>Recent content in Circleci on Jimmy Lin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sat, 09 Dec 2017 09:51:03 +0800</lastBuildDate>
+    
+	<atom:link href="https://jimmylin212.github.io/tags/circleci/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用 CircleCI 部署 Hugo 靜態網站</title>
+      <link>https://jimmylin212.github.io/post/0003_deploy_hugo_using_circleci/</link>
+      <pubDate>Sat, 09 Dec 2017 09:51:03 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/post/0003_deploy_hugo_using_circleci/</guid>
+      <description>搞了半天，終於可以利用 CircleCI 來部署 Hugo 靜態網站到 Github Page，這當中出現出現非常多的錯誤，累積失敗的 Build 高達七十個，把這些錯誤的例子都寫寫，以後如果有</description>
+    </item>
+    
+  </channel>
+</rss>

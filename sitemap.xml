@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://jimmylin212.github.io/post/0004_hugo_other_and_cheat_sheet/</loc>
+    <lastmod>2018-01-22T23:18:37+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jimmylin212.github.io/post/0003_deploy_hugo_using_circleci/</loc>
     <lastmod>2017-12-09T09:51:03+08:00</lastmod>
   </url>
@@ -28,20 +33,32 @@
   </url>
   
   <url>
-    <loc>https://jimmylin212.github.io/tags/hugo/</loc>
+    <loc>https://jimmylin212.github.io/tags/circleci/</loc>
     <lastmod>2017-12-09T09:51:03+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jimmylin212.github.io/tags/github/</loc>
+    <lastmod>2017-11-27T21:53:29+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jimmylin212.github.io/tags/hugo/</loc>
+    <lastmod>2018-01-22T23:18:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/</loc>
-    <lastmod>2017-12-09T09:51:03+08:00</lastmod>
+    <lastmod>2018-01-22T23:18:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/post/</loc>
-    <lastmod>2017-12-09T09:51:03+08:00</lastmod>
+    <lastmod>2018-01-22T23:18:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -52,8 +69,8 @@
   </url>
   
   <url>
-    <loc>https://jimmylin212.github.io/categories/%E7%B6%B2%E7%AB%99%E9%96%8B%E7%99%BC/</loc>
-    <lastmod>2017-12-09T09:51:03+08:00</lastmod>
+    <loc>https://jimmylin212.github.io/categories/web-app-development/</loc>
+    <lastmod>2018-01-22T23:18:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
