@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Software Development on Jimmy Lin</title>
+    <link>https://jimmylin212.github.io/categories/software-development/</link>
+    <description>Recent content in Software Development on Jimmy Lin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Wed, 14 Mar 2018 22:33:39 +0800</lastBuildDate>
+    
+	<atom:link href="https://jimmylin212.github.io/categories/software-development/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>利用 Wix 建立 Windows .msi 安裝檔</title>
+      <link>https://jimmylin212.github.io/post/0005_create_msi_by_wix/</link>
+      <pubDate>Wed, 14 Mar 2018 22:33:39 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/post/0005_create_msi_by_wix/</guid>
+      <description>最近兩週花了蠻多時間研究該如何使用 Wix (Windows Installer XML) 來打包 source file 成一個 .msi 檔，因為沒有打包成 .exe 的經驗，無法比較兩者的差異。中文資料真的少之又少，有很多又很</description>
+    </item>
+    
+  </channel>
+</rss>
