@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Build on Jimmy Lin</title>
-    <link>https://jimmylin212.github.io/tags/build/</link>
-    <description>Recent content in Build on Jimmy Lin</description>
+    <title>Docker on Jimmy Lin</title>
+    <link>https://jimmylin212.github.io/tags/docker/</link>
+    <description>Recent content in Docker on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <lastBuildDate>Sun, 20 May 2018 21:06:13 +0800</lastBuildDate>
     
-	<atom:link href="https://jimmylin212.github.io/tags/build/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jimmylin212.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>https://jimmylin212.github.io/post/0007_create_an_ssh_login_image/</guid>
       <description>最近因為工作需要了解了一下 Jenkins 以及 Docker 這兩個工具，雖然這兩個工具在 DevOps 中已經被使用多年，不過因為這次的經驗才第一次從零開始接觸，當中遇到很多問題，</description>
-    </item>
-    
-    <item>
-      <title>利用 Wix 建立 Windows .msi 安裝檔</title>
-      <link>https://jimmylin212.github.io/post/0005_create_msi_by_wix/</link>
-      <pubDate>Wed, 14 Mar 2018 22:33:39 +0800</pubDate>
-      
-      <guid>https://jimmylin212.github.io/post/0005_create_msi_by_wix/</guid>
-      <description>最近兩週花了蠻多時間研究該如何使用 Wix (Windows Installer XML) 來打包 source file 成一個 .msi 檔，因為沒有打包成 .exe 的經驗，無法比較兩者的差異。中文資料真的少之又少，有很多又很</description>
     </item>
     
   </channel>

@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Wed, 14 Mar 2018 22:33:39 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 20 May 2018 21:06:13 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Build</title>
       <link>https://jimmylin212.github.io/tags/build/</link>
-      <pubDate>Wed, 14 Mar 2018 22:33:39 +0800</pubDate>
+      <pubDate>Sun, 20 May 2018 21:06:13 +0800</pubDate>
       
       <guid>https://jimmylin212.github.io/tags/build/</guid>
       <description></description>
@@ -26,6 +26,24 @@
       <pubDate>Sat, 09 Dec 2017 09:51:03 +0800</pubDate>
       
       <guid>https://jimmylin212.github.io/tags/circleci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Devops</title>
+      <link>https://jimmylin212.github.io/tags/devops/</link>
+      <pubDate>Sun, 20 May 2018 21:06:13 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/tags/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>https://jimmylin212.github.io/tags/docker/</link>
+      <pubDate>Sun, 20 May 2018 21:06:13 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/tags/docker/</guid>
       <description></description>
     </item>
     

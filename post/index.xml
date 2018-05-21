@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Wed, 14 Mar 2018 22:33:39 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 20 May 2018 21:06:13 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>建立一個可用帳號密碼登入的 image</title>
+      <link>https://jimmylin212.github.io/post/0007_create_an_ssh_login_image/</link>
+      <pubDate>Sun, 20 May 2018 21:06:13 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/post/0007_create_an_ssh_login_image/</guid>
+      <description>最近因為工作需要了解了一下 Jenkins 以及 Docker 這兩個工具，雖然這兩個工具在 DevOps 中已經被使用多年，不過因為這次的經驗才第一次從零開始接觸，當中遇到很多問題，</description>
+    </item>
     
     <item>
       <title>利用 Wix 建立 Windows .msi 安裝檔</title>
