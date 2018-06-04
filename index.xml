@@ -6,10 +6,19 @@
     <description>Recent content on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sun, 20 May 2018 21:06:13 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 20 May 2018 22:05:42 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付</title>
+      <link>https://jimmylin212.github.io/post/0008_cicd_with_docker_pm2/</link>
+      <pubDate>Sun, 20 May 2018 22:05:42 +0800</pubDate>
+      
+      <guid>https://jimmylin212.github.io/post/0008_cicd_with_docker_pm2/</guid>
+      <description>簡單來說，我們最終的目的是：CICD + Zero Downtime 佈署 Nextjs 的服務。其實網路上找找有蠻多方法的，像是利用 Kubernetes _(K8S)_，或是直接整合 AWS、GCP 或是</description>
+    </item>
     
     <item>
       <title>建立一個可用帳號密碼登入的 image</title>

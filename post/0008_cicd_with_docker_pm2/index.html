@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Jimmy Lin">
+<meta name="description" content="Things that I learned">
+<meta name="generator" content="Hugo 0.30.2" />
+<title>利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付</title>
+<link rel="shortcut icon" href="https://jimmylin212.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://jimmylin212.github.io/css/style.css">
+<link rel="stylesheet" href="https://jimmylin212.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://jimmylin212.github.io/css/monosocialiconsfont.css">
+
+
+
+<link href="https://jimmylin212.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Jimmy Lin" />
+
+
+<meta property="og:title" content="利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付" />
+<meta property="og:description" content="簡單來說，我們最終的目的是：CICD &#43; Zero Downtime 佈署 Nextjs 的服務。其實網路上找找有蠻多方法的，像是利用 Kubernetes _(K8S)_，或是直接整合 AWS、GCP 或是" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://jimmylin212.github.io/post/0008_cicd_with_docker_pm2/" />
+
+
+
+<meta property="article:published_time" content="2018-05-20T22:05:42&#43;08:00"/>
+
+<meta property="article:modified_time" content="2018-05-20T22:05:42&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付">
+<meta itemprop="description" content="簡單來說，我們最終的目的是：CICD &#43; Zero Downtime 佈署 Nextjs 的服務。其實網路上找找有蠻多方法的，像是利用 Kubernetes _(K8S)_，或是直接整合 AWS、GCP 或是">
+
+
+<meta itemprop="datePublished" content="2018-05-20T22:05:42&#43;08:00" />
+<meta itemprop="dateModified" content="2018-05-20T22:05:42&#43;08:00" />
+<meta itemprop="wordCount" content="2295">
+
+
+
+<meta itemprop="keywords" content="Build,Docker," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付"/>
+<meta name="twitter:description" content="簡單來說，我們最終的目的是：CICD &#43; Zero Downtime 佈署 Nextjs 的服務。其實網路上找找有蠻多方法的，像是利用 Kubernetes _(K8S)_，或是直接整合 AWS、GCP 或是"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://jimmylin212.github.io'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='/about/'>About</a>
+  	
+
+	
+		<a class="cta" href="https://jimmylin212.github.io/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        May 20, 2018
+        <br>
+        
+        
+            
+                <a href="https://jimmylin212.github.io/tags/build">Build</a>
+            
+                <a href="https://jimmylin212.github.io/tags/docker">Docker</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>簡單來說，我們最終的目的是：<strong>CICD + Zero Downtime 佈署 Nextjs 的服務</strong>。其實網路上找找有蠻多方法的，像是利用 Kubernetes _(K8S)_，或是直接整合 AWS、GCP 或是 Azure，不過礙於專案不想要放到外面去，又因為 K8S 過於複雜，學習曲線太高，我們最終選擇了這個相對來說簡單許多的方式。雖然簡單但是因為之前沒有碰過 DevOps 的工作，也花了一些時間，希望這篇文章可以幫助到一些有類似需求的人。</p>
+
+<h2 id="pm2-管理-nextjs-服務">PM2 管理 Nextjs 服務</h2>
+
+<p><a href="http://pm2.keymetrics.io/docs/usage/quick-start/">PM2</a> 是一個可以用來管理 Node 服務的一個軟體，安裝方法很簡單，不僅用了 Node 裡面的 Cluter 可以根據硬體看要起幾個 Process，還可以讓多個 Service 聽同一個 port，達到 Load Balance 的效果，另外結合  <a href="https://keymetrics.io/">Keymetrics</a> 還可以監控你的服務狀態，集多種功能於一身。<a href="https://larrylu.blog/nodejs-pm2-cluster-455ffbd7671">這篇文章</a>簡單介紹了一下 PM2，另外也針對 Load Balance 的效能做了一些簡單的測試，值得花時間看一下。這邊我想要多加著墨的是 <code>ecosystem.config.js</code>，一個 PM2 專屬的 config 檔，藉由設定這個檔案我們可以根據不同的開發環境給予程式不同的環境變數。直接看我們使用的 <code>ecosystem.config.js</code></p>
+
+<pre><code class="language-javascript">module.exports = {
+  apps : [
+    {
+      name: 'SERVICE_NAME',
+      script: '.server/index.js',
+      instances: 2,
+      exec_mode: 'cluster',
+      log_date_format: &quot;YYYY-MM-DD HH:mm Z&quot;,
+      env: {
+        NODE_ENV: 'development',
+        MONGO_URL: 'mongodb://IP_ADDRESS',
+        MONGO_PORT: DB_PORT_NUMBER,
+        PORT: PORT_NUMBER
+      },
+      env_production : {
+        NODE_ENV: 'production',
+        MONGO_URL: 'mongodb://IP_ADDRESS',
+        MONGO_PORT: DB_PORT_NUMBER,
+        PORT: PORT_NUMBER
+      }
+    }
+  ]
+};
+</code></pre>
+
+<p>簡單解釋一下，pm2 起這個專案的時候，會開兩個 instance，就是跑兩個 service，都聽 <code>PORT_NUMBER</code>；專案的起始 script 是 <code>.server/index.js</code>；db 使用 MondoDB，分成 Development 和 Production 環境，會連到不同的 <code>IP_ADDRESS</code> 以及不同的 <code>DB_PORT_NUMBER</code>。上面這些設定全都可以寫在 <code>ecosystem.config.js</code> 裡面，詳細內容請看<a href="http://pm2.keymetrics.io/docs/usage/application-declaration/">官網</a>。這樣在下次 service 重起的時候，會根據指令後面帶的 <code>--update-env</code> 或是 <code>--env production</code> 選擇使用不同的環境變數，官網也有針對環境變數更詳細的<a href="http://pm2.keymetrics.io/docs/usage/environment/">解說</a>。根據上面的設定檔，使用下面的指令：</p>
+
+<pre><code class="language-bash">## 使用預設的 env 設定，也就是 NODE_ENV=development 的那組
+pm2 start ecosystem.config.js 
+
+## 使用 env_production 設定，也就是 NODE_ENV=production 的那組
+pm2 start ecosystem.config.js --env production
+</code></pre>
+
+<h2 id="製作-pm2-docker-image-銜接-nextjs-服務">製作 PM2 Docker Image 銜接 Nextjs 服務</h2>
+
+<p>PM2 團隊提供了 <a href="https://hub.docker.com/r/keymetrics/pm2/">Docker Integration</a>，可以用它們所提供的 Base Image 加上一些 Build 自己專案的指令，就可以利用 Dockerfile 新增一個帶有 PM2 環境的 Image，看一下下面這段 Dockerfile</p>
+
+<pre><code class="language-bash">## 使用 PM2 的 Docker Image 做為 based image
+FROM keymetrics/pm2:latest-alpine
+
+## 複製本地資料夾至 Docker Image 中
+COPY src src/
+COPY package.json .
+COPY pm2.json .
+
+## 執行 npm install
+ENV NPM_CONFIG_LOGLEVEL warn
+RUN npm install --production
+
+## 利用 PM2-runtime 來啟動 Nextjs service，並直接使用 env_production 中的設定
+CMD [ &quot;pm2-runtime&quot;, &quot;start&quot;, &quot;ecosystem.config.js&quot;, &quot;--env&quot;, &quot;production&quot; ]
+</code></pre>
+
+<p>利用這種方式，每次只要執行</p>
+
+<pre><code class="language-bash">docker run IMAGE_NAME
+## 或
+docker start CONTAINER_NAME
+</code></pre>
+
+<p>就可以讓你的專案藉由 PM2 來管理，可以利用</p>
+
+<pre><code class="language-bash">## 監看有多少個 process 正在執行
+docker exec CONTAINER_NAME pm2 list 
+
+## 目前只啟動一個 app
+┌──────────┬────┬─────────┬─────┬────────┬─────────┬────────┬─────┬───────────┬──────┬──────────┐
+│ App name │ id │ mode    │ pid │ status │ restart │ uptime │ cpu │ mem       │ user │ watching │
+├──────────┼────┼─────────┼─────┼────────┼─────────┼────────┼─────┼───────────┼──────┼──────────┤
+│ app_name │ 0  │ cluster │ 16  │ online │ 0       │ 11D    │ 0%  │ 84.5 MB   │ node │ disabled │
+└──────────┴────┴─────────┴─────┴────────┴─────────┴────────┴─────┴───────────┴──────┴──────────┘
+ Use `pm2 show &lt;id|name&gt;` to get more details about an app
+
+</code></pre>
+
+<p>不過我們不是用這種方法管理我們的程式的，原因是：<strong>我們不想要把整個 Image 放到 Docker Cloud 上</strong>。雖然 Build 成 Image 很方便，也可以確保每一次的更新都是一個新的 Image，不過最後還是因為隱私的關係作罷。那我們怎麼做？我們只有上傳上面那份 Dockerfile 產生的 image，這個 image 只有空殼，沒有真正 build 出來的程式碼。之後再利用 volume 讓 Docker 看到 build 出來的檔案，最後使用的 Service 以及 Stack 來啟動我們的 service。</p>
+
+<h2 id="使用-docker-service-和-stack-達到-zero-downtime-部署">使用 Docker Service 和 Stack 達到 Zero Downtime 部署</h2>
+
+<p>Docker 上的 <a href="https://docs.docker.com/get-started/part3/">Service 教學</a>、<a href="https://docs.docker.com/get-started/part5/">Stack 教學</a>都還算清楚，我也是按照教學拼拼湊湊的。要使用 Service，要先建立 <code>docker-compose.yml</code>，這個檔案幫你管理你所需要的所有 Docker image。假設今天你的 service 需要 nginx + mongodb + nodejs 的環境，如果手動起三個不同的 image 又要根據不同的 image 給不同的參數，非常不容易管理，看起來也很凌亂，<code>docker-compose.yml</code> 就是幫你把所有你需要的 docker image 都列出來，之後只要執行簡單的 <code>docker servie on</code> 或是 <code>docker stack deploy -c docker-compose.yml SERVICE_NAME</code> 就可以一次起多個 image，另外還順便幫你把環境都設定好。我們的 service 目前只有起一個 image，看一下我們用的設定檔：</p>
+
+<pre><code class="language-yml">version: '3'
+services:
+  website:
+    image: USER_NAME/REPO_NAME:TAG
+    volumes:
+      - &quot;SOURCE_DIRECTORY_HOST:DESTINATION_DIRECTORY_DOCKER&quot;
+    ports:
+      - &quot;3000:3000&quot;
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 20s
+</code></pre>
+
+<p>要讓 docker 可以執行 service，需要先把這個 node 變成 Swarm 模式：</p>
+
+<pre><code class="language-bash">## 初始化這台機器成為 swarm node
+docker swarm init
+</code></pre>
+
+<p>這時候要部署，有兩三種情況：
+1. 程式碼修改，重新 build
+2. docker-compose.yml 檔案修改，重新 deploy
+3. ecosystem.config.js 檔案修改，重新啟動 service</p>
+
+<p>第一種情況，不需要重新執行任何指令，原因是透過 volume 把 build 好的程式碼關連到 docker 中，docker 會自動更新，網頁也會自動刷新。</p>
+
+<p>第二種情況，需要執行下面指令來重新 deploy 啟動中的 service，這邊可以看一下 <code>docker-compose.yml</code> 中的 <code>deploy</code> 的部分，只有下 deploy 指令，才會根據這邊的設定來執行，上面的設定是說</p>
+
+<ul>
+<li>Deploy 2 個 replicas。</li>
+<li>一次更新一個 replica，並且間隔 20 秒在再更新下一個。</li>
+</ul>
+
+<pre><code class="language-bash">## 根據 docker-compose.yml 中的 deploy 部分 deploy stack
+docker stack deploy -c ./cicd-utils/docker-compose.yml SERVICE_NAME
+
+## 檢查 stack 狀態
+docker stask ls
+
+NAME                SERVICES
+SERVICE_NAME        1
+
+</code></pre>
+
+<p>第三種情況，需要重新啟動 docker 的 service，會重新下載 Docker Hub 上面的 image，並且更新，</p>
+
+<pre><code class="language-bash">## 強制重新啟動 service
+docker service update --image USER_NAME/REPO_NAME:TAG --force SERVICE_NAME_website
+
+## 檢查 service 狀態
+docker service ls
+
+ID            NAME                  MODE        REPLICAS  IMAGE                    PORTS
+m0dwq97pf7vp  SERVICE_NAME_website  replicated  2/2       USER_NAME/REPO_NAME:TAG  *:3000-&gt;3000/tcp
+</code></pre>
+
+<p>使用上面兩行指令，就可以做到 zero downtime deploy 了，可以在部署的時候下 <code>docker service ls</code>，會明顯看到有一個 service 先被關掉了，但是服務還可以連到。</p>
+
+<p>其實透過 Docker 掛載 volume，利用 service 以及 stack 啟動服務還蠻直覺的，管理上也很方便，結合 Jenkins，就可以把 CI/CD 都連在一起。這次算是第一次自己搞 DevOps 的工作，學到很多，如果設定有疑問可直接留言，看到都會回。</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    
+    <img class="avatar" src="https://jimmylin212.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Jimmy Lin</span>
+        <span>Programmer - Diver - Blogger</span>
+    </div>
+    
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0008_cicd_with_docker_pm2%2f - %e5%88%a9%e7%94%a8%20pm2%20%e7%ae%a1%e7%90%86%20node%20%e6%9c%8d%e5%8b%99%ef%bc%8c%e7%b5%90%e5%90%88%20Docker%20Image%20%e9%81%94%e5%88%b0%e6%8c%81%e7%ba%8c%e4%ba%a4%e4%bb%98 "><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jimmylin212-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>更多文章</h3>
+
+    
+    
+    
+        <li>
+            <a href="/post/0007_create_an_ssh_login_image/">建立一個可用帳號密碼登入的 image<aside class="dates">May 20 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/0005_create_msi_by_wix/">利用 Wix 建立 Windows .msi 安裝檔<aside class="dates">Mar 14 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/0004_hugo_other_and_cheat_sheet/">Hugo 其他使用方式以及 Cheat Sheet<aside class="dates">Jan 22 2018</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://www.facebook.com/jimmylin212">
+        circlefacebook
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/jimmylin212">
+        circlegithubalt
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/jimmylin212/">
+        circlelinkedin
+    </a>
+    
+    <a class="symbol" href="https://stackoverflow.com/story/jimmylin212">
+        circlestackoverflow
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Jimmy Lin
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://jimmylin212.github.io/js/main.js"></script>
+<script src="https://jimmylin212.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-2756751-14', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+</body>
+</html>
