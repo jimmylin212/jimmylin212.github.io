@@ -5,7 +5,8 @@
     <link>https://jimmylin212.github.io/tags/hugo/</link>
     <description>Recent content in Hugo on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-tw</language>
+    <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
+    <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
     <lastBuildDate>Mon, 22 Jan 2018 23:18:37 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
@@ -15,7 +16,7 @@
       <title>Hugo 其他使用方式以及 Cheat Sheet</title>
       <link>https://jimmylin212.github.io/post/0004_hugo_other_and_cheat_sheet/</link>
       <pubDate>Mon, 22 Jan 2018 23:18:37 +0800</pubDate>
-      
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/post/0004_hugo_other_and_cheat_sheet/</guid>
       <description>Hugo 上有很多方便的功能，有些蠻簡單易用的，就直接都整理在這邊。最後面附上常用到的指令，方便未來查詢。 文章標頭設定 插入標籤 文章標頭樣板 使用內建樣</description>
     </item>
@@ -24,7 +25,7 @@
       <title>使用 CircleCI 部署 Hugo 靜態網站</title>
       <link>https://jimmylin212.github.io/post/0003_deploy_hugo_using_circleci/</link>
       <pubDate>Sat, 09 Dec 2017 09:51:03 +0800</pubDate>
-      
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/post/0003_deploy_hugo_using_circleci/</guid>
       <description>搞了半天，終於可以利用 CircleCI 來部署 Hugo 靜態網站到 Github Page，這當中出現出現非常多的錯誤，累積失敗的 Build 高達七十個，把這些錯誤的例子都寫寫，以後如果有</description>
     </item>
@@ -33,7 +34,7 @@
       <title>Hugo 的文件管理 - 資料夾結構</title>
       <link>https://jimmylin212.github.io/post/0002_hugo_content_management_dir_structure/</link>
       <pubDate>Tue, 05 Dec 2017 22:00:48 +0800</pubDate>
-      
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/post/0002_hugo_content_management_dir_structure/</guid>
       <description>建立完個人網站之後，最重要的就是開始寫文章，或是讓充實網頁的內容，像是加上個人介紹頁面，或是為自己的網站建立一些基本部落格應該要有的功能，像</description>
     </item>
@@ -42,7 +43,7 @@
       <title>使用 Hugo 建立靜態網站，並部署在 Github Page</title>
       <link>https://jimmylin212.github.io/post/0001_create_hugo_and_deploy_on-github_page/</link>
       <pubDate>Mon, 27 Nov 2017 21:53:29 +0800</pubDate>
-      
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/post/0001_create_hugo_and_deploy_on-github_page/</guid>
       <description>工作幾年了，下班之後會找些事情來做，寫一些小小的 side project，發現有時候要在網路上面找到中文的教學還挺難的。想要了解一些最新的技術也都只</description>
     </item>

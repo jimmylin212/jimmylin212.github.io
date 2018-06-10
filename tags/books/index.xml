@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Books on Jimmy Lin</title>
+    <link>https://jimmylin212.github.io/tags/books/</link>
+    <description>Recent content in Books on Jimmy Lin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
+    <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
+    <lastBuildDate>Sat, 09 Jun 2018 14:58:16 +0800</lastBuildDate>
+    
+	<atom:link href="https://jimmylin212.github.io/tags/books/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Aaron Lazare - On Apology (道歉的力量)</title>
+      <link>https://jimmylin212.github.io/post/0009_on_aplolgy/</link>
+      <pubDate>Sat, 09 Jun 2018 14:58:16 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/post/0009_on_aplolgy/</guid>
+      <description>這本書儼然就是道歉學的教科書，作者從好幾年前就開始研究道歉，並且將之歸類並加以分析，另外也結合了許多古今中外的例子來驗證這些結果。剛開始看覺</description>
+    </item>
+    
+  </channel>
+</rss>

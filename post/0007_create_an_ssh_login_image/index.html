@@ -1,105 +1,200 @@
 <!DOCTYPE html>
-<html lang="zh-tw">
-	<head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="Jimmy Lin">
-<meta name="description" content="Things that I learned">
-<meta name="generator" content="Hugo 0.30.2" />
-<title>建立一個可用帳號密碼登入的 image</title>
-<link rel="shortcut icon" href="https://jimmylin212.github.io/images/favicon.ico">
-<link rel="stylesheet" href="https://jimmylin212.github.io/css/style.css">
-<link rel="stylesheet" href="https://jimmylin212.github.io/css/highlight.css">
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>建立一個可用帳號密碼登入的 image</title>
+  <meta property="og:title" content="建立一個可用帳號密碼登入的 image" />
+  <meta name="twitter:title" content="建立一個可用帳號密碼登入的 image" />
+  <meta name="description" content="最近因為工作需要了解了一下 Jenkins 以及 Docker 這兩個工具，雖然這兩個工具在 DevOps 中已經被使用多年，不過因為這次的經驗才第一次從零開始接觸，當中遇到很多問題，">
+  <meta property="og:description" content="最近因為工作需要了解了一下 Jenkins 以及 Docker 這兩個工具，雖然這兩個工具在 DevOps 中已經被使用多年，不過因為這次的經驗才第一次從零開始接觸，當中遇到很多問題，">
+  <meta name="twitter:description" content="最近因為工作需要了解了一下 Jenkins 以及 Docker 這兩個工具，雖然這兩個工具在 DevOps 中已經被使用多年，不過因為這次的經驗才第一次從零開始接觸，當中遇到很多問題，">
+  <meta name="author" content="Jimmy Lin"/>
+  <link href='https://jimmylin212.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://jimmylin212.github.io/static/images/avatar.png" />
+  <meta name="twitter:image" content="https://jimmylin212.github.io/static/images/avatar.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://jimmylin212.github.io/post/0007_create_an_ssh_login_image/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Jimmy Lin" />
+
+  <meta name="generator" content="Hugo 0.30.2" />
+  <link rel="canonical" href="https://jimmylin212.github.io/post/0007_create_an_ssh_login_image/" />
+  <link rel="alternate" href="https://jimmylin212.github.io/index.xml" type="application/rss+xml" title="Jimmy Lin">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://jimmylin212.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://jimmylin212.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://jimmylin212.github.io/css/codeblock.css" />
 
 
 
-<link rel="stylesheet" href="https://jimmylin212.github.io/css/monosocialiconsfont.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
 
 
 
-<link href="https://jimmylin212.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Jimmy Lin" />
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
+<div class="pswp__bg"></div>
 
-<meta property="og:title" content="建立一個可用帳號密碼登入的 image" />
-<meta property="og:description" content="最近因為工作需要了解了一下 Jenkins 以及 Docker 這兩個工具，雖然這兩個工具在 DevOps 中已經被使用多年，不過因為這次的經驗才第一次從零開始接觸，當中遇到很多問題，" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://jimmylin212.github.io/post/0007_create_an_ssh_login_image/" />
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
 
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-2756751-14', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
 
+</head>
 
-<meta property="article:published_time" content="2018-05-20T21:06:13&#43;08:00"/>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://jimmylin212.github.io">Jimmy Lin</a>
+    </div>
 
-<meta property="article:modified_time" content="2018-05-20T21:06:13&#43;08:00"/>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
 
+        
 
+        
+      </ul>
+    </div>
 
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Jimmy Lin" href="https://jimmylin212.github.io">
+            <img class="avatar-img" src="https://jimmylin212.github.io/static/images/avatar.png" alt="Jimmy Lin" />
+          </a>
+        
+      </div>
+    </div>
 
-
-
-
-
-
-
-
-
-
-<meta itemprop="name" content="建立一個可用帳號密碼登入的 image">
-<meta itemprop="description" content="最近因為工作需要了解了一下 Jenkins 以及 Docker 這兩個工具，雖然這兩個工具在 DevOps 中已經被使用多年，不過因為這次的經驗才第一次從零開始接觸，當中遇到很多問題，">
-
-
-<meta itemprop="datePublished" content="2018-05-20T21:06:13&#43;08:00" />
-<meta itemprop="dateModified" content="2018-05-20T21:06:13&#43;08:00" />
-<meta itemprop="wordCount" content="870">
-
-
-
-<meta itemprop="keywords" content="Build,Docker,DevOps," />
-
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="建立一個可用帳號密碼登入的 image"/>
-<meta name="twitter:description" content="最近因為工作需要了解了一下 Jenkins 以及 Docker 這兩個工具，雖然這兩個工具在 DevOps 中已經被使用多年，不過因為這次的經驗才第一次從零開始接觸，當中遇到很多問題，"/>
-
-
-    </head>
-<body>
-    <nav class="main-nav">
-	
-		<a href='https://jimmylin212.github.io'> <span class="arrow">←</span>Home</a>
-	
-
-	
- 		<a href='/about/'>About</a>
-  	
-
-	
-		<a class="cta" href="https://jimmylin212.github.io/index.xml">Subscribe</a>
-	
+  </div>
 </nav>
 
-    <section id="wrapper">
-        
-        
-<article class="post">
-    <header>
-        <h1>建立一個可用帳號密碼登入的 image</h1>
-        <h2 class="subtitle"></h2>
-        <h2 class="headline">
-        May 20, 2018
-        <br>
-        
-        
-            
-                <a href="https://jimmylin212.github.io/tags/build">Build</a>
-            
-                <a href="https://jimmylin212.github.io/tags/docker">Docker</a>
-            
-                <a href="https://jimmylin212.github.io/tags/devops">DevOps</a>
-            
-        
-        
-        </h2>
-    </header>
-    <section id="post-body">
+
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>建立一個可用帳號密碼登入的 image</h1>
+                
+                
+                  <span class="post-meta">
+  
+  
+  <i class="fa fa-calendar-o"></i>&nbsp;Posted on May 20, 2018
+  
+  
+  &nbsp;|&nbsp;
+  <i class="fa fa-clock-o"></i> 2 minutes (870 words)
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
         <p>最近因為工作需要了解了一下 Jenkins 以及 Docker 這兩個工具，雖然這兩個工具在 DevOps 中已經被使用多年，不過因為這次的經驗才第一次從零開始接觸，當中遇到很多問題，不過也學到蠻多東西的，希望可以把這些東西記錄下來，未來如果有人看到或是自己需要再 reference 的話，至少有個管道。</p>
 
 <p>我們就從最基礎開始吧，如何建立一個 Docker Image。不過在先了解我們為什麼要建立之前，可以先了解一下 Docker 的概念，官網的<a href="https://docs.docker.com/get-started/">介紹</a>其實蠻詳細的。另外我的環境是在 Windows 上面使用 <a href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>，我覺得使用上沒有不一致，使用起來也相當得心應手，如果你的開發環境不全然是 Linux，是可以用 Docker for Windows 的。另外其實 Docker 的教學也寫得非常好，可以讓你真正從零開始打造一個自己的 Image，所以有很多類似的就不贅述了。</p>
@@ -132,63 +227,146 @@
 </ol>
 
 <p>使用方法很簡單：</p>
-
-<pre><code>#把所有有開的 port 都給定一個對應的 port
+<div class="highlight"><pre class="chroma">#把所有有開的 port 都給定一個對應的 port
 docker run -P IMAGENAME:TAG 
 
 #把 port 2222 指向 image 的 port 22，可用 port 22222 連入
-docker run -p 22222:22 IMAGENAME:TAG 
-</code></pre>
-
+docker run -p 22222:22 IMAGENAME:TAG </pre></div>
 <p>啟動之後可以輸入</p>
-
-<pre><code class="language-bash">docker container ls
-# or
-docker ps 
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker container ls
+<span class="c1"># or
+</span><span class="c1"></span>docker ps </code></pre></div>
 <p>可以看到你的 image 已經跑起來了，之後就可以透過 shell 連入 <code>127.0.0.1:22</code> 輸入我們設定好的帳號密碼，就可以登入囉。</p>
 
 <p>列一下常用的 Docker 指令</p>
-
-<pre><code class="language-bash">docker image ls
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker image ls
 docker image rm
 docker container ls 
 docker container ls --all
 docker stop CONTAINER
 docker rm CONTAINER
-docker exec CONTAINER COMMAND
+docker <span class="nb">exec</span> CONTAINER COMMAND
 docker pull ACCOUNT/IMAGE:TAG
 docker tag IMAGE:TAG ACCOUNT/IMAGE:TAG
-docker push ACCOUNT/IMAGE:TAG
-</code></pre>
+docker push ACCOUNT/IMAGE:TAG</code></pre></div>
 
-    </section>
-</article>
+        
+          <div class="blog-tags">
+            
+              <a href="https://jimmylin212.github.io/tags/build/">Build</a>&nbsp;
+            
+              <a href="https://jimmylin212.github.io/tags/docker/">Docker</a>&nbsp;
+            
+              <a href="https://jimmylin212.github.io/tags/devops/">DevOps</a>&nbsp;
+            
+          </div>
+        
 
-<footer id="post-meta" class="clearfix">
-    
-    <img class="avatar" src="https://jimmylin212.github.io/images/avatar.png">
-    <div>
-        <span class="dark">Jimmy Lin</span>
-        <span>Programmer - Diver - Blogger</span>
-    </div>
-    
-    <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0007_create_an_ssh_login_image%2f - %e5%bb%ba%e7%ab%8b%e4%b8%80%e5%80%8b%e5%8f%af%e7%94%a8%e5%b8%b3%e8%99%9f%e5%af%86%e7%a2%bc%e7%99%bb%e5%85%a5%e7%9a%84%20image "><span class="icon-twitter"> tweet</span></a>
+        
+            <hr/>
+            <section id="social-share">
+              <ul class="list-inline footer-links">
+                
 
-<a class="facebook" href="#" onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-      'facebook-share-dialog',
-      'width=626,height=436');
-    return false;"><span class="icon-facebook-rect"> Share</span>
-</a>
 
-    </section>
-</footer>
+<li>
+    <a href="//twitter.com/share?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0007_create_an_ssh_login_image%2f&amp;text=%e5%bb%ba%e7%ab%8b%e4%b8%80%e5%80%8b%e5%8f%af%e7%94%a8%e5%b8%b3%e8%99%9f%e5%af%86%e7%a2%bc%e7%99%bb%e5%85%a5%e7%9a%84%20image&amp;via="
+       target="_blank" alt="" title="Share on Twitter">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
 
-<div id="disqus_thread"></div>
+
+<li>
+    <a href="//plus.google.com/share?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0007_create_an_ssh_login_image%2f" target="_blank" title="Share on Google Plus">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0007_create_an_ssh_login_image%2f" target="_blank" title="Share on Facebook">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//reddit.com/submit?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0007_create_an_ssh_login_image%2f&amp;title=%e5%bb%ba%e7%ab%8b%e4%b8%80%e5%80%8b%e5%8f%af%e7%94%a8%e5%b8%b3%e8%99%9f%e5%af%86%e7%a2%bc%e7%99%bb%e5%85%a5%e7%9a%84%20image" target="_blank" title="Share on Reddit">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-reddit fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0007_create_an_ssh_login_image%2f&amp;title=%e5%bb%ba%e7%ab%8b%e4%b8%80%e5%80%8b%e5%8f%af%e7%94%a8%e5%b8%b3%e8%99%9f%e5%af%86%e7%a2%bc%e7%99%bb%e5%85%a5%e7%9a%84%20image" target="_blank"
+       title="Share on LinkedIn">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0007_create_an_ssh_login_image%2f&amp;title=%e5%bb%ba%e7%ab%8b%e4%b8%80%e5%80%8b%e5%8f%af%e7%94%a8%e5%b8%b3%e8%99%9f%e5%af%86%e7%a2%bc%e7%99%bb%e5%85%a5%e7%9a%84%20image" target="_blank"
+       title="Share on StumbleUpon">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stumbleupon fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0007_create_an_ssh_login_image%2f&amp;description=%e5%bb%ba%e7%ab%8b%e4%b8%80%e5%80%8b%e5%8f%af%e7%94%a8%e5%b8%b3%e8%99%9f%e5%af%86%e7%a2%bc%e7%99%bb%e5%85%a5%e7%9a%84%20image" target="_blank"
+       title="Share on Pinterest">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-pinterest fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+              </ul>
+            </section>
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://jimmylin212.github.io/post/0005_create_msi_by_wix/" data-toggle="tooltip" data-placement="top" title="利用 Wix 建立 Windows .msi 安裝檔">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://jimmylin212.github.io/post/0008_cicd_with_docker_pm2/" data-toggle="tooltip" data-placement="top" title="利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+        
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
 <script>
     var disqus_config = function () {
     
@@ -208,83 +386,116 @@ docker push ACCOUNT/IMAGE:TAG
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+        
+        
+      
 
-<ul id="post-list" class="archive readmore">
-    <h3>更多文章</h3>
-
-    
-    
-    
-        <li>
-            <a href="/post/0008_cicd_with_docker_pm2/">利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付<aside class="dates">May 20 2018</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/0005_create_msi_by_wix/">利用 Wix 建立 Windows .msi 安裝檔<aside class="dates">Mar 14 2018</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/0004_hugo_other_and_cheat_sheet/">Hugo 其他使用方式以及 Cheat Sheet<aside class="dates">Jan 22 2018</aside></a>
-        </li>
-    
-</ul>
-
-
-
-        <footer id="footer">
-    
-        <div id="social">
-
-	
-	
-    
-    <a class="symbol" href="https://www.facebook.com/jimmylin212">
-        circlefacebook
-    </a>
-    
-    <a class="symbol" href="https://www.github.com/jimmylin212">
-        circlegithubalt
-    </a>
-    
-    <a class="symbol" href="https://www.linkedin.com/in/jimmylin212/">
-        circlelinkedin
-    </a>
-    
-    <a class="symbol" href="https://stackoverflow.com/story/jimmylin212">
-        circlestackoverflow
-    </a>
-    
-
-
+    </div>
+  </div>
 </div>
 
-    
-    <p class="small">
-    
-        © Copyright 2018 Jimmy Lin
-    
-    </p>
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:jimmylin212@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/jimmylin212" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/jimmylin212" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/jimmylin212" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/users/743158/jimmy-lin" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            
+            <a href="https://jimmylin212.github.io/index.xml" title="RSS">
+            
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="jimmylin212.github.io">Jimmy Lin</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://jimmylin212.github.io">Jimmy Lin</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.30.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
 </footer>
 
-    </section>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="https://jimmylin212.github.io/js/main.js"></script>
-<script src="https://jimmylin212.github.io/js/highlight.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+<script src="https://jimmylin212.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="https://jimmylin212.github.io/js/load-photoswipe.js"></script>
 
 
 
 
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-2756751-14', 'auto');
-ga('send', 'pageview');
-</script>
 
 
-</body>
+  </body>
 </html>
+

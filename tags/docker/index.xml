@@ -5,7 +5,8 @@
     <link>https://jimmylin212.github.io/tags/docker/</link>
     <description>Recent content in Docker on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-tw</language>
+    <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
+    <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
     <lastBuildDate>Sun, 20 May 2018 22:05:42 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
@@ -15,7 +16,7 @@
       <title>利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付</title>
       <link>https://jimmylin212.github.io/post/0008_cicd_with_docker_pm2/</link>
       <pubDate>Sun, 20 May 2018 22:05:42 +0800</pubDate>
-      
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/post/0008_cicd_with_docker_pm2/</guid>
       <description>簡單來說，我們最終的目的是：CICD + Zero Downtime 佈署 Nextjs 的服務。其實網路上找找有蠻多方法的，像是利用 Kubernetes _(K8S)_，或是直接整合 AWS、GCP 或是</description>
     </item>
@@ -24,7 +25,7 @@
       <title>建立一個可用帳號密碼登入的 image</title>
       <link>https://jimmylin212.github.io/post/0007_create_an_ssh_login_image/</link>
       <pubDate>Sun, 20 May 2018 21:06:13 +0800</pubDate>
-      
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/post/0007_create_an_ssh_login_image/</guid>
       <description>最近因為工作需要了解了一下 Jenkins 以及 Docker 這兩個工具，雖然這兩個工具在 DevOps 中已經被使用多年，不過因為這次的經驗才第一次從零開始接觸，當中遇到很多問題，</description>
     </item>
