@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Backend on Jimmy Lin</title>
+    <link>https://jimmylin212.github.io/tags/backend/</link>
+    <description>Recent content in Backend on Jimmy Lin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
+    <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
+    <lastBuildDate>Fri, 15 Jun 2018 21:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://jimmylin212.github.io/tags/backend/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>利用 Golang 與 GraphQL Server 做檔案操作</title>
+      <link>https://jimmylin212.github.io/post/0006_golang_with_graphql/</link>
+      <pubDate>Fri, 15 Jun 2018 21:00:00 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/post/0006_golang_with_graphql/</guid>
+      <description>我們目前做的網站提供上傳以及下載的功能，另外想要提供一個 offline CLI Tool 可以讓使用者更方便的上傳或下載檔案，也有可能可以整合這個 CLI tool 到他們自己的 CI\CD 流程</description>
+    </item>
+    
+  </channel>
+</rss>

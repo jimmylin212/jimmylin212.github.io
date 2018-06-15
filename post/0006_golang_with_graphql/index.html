@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>利用 Golang 與 GraphQL Server 做檔案操作</title>
+  <meta property="og:title" content="利用 Golang 與 GraphQL Server 做檔案操作" />
+  <meta name="twitter:title" content="利用 Golang 與 GraphQL Server 做檔案操作" />
+  <meta name="description" content="我們目前做的網站提供上傳以及下載的功能，另外想要提供一個 offline CLI Tool 可以讓使用者更方便的上傳或下載檔案，也有可能可以整合這個 CLI tool 到他們自己的 CI\CD 流程">
+  <meta property="og:description" content="我們目前做的網站提供上傳以及下載的功能，另外想要提供一個 offline CLI Tool 可以讓使用者更方便的上傳或下載檔案，也有可能可以整合這個 CLI tool 到他們自己的 CI\CD 流程">
+  <meta name="twitter:description" content="我們目前做的網站提供上傳以及下載的功能，另外想要提供一個 offline CLI Tool 可以讓使用者更方便的上傳或下載檔案，也有可能可以整合這個 CLI tool 到他們自己的 CI\CD 流程">
+  <meta name="author" content="Jimmy Lin"/>
+  <link href='https://jimmylin212.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://jimmylin212.github.io/images/avatar.png" />
+  <meta name="twitter:image" content="https://jimmylin212.github.io/images/avatar.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://jimmylin212.github.io/post/0006_golang_with_graphql/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Jimmy Lin" />
+
+  <meta name="generator" content="Hugo 0.30.2" />
+  <link rel="canonical" href="https://jimmylin212.github.io/post/0006_golang_with_graphql/" />
+  <link rel="alternate" href="https://jimmylin212.github.io/index.xml" type="application/rss+xml" title="Jimmy Lin">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://jimmylin212.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://jimmylin212.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://jimmylin212.github.io/css/codeblock.css" />
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-2756751-14', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://jimmylin212.github.io">Jimmy Lin</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Jimmy Lin" href="https://jimmylin212.github.io">
+            <img class="avatar-img" src="https://jimmylin212.github.io/images/avatar.png" alt="Jimmy Lin" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>利用 Golang 與 GraphQL Server 做檔案操作</h1>
+                
+                
+                  <span class="post-meta">
+  
+  
+  <i class="fa fa-calendar-o"></i>&nbsp;Posted on June 15, 2018
+  
+  
+  &nbsp;|&nbsp;
+  <i class="fa fa-clock-o"></i> 5 minutes (2203 words)
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        
+
+<p>我們目前做的網站提供上傳以及下載的功能，另外想要提供一個 offline CLI Tool 可以讓使用者更方便的上傳或下載檔案，也有可能可以整合這個 CLI tool 到他們自己的 CI\CD 流程當中。因為是獨立的 tool，想要用 Golang 來完成，順便可以了解一下這個語言的特性。</p>
+
+<p>先簡單說一下我們 server 的環境配置：</p>
+
+<ul>
+<li>利用 Json Web Token (JWT) 來作為認證的方式</li>
+<li>GraphQL 來當作 api 的唯一接口</li>
+</ul>
+
+<p>因為功能不多，所以這篇文章就專注在如何使用 Golang 來發送 GraphQL 的 query 以及 mutation 指令到指定的 server。這個簡單的小工具，流程是這樣的：</p>
+
+<ol>
+<li>檢查 <code>config.toml</code> 當中有沒有 JWT 的欄位，有的話就讀出來，沒有的話回報錯誤</li>
+<li>從使用者輸入查看 action 是 import 還是 export，以及指令的 ProjectID，執行不同的函式</li>
+<li>發送 GraphQL 指令</li>
+<li>整理 GraphQL response</li>
+</ol>
+
+<h2 id="讀取-config-檔">讀取 config 檔</h2>
+
+<p>每個語言或是作業系統都有不同對應的設定檔格式，像 Windows 鍾愛 <code>.ini</code>，有些語言又可以支援多種的格式，像 Python 支援 <code>.ini</code> 以及 <code>.json</code>。在 Golang 當中官方推薦的格式是 <code>.toml</code>，這個格式很像 <code>.ini</code>，不過又更彈性。在 Golang 當中要讀取 toml 的檔案相當簡單，直接看下面程式碼：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Config</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Token</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">readConfig</span><span class="p">()</span> <span class="p">(</span><span class="nx">config</span> <span class="nx">Config</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 讀取執行檔所在路徑
+</span><span class="c1"></span>	<span class="nx">exeFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Executable</span><span class="p">()</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+	<span class="p">}</span>
+    <span class="c1">// 把資料夾路徑和 config.toml Join 在一起，方便之後讀檔
+</span><span class="c1"></span>	<span class="nx">configFilePath</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nx">Dir</span><span class="p">(</span><span class="nx">exeFile</span><span class="p">),</span> <span class="s">&#34;config.toml&#34;</span><span class="p">)</span>
+	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Stat</span><span class="p">(</span><span class="nx">configFilePath</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="s">&#34;Config file is missing: &#34;</span><span class="p">,</span> <span class="nx">configFilePath</span><span class="p">)</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 利用這行就可以直接把 config.toml 檔案的內容直接轉換到上面定義好的 Config Struct 中
+</span><span class="c1"></span>	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">toml</span><span class="p">.</span><span class="nx">DecodeFile</span><span class="p">(</span><span class="nx">configFilePath</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">config</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c1">// 回傳一個 config Config 的結構
+</span><span class="c1"></span>	<span class="k">return</span> <span class="nx">config</span>
+<span class="p">}</span></code></pre></div>
+<p>要簡單的利用 toml 的格式，我們必須安裝另外一個第三方套件 <a href="https://github.com/BurntSushi/toml">https://github.com/BurntSushi/toml</a>，利用下面指令可以直接安裝</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">go get github.com/BurntSushi/toml
+
+<span class="c1"># 如果被 Proxy 擋住了
+</span><span class="c1"></span><span class="nv">https_proxy</span><span class="o">=</span>PROXY_URL:PORT go get github.com/BurntSushi/toml</code></pre></div>
+<hr />
+
+<h2 id="建立一個簡單的-help-message並支持使用者輸入">建立一個簡單的 Help Message並支持使用者輸入</h2>
+
+<p>我覺得 Golang 在這塊沒有像 Python 這麼的完善，介面相對簡單許多，也沒有提供 required 的功能，需要我們自己來實踐，直接看程式碼：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 定義變數
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">action</span> <span class="kt">string</span>
+<span class="kd">var</span> <span class="nx">projectID</span> <span class="kt">string</span>
+<span class="kd">var</span> <span class="nx">dirFilePath</span> <span class="kt">string</span>
+
+<span class="c1">// StringVar 參數解釋: 對應變數, 參數名稱, 預設值, 說明
+</span><span class="c1"></span><span class="nx">flag</span><span class="p">.</span><span class="nx">StringVar</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">action</span><span class="p">,</span> <span class="s">&#34;action&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;Action should be import / export&#34;</span><span class="p">)</span>
+<span class="nx">flag</span><span class="p">.</span><span class="nx">StringVar</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">projectID</span><span class="p">,</span> <span class="s">&#34;pid&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;The target project ID&#34;</span><span class="p">)</span>
+<span class="nx">flag</span><span class="p">.</span><span class="nx">StringVar</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">dirFilePath</span><span class="p">,</span> <span class="s">&#34;path&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;The directory or file path. Always using / on Windows&#34;</span><span class="p">)</span>
+<span class="nx">flag</span><span class="p">.</span><span class="nx">Parse</span><span class="p">()</span>
+
+<span class="c1">// 簡單做一下 required，如果有欄位缺失就跳錯誤
+</span><span class="c1"></span><span class="k">if</span> <span class="nx">action</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="o">||</span> <span class="nx">projectID</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="o">||</span> <span class="nx">dirFilePath</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+	<span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&#34;Input is not complete, please check again&#34;</span><span class="p">))</span>
+<span class="p">}</span></code></pre></div>
+<p>上面這段編譯之後執行 <code>./PROJECT.EXE -h</code> 可以看到下面的 help 訊息</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Usage of C:<span class="se">\\</span>Users<span class="se">\\</span>USER_NAME<span class="se">\\</span>go<span class="se">\\</span>src<span class="se">\\</span>PROJECT<span class="se">\\</span>PROJECT.exe:
+  -action string
+        Action should be import / <span class="nb">export</span>
+  -path string
+        The directory or file path. Always using / on Windows
+  -pid string
+        The target project ID</code></pre></div>
+<p>使用者藉由輸入</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">./PROJECT.EXE -action import -path PATH_TO_DIR_FILE -pid PROJECT_ID </code></pre></div>
+<p>即可進入程式</p>
+
+<hr />
+
+<h2 id="發送-graphql-query-mutation-指令以及-form-data-操作">發送 GraphQL Query/Mutation 指令以及 form-data 操作</h2>
+
+<p>發現 Golang 相當推薦使用 Struct 的方式來處理結構複雜的變數，所以結果都會轉換成 Struct 再回傳。這邊先定義的回傳 Struct。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Import</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">lineCount</span>  <span class="kt">float64</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">Export</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">filePath</span> <span class="kt">string</span>
+	<span class="nx">fileName</span> <span class="kt">string</span>
+<span class="p">}</span></code></pre></div>
+<h3 id="共用函式">共用函式</h3>
+
+<p>因為最後的 request 都會走到同一個步驟，所以把發送 request 的部分抽出來，這樣才不會有大量重複的程式碼。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nx">graphqlQuery</span><span class="p">(</span><span class="nx">request</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">(</span><span class="nx">statusCode</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">response</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{},</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 增加其他 headers
+</span><span class="c1"></span>	<span class="nx">request</span><span class="p">.</span><span class="nx">Header</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&#34;Authorization&#34;</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&#34;Bearer %s&#34;</span><span class="p">,</span> <span class="nx">gJwtToken</span><span class="p">))</span>
+	<span class="nx">request</span><span class="p">.</span><span class="nx">Header</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&#34;Cache-Control&#34;</span><span class="p">,</span> <span class="s">&#34;no-cache&#34;</span><span class="p">)</span>
+
+    <span class="c1">// 發送 request
+</span><span class="c1"></span>	<span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">DefaultClient</span><span class="p">.</span><span class="nx">Do</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">statusCode</span><span class="p">,</span> <span class="nx">response</span><span class="p">,</span> <span class="nx">err</span>
+	<span class="p">}</span>
+
+	<span class="k">defer</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+
+    <span class="nx">statusCode</span> <span class="p">=</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Status</span>
+    <span class="c1">// 讀取 response.body 
+</span><span class="c1"></span>    <span class="nx">body</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nx">ReadAll</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
+    <span class="c1">// 轉換成 json 格式
+</span><span class="c1"></span>	<span class="nx">err</span> <span class="p">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">Unmarshal</span><span class="p">(</span><span class="nx">body</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">response</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="nx">statusCode</span><span class="p">,</span> <span class="nx">response</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span></code></pre></div>
+<h3 id="query-mutation">Query / Mutation</h3>
+
+<p>Query 和 Mutation 操作方式都是一樣的，只差在指令當中把 query 或是 mutation。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nx">graphqlExport</span><span class="p">(</span><span class="nx">projectID</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="nx">finalRes</span> <span class="nx">Export</span><span class="p">,</span> <span class="nx">prettyRes</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// GraphQL query 指令
+</span><span class="c1"></span>	<span class="nx">query</span> <span class="o">:=</span> <span class="s">`mutation { 
+</span><span class="s">		export(projectId:&#34;%s&#34;) {
+</span><span class="s">			filepath 
+</span><span class="s">			filename
+</span><span class="s">		} 
+</span><span class="s">	}`</span>
+
+    <span class="c1">// 把 query 變數轉成要發送的 Graphql 格式
+</span><span class="c1"></span>    <span class="nx">querySrting</span> <span class="o">:=</span> <span class="s">`{&#34;query&#34;:`</span> <span class="o">+</span> <span class="nx">strconv</span><span class="p">.</span><span class="nx">QuoteToASCII</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">projectID</span><span class="p">))</span> <span class="o">+</span> <span class="s">`}`</span>
+    
+    <span class="c1">// 建立新的 request，以及增加特定的 header
+</span><span class="c1"></span>	<span class="nx">request</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">NewRequest</span><span class="p">(</span><span class="s">&#34;POST&#34;</span><span class="p">,</span> <span class="nx">gGraphqlURL</span><span class="p">,</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">NewReader</span><span class="p">(</span><span class="nx">querySrting</span><span class="p">))</span>
+	<span class="nx">request</span><span class="p">.</span><span class="nx">Header</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&#34;Content-Type&#34;</span><span class="p">,</span> <span class="s">&#34;application/json&#34;</span><span class="p">)</span>
+
+    <span class="c1">// 呼叫 共同函式發 query
+</span><span class="c1"></span>	<span class="nx">_</span><span class="p">,</span> <span class="nx">response</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">graphqlQuery</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">finalRes</span><span class="p">,</span> <span class="nx">prettyRes</span><span class="p">,</span> <span class="nx">err</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 轉換 response 成 struct 格式
+</span><span class="c1"></span>	<span class="nx">finalRes</span><span class="p">.</span><span class="nx">fileName</span> <span class="p">=</span> <span class="nx">response</span><span class="p">[</span><span class="s">&#34;data&#34;</span><span class="p">][</span><span class="s">&#34;export&#34;</span><span class="p">][</span><span class="s">&#34;filename&#34;</span><span class="p">].(</span><span class="kt">string</span><span class="p">)</span>
+	<span class="nx">finalRes</span><span class="p">.</span><span class="nx">filePath</span> <span class="p">=</span> <span class="nx">response</span><span class="p">[</span><span class="s">&#34;data&#34;</span><span class="p">][</span><span class="s">&#34;export&#34;</span><span class="p">][</span><span class="s">&#34;filepath&#34;</span><span class="p">].(</span><span class="kt">string</span><span class="p">)</span>
+
+    <span class="c1">// Pretty print response 格式
+</span><span class="c1"></span>	<span class="nx">tmpPrettyRes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">MarshalIndent</span><span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;  &#34;</span><span class="p">)</span>
+	<span class="nx">prettyRes</span> <span class="p">=</span> <span class="nb">string</span><span class="p">(</span><span class="nx">tmpPrettyRes</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="nx">finalRes</span><span class="p">,</span> <span class="nx">prettyRes</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span></code></pre></div>
+<h3 id="mutation-form-data-multipart">Mutation Form-data Multipart</h3>
+
+<p>這邊比較特別一點，因為我們要上傳檔案至 server，利用了 form-data 的功能，所以這邊其實是把所有的 key-value 都包成 payload，再一次傳出去。總共有三個 key：</p>
+
+<ul>
+<li>operations: Graphql 的指令</li>
+<li>map: 檔案對應的變數</li>
+<li>file: 檔案的相關資訊</li>
+</ul>
+
+<p>這三個的格式是因為 server 上的 <a href="https://github.com/jaydenseric/apollo-upload-server">Apollo-server-upload</a> module 的<a href="https://github.com/jaydenseric/graphql-multipart-request-spec">教學</a>文件這樣寫，我們就這樣採用了，並沒有特殊原因。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nx">graphqlImport</span><span class="p">(</span><span class="nx">filePath</span><span class="p">,</span> <span class="nx">projectID</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="nx">finalRes</span> <span class="nx">Import</span><span class="p">,</span> <span class="nx">prettyRes</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 開啟要上傳的檔案
+</span><span class="c1"></span>	<span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Open</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">finalRes</span><span class="p">,</span> <span class="nx">prettyRes</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&#34;Could not open the file, file format incorrect&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+
+    <span class="nx">queryBody</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span><span class="p">{}</span>
+    <span class="c1">// 建立 multipart writer instance
+</span><span class="c1"></span>    <span class="nx">writer</span> <span class="o">:=</span> <span class="nx">multipart</span><span class="p">.</span><span class="nx">NewWriter</span><span class="p">(</span><span class="nx">queryBody</span><span class="p">)</span>
+	<span class="nx">boundary</span> <span class="o">:=</span> <span class="nx">writer</span><span class="p">.</span><span class="nx">Boundary</span><span class="p">()</span>
+
+	<span class="nx">query</span> <span class="o">:=</span> <span class="s">`mutation ($projectId:ID! $file:Upload!) { 
+</span><span class="s">		import(projectId:$projectId file:$file) {
+</span><span class="s">			lineCount 
+</span><span class="s">		} 
+</span><span class="s">	}`</span>
+	<span class="nx">variables</span> <span class="o">:=</span> <span class="s">`{	
+</span><span class="s">		&#34;projectId&#34; : &#34;%s&#34;,	
+</span><span class="s">		&#34;file&#34; : null 
+</span><span class="s">	}`</span>
+
+    <span class="c1">// 把 query 變數以及 variables 變數串一起
+</span><span class="c1"></span>	<span class="nx">operationsValue</span> <span class="o">:=</span> <span class="s">`{&#34;query&#34;:`</span> <span class="o">+</span> <span class="nx">strconv</span><span class="p">.</span><span class="nx">QuoteToASCII</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="o">+</span> <span class="s">`,&#34;variables&#34;:`</span> <span class="o">+</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="nx">variables</span><span class="p">,</span> <span class="nx">projectID</span><span class="p">)</span> <span class="o">+</span> <span class="s">`}`</span>
+    <span class="nx">mapValue</span> <span class="o">:=</span> <span class="s">`{&#34;file&#34; : [&#34;variables.file&#34;]}`</span>
+    
+    <span class="c1">// 寫入 multipart 中
+</span><span class="c1"></span>	<span class="nx">_</span> <span class="p">=</span> <span class="nx">writer</span><span class="p">.</span><span class="nx">WriteField</span><span class="p">(</span><span class="s">&#34;operations&#34;</span><span class="p">,</span> <span class="nx">operationsValue</span><span class="p">)</span>
+    <span class="nx">_</span> <span class="p">=</span> <span class="nx">writer</span><span class="p">.</span><span class="nx">WriteField</span><span class="p">(</span><span class="s">&#34;map&#34;</span><span class="p">,</span> <span class="nx">mapValue</span><span class="p">)</span>
+    
+    <span class="c1">// 讀取檔案相關資訊
+</span><span class="c1"></span>	<span class="nx">part</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">writer</span><span class="p">.</span><span class="nx">CreateFormFile</span><span class="p">(</span><span class="s">&#34;file&#34;</span><span class="p">,</span> <span class="nx">filepath</span><span class="p">.</span><span class="nx">Base</span><span class="p">(</span><span class="nx">filePath</span><span class="p">))</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">finalRes</span><span class="p">,</span> <span class="nx">prettyRes</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&#34;Could not open the file, file format incorrect&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 寫入 multipart 中
+</span><span class="c1"></span>	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Copy</span><span class="p">(</span><span class="nx">part</span><span class="p">,</span> <span class="nx">file</span><span class="p">)</span>
+
+	<span class="nx">err</span> <span class="p">=</span> <span class="nx">writer</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">finalRes</span><span class="p">,</span> <span class="nx">prettyRes</span><span class="p">,</span> <span class="nx">err</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 建立新的 request，以及特定的 header 
+</span><span class="c1"></span>	<span class="nx">request</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">NewRequest</span><span class="p">(</span><span class="s">&#34;POST&#34;</span><span class="p">,</span> <span class="nx">gGraphqlURL</span><span class="p">,</span> <span class="nx">queryBody</span><span class="p">)</span>
+	<span class="nx">request</span><span class="p">.</span><span class="nx">Header</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&#34;Content-Type&#34;</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&#34;multipart/form-data; boundary=%s&#34;</span><span class="p">,</span> <span class="nx">boundary</span><span class="p">))</span>
+
+    <span class="c1">// 呼叫 共同函式發 query
+</span><span class="c1"></span>	<span class="nx">_</span><span class="p">,</span> <span class="nx">response</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">graphqlQuery</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">finalRes</span><span class="p">,</span> <span class="nx">prettyRes</span><span class="p">,</span> <span class="nx">err</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 轉換 response 成 struct 格式
+</span><span class="c1"></span>	<span class="nx">finalRes</span><span class="p">.</span><span class="nx">currentRows</span> <span class="p">=</span> <span class="nx">response</span><span class="p">[</span><span class="s">&#34;data&#34;</span><span class="p">][</span><span class="s">&#34;import&#34;</span><span class="p">][</span><span class="s">&#34;lineCount&#34;</span><span class="p">].(</span><span class="kt">float64</span><span class="p">)</span>
+
+    <span class="c1">// Pretty print response 格式
+</span><span class="c1"></span>	<span class="nx">tmpPrettyRes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">MarshalIndent</span><span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;  &#34;</span><span class="p">)</span>
+	<span class="nx">prettyRes</span> <span class="p">=</span> <span class="nb">string</span><span class="p">(</span><span class="nx">tmpPrettyRes</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="nx">finalRes</span><span class="p">,</span> <span class="nx">prettyRes</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span></code></pre></div>
+<hr />
+
+<h2 id="下載某個-url-的檔案">下載某個 URL 的檔案</h2>
+
+<p>要下載某個 URL 的檔案或是讀取某一個 URL 的內容是後端常見的使用情境，要怎做呢？這邊可以注意一下程式碼中 URL 的串接方式，雖然可以用簡單的方式 <code>fmt.Sprintf(&quot;%s/%s&quot;, DOMAIN, PATH)</code>，不過看到 stackoverflow <a href="https://stackoverflow.com/a/43415988/743158">這篇文章</a>之後發現這種作法應該比較正確。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nx">downloadFromURL</span><span class="p">(</span><span class="nx">dstDirPath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">finalRes</span> <span class="nx">Export</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+    <span class="nx">gBaseDomain</span> <span class="o">:=</span> <span class="s">&#34;http://DOMAIN.COM&#34;</span>
+    <span class="c1">// Parse URL domain
+</span><span class="c1"></span>	<span class="nx">base</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">Parse</span><span class="p">(</span><span class="nx">gBaseDomain</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">err</span>
+	<span class="p">}</span>
+    <span class="c1">// Parse URL Path
+</span><span class="c1"></span>	<span class="nx">downloadPath</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">Parse</span><span class="p">(</span><span class="nx">finalRes</span><span class="p">.</span><span class="nx">filePath</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">err</span>
+	<span class="p">}</span>
+    <span class="c1">// Concat Domain and Path to one URL
+</span><span class="c1"></span>    <span class="nx">downloadURL</span> <span class="o">:=</span> <span class="nx">base</span><span class="p">.</span><span class="nx">ResolveReference</span><span class="p">(</span><span class="nx">downloadPath</span><span class="p">).</span><span class="nx">String</span><span class="p">()</span>
+    <span class="c1">// Concat 檔案路徑
+</span><span class="c1"></span>	<span class="nx">dstFilePath</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">dstDirPath</span><span class="p">,</span> <span class="nx">finalRes</span><span class="p">.</span><span class="nx">fileName</span><span class="p">)</span>
+
+	<span class="nx">log</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&#34;Download %v -&gt; %v&#34;</span><span class="p">,</span> <span class="nx">downloadURL</span><span class="p">,</span> <span class="nx">dstFilePath</span><span class="p">)</span>
+
+    <span class="c1">// 開啟目標檔案
+</span><span class="c1"></span>	<span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Create</span><span class="p">(</span><span class="nx">dstFilePath</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">err</span>
+	<span class="p">}</span>
+    <span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+    
+    <span class="c1">// 讀取 URL 內容
+</span><span class="c1"></span>	<span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">Get</span><span class="p">(</span><span class="nx">downloadURL</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">err</span>
+	<span class="p">}</span>
+	<span class="k">defer</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+
+    <span class="c1">// 複製 URL 內容至檔案
+</span><span class="c1"></span>	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Copy</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">err</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="kc">nil</span>
+<span class="p">}</span></code></pre></div>
+<hr />
+
+<h2 id="檢查檔案是否存在或是輸入是否為資料夾">檢查檔案是否存在或是輸入是否為資料夾</h2>
+
+<p>Golang 裡面這種對於資料夾的驗證比較麻煩一點，或是並沒有提供，查一查發現許多人都會自己寫並且包成一個 function 方便未來使用，如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 檢查檔案是否存在
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">fileExists</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Stat</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">nil</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="nx">os</span><span class="p">.</span><span class="nx">IsNotExist</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&#34;File is not exists&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">err</span>
+<span class="p">}</span>
+<span class="c1">// 檢查路徑是否為資料夾
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">isDirectory</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+	<span class="nx">pathStat</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Stat</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&#34;Path is not exists&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="nx">pathStat</span><span class="p">.</span><span class="nx">IsDir</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">nil</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&#34;Path is not directory&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<hr />
+
+<p>寫了這個簡單的小工具，開始理解 Golang 的邏輯，一開始有點不習慣，不過寫道之後其實蠻上手的，因為 Golang 的嚴格規範，每一個人寫出來的程式碼都會符合某種風格，這也讓專案越來越大的時候更方便管理，這點是很值得讚揚的。雖然只是一個小小的工具，不過已經有點喜歡用 Golang 了，之後一些 Backend 的城市應該都會嘗試用 Golang 來寫，若有問題也請留言，有看到都會回。</p>
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="https://jimmylin212.github.io/tags/golang/">Golang</a>&nbsp;
+            
+              <a href="https://jimmylin212.github.io/tags/graphql/">GraphQL</a>&nbsp;
+            
+              <a href="https://jimmylin212.github.io/tags/backend/">Backend</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <ul class="list-inline footer-links">
+                
+
+
+<li>
+    <a href="//twitter.com/share?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0006_golang_with_graphql%2f&amp;text=%e5%88%a9%e7%94%a8%20Golang%20%e8%88%87%20GraphQL%20Server%20%e5%81%9a%e6%aa%94%e6%a1%88%e6%93%8d%e4%bd%9c&amp;via="
+       target="_blank" alt="" title="Share on Twitter">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//plus.google.com/share?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0006_golang_with_graphql%2f" target="_blank" title="Share on Google Plus">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0006_golang_with_graphql%2f" target="_blank" title="Share on Facebook">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//reddit.com/submit?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0006_golang_with_graphql%2f&amp;title=%e5%88%a9%e7%94%a8%20Golang%20%e8%88%87%20GraphQL%20Server%20%e5%81%9a%e6%aa%94%e6%a1%88%e6%93%8d%e4%bd%9c" target="_blank" title="Share on Reddit">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-reddit fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0006_golang_with_graphql%2f&amp;title=%e5%88%a9%e7%94%a8%20Golang%20%e8%88%87%20GraphQL%20Server%20%e5%81%9a%e6%aa%94%e6%a1%88%e6%93%8d%e4%bd%9c" target="_blank"
+       title="Share on LinkedIn">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0006_golang_with_graphql%2f&amp;title=%e5%88%a9%e7%94%a8%20Golang%20%e8%88%87%20GraphQL%20Server%20%e5%81%9a%e6%aa%94%e6%a1%88%e6%93%8d%e4%bd%9c" target="_blank"
+       title="Share on StumbleUpon">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stumbleupon fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0006_golang_with_graphql%2f&amp;description=%e5%88%a9%e7%94%a8%20Golang%20%e8%88%87%20GraphQL%20Server%20%e5%81%9a%e6%aa%94%e6%a1%88%e6%93%8d%e4%bd%9c" target="_blank"
+       title="Share on Pinterest">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-pinterest fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+              </ul>
+            </section>
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://jimmylin212.github.io/post/0009_on_aplolgy/" data-toggle="tooltip" data-placement="top" title="Aaron Lazare - On Apology (道歉的力量)">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jimmylin212-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:jimmylin212@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/jimmylin212" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/jimmylin212" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/jimmylin212" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/users/743158/jimmy-lin" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            
+            <a href="https://jimmylin212.github.io/index.xml" title="RSS">
+            
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="jimmylin212.github.io">Jimmy Lin</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://jimmylin212.github.io">Jimmy Lin</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.30.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://jimmylin212.github.io/js/main.js"></script>
+<script src="https://jimmylin212.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="https://jimmylin212.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+
