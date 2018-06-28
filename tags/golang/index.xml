@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Fri, 15 Jun 2018 21:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 28 Jun 2018 13:28:30 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>為 Golang CLI 打造漂亮的 Help Message</title>
+      <link>https://jimmylin212.github.io/post/0010_golang_with_better_cli/</link>
+      <pubDate>Thu, 28 Jun 2018 13:28:30 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/post/0010_golang_with_better_cli/</guid>
+      <description>Golang 提供了簡單的方法產生 Help Message 以及支援使用者輸入，不過如果你的 CLI Tool 功能較多，或是有階層性的，那要怎麼辦？我們可以利用 Cobra 以及 Viper，這兩個其實</description>
+    </item>
     
     <item>
       <title>利用 Golang 與 GraphQL Server 做檔案操作</title>

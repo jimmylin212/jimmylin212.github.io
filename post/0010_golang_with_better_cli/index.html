@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>為 Golang CLI 打造漂亮的 Help Message</title>
+  <meta property="og:title" content="為 Golang CLI 打造漂亮的 Help Message" />
+  <meta name="twitter:title" content="為 Golang CLI 打造漂亮的 Help Message" />
+  <meta name="description" content="Golang 提供了簡單的方法產生 Help Message 以及支援使用者輸入，不過如果你的 CLI Tool 功能較多，或是有階層性的，那要怎麼辦？我們可以利用 Cobra 以及 Viper，這兩個其實">
+  <meta property="og:description" content="Golang 提供了簡單的方法產生 Help Message 以及支援使用者輸入，不過如果你的 CLI Tool 功能較多，或是有階層性的，那要怎麼辦？我們可以利用 Cobra 以及 Viper，這兩個其實">
+  <meta name="twitter:description" content="Golang 提供了簡單的方法產生 Help Message 以及支援使用者輸入，不過如果你的 CLI Tool 功能較多，或是有階層性的，那要怎麼辦？我們可以利用 Cobra 以及 Viper，這兩個其實">
+  <meta name="author" content="Jimmy Lin"/>
+  <link href='https://jimmylin212.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://jimmylin212.github.io/images/avatar.png" />
+  <meta name="twitter:image" content="https://jimmylin212.github.io/images/avatar.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://jimmylin212.github.io/post/0010_golang_with_better_cli/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Jimmy Lin" />
+
+  <meta name="generator" content="Hugo 0.30.2" />
+  <link rel="canonical" href="https://jimmylin212.github.io/post/0010_golang_with_better_cli/" />
+  <link rel="alternate" href="https://jimmylin212.github.io/index.xml" type="application/rss+xml" title="Jimmy Lin">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://jimmylin212.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://jimmylin212.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://jimmylin212.github.io/css/codeblock.css" />
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-2756751-14', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://jimmylin212.github.io">Jimmy Lin</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Jimmy Lin" href="https://jimmylin212.github.io">
+            <img class="avatar-img" src="https://jimmylin212.github.io/images/avatar.png" alt="Jimmy Lin" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>為 Golang CLI 打造漂亮的 Help Message</h1>
+                
+                
+                  <span class="post-meta">
+  
+  
+  <i class="fa fa-calendar-o"></i>&nbsp;Posted on June 28, 2018
+  
+  
+  &nbsp;|&nbsp;
+  <i class="fa fa-clock-o"></i> 4 minutes (1893 words)
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        
+
+<p>Golang 提供了簡單的方法產生 Help Message 以及支援使用者輸入，不過如果你的 CLI Tool 功能較多，或是有階層性的，那要怎麼辦？我們可以利用 <a href="https://github.com/spf13/cobra">Cobra</a> 以及 <a href="https://github.com/spf13/viper">Viper</a>，這兩個其實是完全不相關的 module，可以單獨使用，不過我覺得結合再一起真的是非常不錯。Cobra 是用來產生漂亮的 CLI 介面以及支援處理使用者的輸入；Viper 則是負責處理 config 檔。想像一下，一個常見的 CLI，程式輸入不外乎就是從這兩個入口進來，所以一起來看一下吧！</p>
+
+
+<link rel="stylesheet" href="/css/hugo-easy-gallery.css" />
+<div class="box" >
+  <figure  itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <div class="img">
+      <img itemprop="thumbnail" src="/images/cover/0010.png" />
+    </div>
+    <a href="/images/cover/0010.png" itemprop="contentUrl"></a>
+  </figure>
+</div>
+
+<h2 id="cobra">Cobra</h2>
+
+<p>雖然 Cobra 的 ReadMe 提供了一些教學，不過有些東西並沒有寫得非常清楚，而且這些教學最終的結果都只是印出一些無用的訊息，對於要建構一個大型一點的或複雜一點的 CLI 幫助不大，另外有些基本用法可能太基本，所以並沒有提到，蠻可惜的，這邊就補充一下。</p>
+
+<p>本來 Golang 的程式入口都在 <code>main()</code>，不過利用了 Cobra，程式的入口變成一個一個的 command，再由 command 去呼叫他所需要的 function，所以本來的 <code>main()</code> 就單純許多。要開始使用 Cobra，可能有兩種情況：</p>
+
+<ol>
+<li>程式的功能都已經完善，只是想要加上 CLI 的輸入</li>
+<li>程式都還沒開始開發，想要從 CLI 輸入開始</li>
+</ol>
+
+<h3 id="初始化">初始化</h3>
+
+<p>Cobra 提供了很方便的 <code>root.go</code> 把基本設定都寫好了，不過一定要透過 <code>cobra init [AppName]</code> 才有辦法取得這個檔案，所以如果你是屬於第一種狀況的人，就利用 cobra init 一個暫時的專案，再把 <code>root.go</code> 複製到自己專案的資料夾中；如果是第二種狀況的人，可以直接使用 cobra 初始化你的專案。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 第一種狀況，利用 cobra 初始化暫時專案，再複製到你的專案中
+</span><span class="c1"></span><span class="nx">cobra</span> <span class="nx">init</span> <span class="nx">TempProject</span>
+
+<span class="c1">// 第二種狀況，直接利用 cobra 初始化你的專案
+</span><span class="c1"></span><span class="nx">cobra</span> <span class="nx">init</span> <span class="nx">MyProject</span></code></pre></div>
+<p>看一下 <code>root.go</code> 可以了解到整個 Cobra 的架構，資料結構也都會沿用到其他的 command 中</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">cmd</span>
+<span class="c1">// 定義 rootCmd 的 command、簡短的描以及詳細的描述
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">rootCmd</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">cobra</span><span class="p">.</span><span class="nx">Command</span><span class="p">{</span>
+	<span class="nx">Use</span><span class="p">:</span>   <span class="s">&#34;myproject&#34;</span><span class="p">,</span>
+	<span class="nx">Short</span><span class="p">:</span> <span class="s">&#34;myproject&#39;s short description&#34;</span><span class="p">,</span>
+	<span class="nx">Long</span><span class="p">:</span>  <span class="s">&#34;myproject&#39;s loooooooooong description&#34;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Cobra 初始化要呼叫的函式，可以自行定義，initMyConfig 就是我自己定義的 init 函式
+</span><span class="c1"></span>	<span class="nx">cobra</span><span class="p">.</span><span class="nx">OnInitialize</span><span class="p">(</span><span class="nx">initConfig</span><span class="p">,</span> <span class="nx">initMyConfig</span><span class="p">)</span>
+
+    <span class="c1">// 這邊開始我們定義 flags，Cobra 支援全域設定，寫在這邊的都會是全域，所有的 command 都可以使用
+</span><span class="c1"></span>    <span class="c1">// 參數解釋
+</span><span class="c1"></span>    <span class="c1">// 第一個 &amp;cfgFile 為這個 command binding 的變數名稱
+</span><span class="c1"></span>    <span class="c1">// 第二個 config 為指令名稱
+</span><span class="c1"></span>    <span class="c1">// 第三個 &#34;&#34; 為參數為預設值，這邊設為空字串
+</span><span class="c1"></span>    <span class="c1">// 第四個為指令描述
+</span><span class="c1"></span>	<span class="nx">rootCmd</span><span class="p">.</span><span class="nx">PersistentFlags</span><span class="p">().</span><span class="nx">StringVar</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">cfgFile</span><span class="p">,</span> <span class="s">&#34;config&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;config file (default is $HOME/config.toml)&#34;</span><span class="p">)</span>
+    <span class="c1">// 標記 config 為必填欄位
+</span><span class="c1"></span>	<span class="nx">rootCmd</span><span class="p">.</span><span class="nx">MarkFlagRequired</span><span class="p">(</span><span class="s">&#34;config&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">// 初始化 config 設定，這邊完全不用動，會自動把 config 裡的 key 都存下來，存在 viper 裡面
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">initConfig</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">cfgFile</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+		<span class="c1">// Use config file from the flag.
+</span><span class="c1"></span>		<span class="nx">viper</span><span class="p">.</span><span class="nx">SetConfigFile</span><span class="p">(</span><span class="nx">cfgFile</span><span class="p">)</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="c1">// Find home directory.
+</span><span class="c1"></span>		<span class="nx">home</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">homedir</span><span class="p">.</span><span class="nx">Dir</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+			<span class="nx">os</span><span class="p">.</span><span class="nx">Exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="p">}</span>
+
+		<span class="c1">// Search config in home directory with name &#34;config&#34; (without extension).
+</span><span class="c1"></span>		<span class="nx">viper</span><span class="p">.</span><span class="nx">AddConfigPath</span><span class="p">(</span><span class="nx">home</span><span class="p">)</span>
+		<span class="nx">viper</span><span class="p">.</span><span class="nx">SetConfigName</span><span class="p">(</span><span class="s">&#34;config&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="nx">viper</span><span class="p">.</span><span class="nx">AutomaticEnv</span><span class="p">()</span> <span class="c1">// read in environment variables that match
+</span><span class="c1"></span>
+	<span class="c1">// If a config file is found, read it in.
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">viper</span><span class="p">.</span><span class="nx">ReadInConfig</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&#34;Reading config file&#34;</span><span class="p">,</span> <span class="nx">viper</span><span class="p">.</span><span class="nx">ConfigFileUsed</span><span class="p">(),</span> <span class="s">&#34;failed.&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// 自定義的初始化函式，我把程式中的全域變數存在 viper 中，方便之後不同的 package 都可以直接利用 viper 呼叫
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">initMyConfig</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">viper</span><span class="p">.</span><span class="nx">Set</span><span class="p">(</span><span class="s">&#34;baseDomain&#34;</span><span class="p">,</span> <span class="s">&#34;http://google.com/&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<hr />
+
+<h3 id="建立自定義-command">建立自定義 command</h3>
+
+<p>看完 <code>root.go</code> 之後我們來新增一個 command，叫 concat，執行完下面指令之後 cobra 會幫你新增一個資料夾 _(cmd)_，並且在裡面新增一個 <code>concat.go</code> 的檔案</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 新增 command
+</span><span class="c1"></span><span class="nx">cobra</span> <span class="nx">add</span> <span class="nx">concat</span></code></pre></div>
+<p>來看一下 <code>concat.go</code>，可以發現到這邊邏輯和 <code>root.go</code> 走的是同一個套路，只是 <code>rootCmd</code> 變成了 <code>concatCmd</code>，設定方式幾乎都一樣，我們看一下前面沒有看到的 PreRun 和 Run 即可。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// package 為 cmd，和 root.go 的相同
+</span><span class="c1"></span><span class="kn">package</span> <span class="nx">cmd</span>
+<span class="c1">// 要 import 的 package
+</span><span class="c1"></span><span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;PROJECT_PATH/mypath&#34;</span>
+
+    <span class="s">&#34;github.com/spf13/cobra&#34;</span>  
+<span class="p">)</span>
+<span class="c1">// 記得把要對應的變數放在最外面
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">path</span> <span class="kt">string</span>
+
+<span class="c1">// 定義 squareCmd 的設定
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">concatCmd</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">cobra</span><span class="p">.</span><span class="nx">Command</span><span class="p">{</span>
+	<span class="nx">Use</span><span class="p">:</span>   <span class="s">&#34;concat&#34;</span><span class="p">,</span>
+	<span class="nx">Short</span><span class="p">:</span> <span class="s">&#34;Concat the path with base domain&#34;</span><span class="p">,</span>
+    <span class="nx">Long</span><span class="p">:</span>  <span class="s">&#34;Concat the path with base domain, this is a longer description&#34;</span><span class="p">,</span>
+    <span class="c1">// PreRun 會在 Run 之前執行，這邊我們可以針對這個 command 做檢查，或是把 authentication 放在這邊
+</span><span class="c1"></span>	<span class="nx">PreRun</span><span class="p">:</span> <span class="kd">func</span><span class="p">(</span><span class="nx">cmd</span> <span class="o">*</span><span class="nx">cobra</span><span class="p">.</span><span class="nx">Command</span><span class="p">,</span> <span class="nx">args</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 假設長度小於 5 的 path 不處理
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span> <span class="p">&lt;</span> <span class="mi">5</span> <span class="p">{</span>
+            <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="s">&#34;Path is too short&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="c1">// 重頭戲，主要的執行邏輯
+</span><span class="c1"></span>	<span class="nx">Run</span><span class="p">:</span> <span class="kd">func</span><span class="p">(</span><span class="nx">cmd</span> <span class="o">*</span><span class="nx">cobra</span><span class="p">.</span><span class="nx">Command</span><span class="p">,</span> <span class="nx">args</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 呼叫其他的 package
+</span><span class="c1"></span>		<span class="nx">concatURL</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">mypath</span><span class="p">.</span><span class="nx">Concat</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+		<span class="p">}</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">concatURL</span><span class="p">)</span>
+	<span class="p">},</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">rootCmd</span><span class="p">.</span><span class="nx">AddCommand</span><span class="p">(</span><span class="nx">concatCmd</span><span class="p">)</span>
+
+	<span class="nx">concatCmd</span><span class="p">.</span><span class="nx">Flags</span><span class="p">().</span><span class="nx">StringVarP</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">path</span><span class="p">,</span> <span class="s">&#34;path&#34;</span><span class="p">,</span> <span class="s">&#34;p&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;the original sentence&#34;</span><span class="p">)</span>
+	<span class="nx">concatCmd</span><span class="p">.</span><span class="nx">MarkFlagRequired</span><span class="p">(</span><span class="s">&#34;path&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<hr />
+
+<h3 id="呼叫外部-package-並使用全域變數">呼叫外部 package，並使用全域變數</h3>
+
+<p>最後來看一下我們的 package mypath ，看到有些做法是把所有的程式都放到 package cmd 下面，不過官方建議參考 <a href="https://github.com/gohugoio/hugo">Hugo repo</a> 的作法，Hugo 根據不同的功能，又分成不同的 package，這樣管理起來也挺便利的。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">mypath</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;log&#34;</span>
+    <span class="s">&#34;net/url&#34;</span>
+
+    <span class="s">&#34;github.com/spf13/viper&#34;</span>
+<span class="p">)</span>
+
+<span class="c1">// 如果這個 function 要 export 出去，首字必須大寫
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">Concat</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="nx">concatURL</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 讀取剛剛存在 viper 裡面的全域變數
+</span><span class="c1"></span>    <span class="nx">baseDomain</span> <span class="o">:=</span> <span class="nx">viper</span><span class="p">.</span><span class="nx">GetString</span><span class="p">(</span><span class="s">&#34;baseDomain&#34;</span><span class="p">)</span>
+
+    <span class="c1">// Parse base domain
+</span><span class="c1"></span>    <span class="nx">base</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">Parse</span><span class="p">(</span><span class="nx">baseDomain</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c1">// Parse path 
+</span><span class="c1"></span>    <span class="nx">parsedPath</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">Parse</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c1">// concat base and path 
+</span><span class="c1"></span>    <span class="nx">concatURL</span> <span class="p">=</span> <span class="nx">base</span><span class="p">.</span><span class="nx">ResolveReference</span><span class="p">(</span><span class="nx">parsedPath</span><span class="p">).</span><span class="nx">String</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nx">concatURL</span>
+<span class="p">}</span></code></pre></div>
+<hr />
+
+<p>這樣就簡單的完成了 golang 的 help message 了，來看一下結果</p>
+
+<p><code>main.go</code> 的 help message，接受兩個 command：concat 和 help，以及一個全域 flag <code>--config</code></p>
+<div class="highlight"><pre class="chroma">C:\Users\USERNAME\go\src\myproject&gt;go run main.go --help
+myproject&#39;s loooooooooong description
+
+Usage:
+  myproject [command]
+
+Available Commands:
+  concat      The short description of concat command
+  help        Help about any command
+
+Flags:
+      --config string   config file (default is $HOME/config.toml)
+  -h, --help            help for myproject
+
+Use &#34;myproject [command] --help&#34; for more information about a command.</pre></div>
+<p>concat 指令的 help message，接受一個自定義 flag：&ndash;path，以及全域 flag <code>--config</code></p>
+<div class="highlight"><pre class="chroma">C:\Users\USERNAME\go\src\myproject&gt;go run main.go concat --help
+The loooooooooooooooooooooooooong description of concat command
+
+Usage:
+  myproject concat [flags]
+
+Flags:
+  -h, --help          help for concat
+  -p, --path string   the original sentence
+
+Global Flags:
+      --config string   config file (default is $HOME/config.toml)</pre></div>
+<p>執行結果，把 path 和 base domain concat 起來並印出</p>
+<div class="highlight"><pre class="chroma">C:\Users\USERNAME\go\src\myproject&gt;go run main.go concat -p /a123b456c789
+http://google.com/a123b456c789
+
+C:\Users\USERNAME\go\src\myproject&gt;go run main.go concat --path /a123b456c789
+http://google.com/a123b456c789</pre></div>
+<p>這個方法真得是簡單直覺好用，只是有些地方因為不熟悉花了些時間研究，但是整體下來我覺得甚至比 python 的 parsearg 都好用許多，程式也相對乾淨。Cobra 的官網說 docker 以及 git 都是用 cobra 來做 CLI 的介面，用這個 module 也讓簡單的 CLI 看起來更專業了。有問題在發問，看到都會回。</p>
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="https://jimmylin212.github.io/tags/golang/">Golang</a>&nbsp;
+            
+              <a href="https://jimmylin212.github.io/tags/backend/">Backend</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <ul class="list-inline footer-links">
+                
+
+
+<li>
+    <a href="//twitter.com/share?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0010_golang_with_better_cli%2f&amp;text=%e7%82%ba%20Golang%20CLI%20%e6%89%93%e9%80%a0%e6%bc%82%e4%ba%ae%e7%9a%84%20Help%20Message&amp;via="
+       target="_blank" alt="" title="Share on Twitter">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//plus.google.com/share?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0010_golang_with_better_cli%2f" target="_blank" title="Share on Google Plus">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0010_golang_with_better_cli%2f" target="_blank" title="Share on Facebook">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//reddit.com/submit?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0010_golang_with_better_cli%2f&amp;title=%e7%82%ba%20Golang%20CLI%20%e6%89%93%e9%80%a0%e6%bc%82%e4%ba%ae%e7%9a%84%20Help%20Message" target="_blank" title="Share on Reddit">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-reddit fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0010_golang_with_better_cli%2f&amp;title=%e7%82%ba%20Golang%20CLI%20%e6%89%93%e9%80%a0%e6%bc%82%e4%ba%ae%e7%9a%84%20Help%20Message" target="_blank"
+       title="Share on LinkedIn">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0010_golang_with_better_cli%2f&amp;title=%e7%82%ba%20Golang%20CLI%20%e6%89%93%e9%80%a0%e6%bc%82%e4%ba%ae%e7%9a%84%20Help%20Message" target="_blank"
+       title="Share on StumbleUpon">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stumbleupon fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0010_golang_with_better_cli%2f&amp;description=%e7%82%ba%20Golang%20CLI%20%e6%89%93%e9%80%a0%e6%bc%82%e4%ba%ae%e7%9a%84%20Help%20Message" target="_blank"
+       title="Share on Pinterest">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-pinterest fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+              </ul>
+            </section>
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://jimmylin212.github.io/post/0006_golang_with_graphql/" data-toggle="tooltip" data-placement="top" title="利用 Golang 與 GraphQL Server 做檔案操作">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jimmylin212-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:jimmylin212@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/jimmylin212" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/jimmylin212" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/jimmylin212" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/users/743158/jimmy-lin" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            
+            <a href="https://jimmylin212.github.io/index.xml" title="RSS">
+            
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="jimmylin212.github.io">Jimmy Lin</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://jimmylin212.github.io">Jimmy Lin</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.30.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://jimmylin212.github.io/js/main.js"></script>
+<script src="https://jimmylin212.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="https://jimmylin212.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+
