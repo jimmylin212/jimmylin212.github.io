@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Thu, 28 Jun 2018 13:28:30 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 04 Jul 2018 10:06:56 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>在 Docker Swarm 上製作 MongoDB Replica Set</title>
+      <link>https://jimmylin212.github.io/post/0011_mongodb_replica_set_with_docker_swarm/</link>
+      <pubDate>Wed, 04 Jul 2018 10:06:56 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/post/0011_mongodb_replica_set_with_docker_swarm/</guid>
+      <description>這篇文章說明如何在 Docker Swarm 上面使用 Mongodb 自身的 Replica Set 以及環境建置，雖然 Docker Service 已經可以使用內建的 replica 了，不過使用 Mongodb 自身的支援度較高也較完整，本文參考自 Medium 的這</description>
+    </item>
     
     <item>
       <title>為 Golang CLI 打造漂亮的 Help Message</title>
