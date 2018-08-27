@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Wed, 14 Mar 2018 22:33:39 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 27 Aug 2018 10:40:47 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/categories/software-development/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用 xliffmerge 讓 Angular i18n 更強大</title>
+      <link>https://jimmylin212.github.io/post/0012_angular_i18n_with_xliffmerge/</link>
+      <pubDate>Mon, 27 Aug 2018 10:40:47 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/post/0012_angular_i18n_with_xliffmerge/</guid>
+      <description>最近這幾個月使用 Angular + Firebase 開發 side-project，想要利用 Angular 中的 i18n 的功能來完成多國語言支援。雖然不一定用的到，不過可以把語言的相關資料都存</description>
+    </item>
     
     <item>
       <title>利用 Wix 建立 Windows .msi 安裝檔</title>

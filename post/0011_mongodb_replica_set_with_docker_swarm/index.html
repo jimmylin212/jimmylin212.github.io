@@ -20,7 +20,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Jimmy Lin" />
 
-  <meta name="generator" content="Hugo 0.30.2" />
+  <meta name="generator" content="Hugo 0.47.1" />
   <link rel="canonical" href="https://jimmylin212.github.io/post/0011_mongodb_replica_set_with_docker_swarm/" />
   <link rel="alternate" href="https://jimmylin212.github.io/index.xml" type="application/rss+xml" title="Jimmy Lin">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -81,12 +81,16 @@
     </div>
 </div>
 
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-2756751-14', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-2756751-14', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 </head>
 
@@ -175,7 +179,7 @@ ga('send', 'pageview');
   
   
   &nbsp;|&nbsp;
-  <i class="fa fa-clock-o"></i> 5 minutes (2195 words)
+  <i class="fa fa-clock-o"></i> 5 minutes (2121 words)
   
   
 </span>
@@ -200,7 +204,7 @@ ga('send', 'pageview');
 <p>這篇文章說明如何在 Docker Swarm 上面使用 Mongodb 自身的 Replica Set 以及環境建置，雖然 Docker Service 已經可以使用內建的 replica 了，不過使用 Mongodb 自身的支援度較高也較完整，本文參考自 Medium 的<a href="https://medium.com/@kalahari/running-a-mongodb-replica-set-on-docker-1-12-swarm-mode-step-by-step-a5f3ba07d06e">這篇</a>，寫得非常清楚詳細。</p>
 
 
-
+<link rel="stylesheet" href="/css/hugo-easy-gallery.css" />
 <div class="box" >
   <figure  itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
     <div class="img">
@@ -307,7 +311,7 @@ l136q8h5hzfl        mongo               overlay             swarm  <span class="
 
 <li><p>放在硬碟中，利用 bind mount 掛載一個實體位置給 container
 
-<link rel="stylesheet" href="/css/hugo-easy-gallery.css" />
+
 <div class="box" style="max-width:50%">
   <figure  itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
     <div class="img">
@@ -339,74 +343,74 @@ docker volume create --name config</code></pre></div>
 <h2 id="啟動-mongodb-service">啟動 Mongodb service</h2>
 
 <p>我們使用 <code>docker-compose.yml</code> 啟動 mongodb service，這份 <code>yml</code> 使用混合模式，檔案內容如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-yml" data-lang="yml">version: &#39;3.3&#39;
-services:
-  db_manager:
-    image: mongo:3.6.4
-    volumes:
-      ## 利用 bind mount 掛載硬碟空間以及存放在硬碟上的 config 給 container
-      - &#34;PATH_TO_DIRECTORY_FOR_DB:/data/db&#34;
-      - &#34;PATH_TO_CONFIG_FILE:/etc/mongo.conf&#34;
-    environment:
-      - MONGO_INITDB_DATABASE=YOUR_DB_NAME
-    command: mongod --config /etc/mongo.conf
-    networks:
-      - mongo
-    deploy:
-      replicas: 1
-      placement:
-        constraints:
-          ## 指定這個 service 被 deploy 至 label mongo.replica == 1 的 node 
-          - node.labels.mongo.replica == 1
-  db_worker_1:
-    image: mongo:3.6.4
-    volumes:
-      ## 利用 volume 掛載 docker 空間給 container
-      - type: volume
-        source: data
-        target: /data/db
-      ## 利用 bind mount 掛載存放在硬碟上的 config 給 container
-      - &#34;PATH_TO_CONFIG_FILE:/etc/mongo.conf&#34;
-    environment:
-      - MONGO_INITDB_DATABASE=YOUR_DB_NAME
-    command: mongod --config /etc/mongo.conf
-    networks:
-      - mongo
-    deploy:
-      replicas: 1
-      placement:
-        constraints:
-          ## 指定這個 service 被 deploy 至 label mongo.replica == 2 的 node
-          - node.labels.mongo.replica == 2
-  db_worker_2:
-    image: mongo:3.6.4
-    volumes:
-      ## 利用 volume 掛載 docker 空間給 container
-      - type: volume
-        source: data
-        target: /data/db
-      ## 利用 bind mount 掛載存放在硬碟上的 config 給 container
-      - &#34;PATH_TO_CONFIG_FILE:/etc/mongo.conf&#34;
-    environment:
-      - MONGO_INITDB_DATABASE=YOUR_DB_NAME
-    command: mongod --config /etc/mongo.conf
-    networks:
-      - mongo
-    deploy:
-      replicas: 1
-      placement:
-        constraints:
-          ## 指定這個 service 被 deploy 至 label mongo.replica == 2 的 node
-          - node.labels.mongo.replica == 3
-
-networks:
-  mercury:
-    external:
-      ## 使用 external 的網路，否則 docker stack 會自動產生網路，網路名稱前綴 service 名字
-      name: mongo
-
-volumes:
-  data:</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-yml" data-lang="yml">version<span class="p">:</span><span class="w"> </span><span class="s1">&#39;3.3&#39;</span><span class="w">
+</span><span class="w"></span>services<span class="p">:</span><span class="w">
+</span><span class="w">  </span>db_manager<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>mongo<span class="p">:</span><span class="m">3.6</span>.<span class="m">4</span><span class="w">
+</span><span class="w">    </span>volumes<span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="c">## 利用 bind mount 掛載硬碟空間以及存放在硬碟上的 config 給 container</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span><span class="s2">&#34;PATH_TO_DIRECTORY_FOR_DB:/data/db&#34;</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span><span class="s2">&#34;PATH_TO_CONFIG_FILE:/etc/mongo.conf&#34;</span><span class="w">
+</span><span class="w">    </span>environment<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>MONGO_INITDB_DATABASE=YOUR_DB_NAME<span class="w">
+</span><span class="w">    </span>command<span class="p">:</span><span class="w"> </span>mongod<span class="w"> </span>--config<span class="w"> </span>/etc/mongo.conf<span class="w">
+</span><span class="w">    </span>networks<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>mongo<span class="w">
+</span><span class="w">    </span>deploy<span class="p">:</span><span class="w">
+</span><span class="w">      </span>replicas<span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">      </span>placement<span class="p">:</span><span class="w">
+</span><span class="w">        </span>constraints<span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="c">## 指定這個 service 被 deploy 至 label mongo.replica == 1 的 node </span><span class="w">
+</span><span class="w">          </span>-<span class="w"> </span>node.labels.mongo.replica<span class="w"> </span>==<span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">  </span>db_worker_1<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>mongo<span class="p">:</span><span class="m">3.6</span>.<span class="m">4</span><span class="w">
+</span><span class="w">    </span>volumes<span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="c">## 利用 volume 掛載 docker 空間給 container</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>type<span class="p">:</span><span class="w"> </span>volume<span class="w">
+</span><span class="w">        </span>source<span class="p">:</span><span class="w"> </span>data<span class="w">
+</span><span class="w">        </span>target<span class="p">:</span><span class="w"> </span>/data/db<span class="w">
+</span><span class="w">      </span><span class="c">## 利用 bind mount 掛載存放在硬碟上的 config 給 container</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span><span class="s2">&#34;PATH_TO_CONFIG_FILE:/etc/mongo.conf&#34;</span><span class="w">
+</span><span class="w">    </span>environment<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>MONGO_INITDB_DATABASE=YOUR_DB_NAME<span class="w">
+</span><span class="w">    </span>command<span class="p">:</span><span class="w"> </span>mongod<span class="w"> </span>--config<span class="w"> </span>/etc/mongo.conf<span class="w">
+</span><span class="w">    </span>networks<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>mongo<span class="w">
+</span><span class="w">    </span>deploy<span class="p">:</span><span class="w">
+</span><span class="w">      </span>replicas<span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">      </span>placement<span class="p">:</span><span class="w">
+</span><span class="w">        </span>constraints<span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="c">## 指定這個 service 被 deploy 至 label mongo.replica == 2 的 node</span><span class="w">
+</span><span class="w">          </span>-<span class="w"> </span>node.labels.mongo.replica<span class="w"> </span>==<span class="w"> </span><span class="m">2</span><span class="w">
+</span><span class="w">  </span>db_worker_2<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>mongo<span class="p">:</span><span class="m">3.6</span>.<span class="m">4</span><span class="w">
+</span><span class="w">    </span>volumes<span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="c">## 利用 volume 掛載 docker 空間給 container</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>type<span class="p">:</span><span class="w"> </span>volume<span class="w">
+</span><span class="w">        </span>source<span class="p">:</span><span class="w"> </span>data<span class="w">
+</span><span class="w">        </span>target<span class="p">:</span><span class="w"> </span>/data/db<span class="w">
+</span><span class="w">      </span><span class="c">## 利用 bind mount 掛載存放在硬碟上的 config 給 container</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span><span class="s2">&#34;PATH_TO_CONFIG_FILE:/etc/mongo.conf&#34;</span><span class="w">
+</span><span class="w">    </span>environment<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>MONGO_INITDB_DATABASE=YOUR_DB_NAME<span class="w">
+</span><span class="w">    </span>command<span class="p">:</span><span class="w"> </span>mongod<span class="w"> </span>--config<span class="w"> </span>/etc/mongo.conf<span class="w">
+</span><span class="w">    </span>networks<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>mongo<span class="w">
+</span><span class="w">    </span>deploy<span class="p">:</span><span class="w">
+</span><span class="w">      </span>replicas<span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">      </span>placement<span class="p">:</span><span class="w">
+</span><span class="w">        </span>constraints<span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="c">## 指定這個 service 被 deploy 至 label mongo.replica == 2 的 node</span><span class="w">
+</span><span class="w">          </span>-<span class="w"> </span>node.labels.mongo.replica<span class="w"> </span>==<span class="w"> </span><span class="m">3</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>networks<span class="p">:</span><span class="w">
+</span><span class="w">  </span>mercury<span class="p">:</span><span class="w">
+</span><span class="w">    </span>external<span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="c">## 使用 external 的網路，否則 docker stack 會自動產生網路，網路名稱前綴 service 名字</span><span class="w">
+</span><span class="w">      </span>name<span class="p">:</span><span class="w"> </span>mongo<span class="w">
+</span><span class="w">
+</span><span class="w"></span>volumes<span class="p">:</span><span class="w">
+</span><span class="w">  </span>data<span class="p">:</span></code></pre></div>
 <p>另外我們的 <code>mongo.conf</code> 如下，最重要的設定就是 <strong>replSetName</strong>，等等在 mongodb console 會用到，按照上面的 <code>yml</code> ，請記得把這個 config 放到三台機器的指定路徑 _(PATH_TO_CONFIG<em>FILE)</em> 下。</p>
 <div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf"># mongod.conf
 
@@ -482,10 +486,12 @@ b578b7f6c539   mongo:3.6.4   <span class="s2">&#34;docker-entrypoint.s…&#34;</
       <span class="p">{</span> <span class="nx">_id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">host</span><span class="o">:</span> <span class="s2">&#34;db_worker_1:27017&#34;</span> <span class="p">},</span>
       <span class="p">{</span> <span class="nx">_id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">host</span><span class="o">:</span> <span class="s2">&#34;db_worker_2:27017&#34;</span> <span class="p">}</span>
    <span class="p">]</span>
-<span class="p">})</span></code></pre></div>
+<span class="p">})</span>
+</code></pre></div>
 <p>再來可以在 manager 上面查看 replica set 資訊</p>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="c1">// 在 manager (primary) 上查看 replica set 資訊
-</span><span class="c1"></span><span class="nx">rs</span><span class="p">.</span><span class="nx">status</span><span class="p">()</span></code></pre></div>
+</span><span class="c1"></span><span class="nx">rs</span><span class="p">.</span><span class="nx">status</span><span class="p">()</span>
+</code></pre></div>
 <p>直接看 members 那欄，可以看到三個 service 已經被加到一組 replica set，一個 Primary，兩個 secondary。</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">//</span> <span class="err">rs.status()</span> <span class="err">的輸出</span>
 <span class="p">{</span>
@@ -697,6 +703,10 @@ b578b7f6c539   mongo:3.6.4   <span class="s2">&#34;docker-entrypoint.s…&#34;</
             </li>
           
           
+            <li class="next">
+              <a href="https://jimmylin212.github.io/post/0012_angular_i18n_with_xliffmerge/" data-toggle="tooltip" data-placement="top" title="使用 xliffmerge 讓 Angular i18n 更強大">Next Post &rarr;</a>
+            </li>
+          
         </ul>
       
 
@@ -705,7 +715,7 @@ b578b7f6c539   mongo:3.6.4   <span class="s2">&#34;docker-entrypoint.s…&#34;</
         
           <div class="disqus-comments">
             <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -809,7 +819,7 @@ b578b7f6c539   mongo:3.6.4   <span class="s2">&#34;docker-entrypoint.s…&#34;</
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.30.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="http://gohugo.io">Hugo v0.47.1</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
           
         </p>
       </div>

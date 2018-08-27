@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Angular on Jimmy Lin</title>
+    <link>https://jimmylin212.github.io/tags/angular/</link>
+    <description>Recent content in Angular on Jimmy Lin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
+    <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
+    <lastBuildDate>Mon, 27 Aug 2018 10:40:47 +0800</lastBuildDate>
+    
+	<atom:link href="https://jimmylin212.github.io/tags/angular/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用 xliffmerge 讓 Angular i18n 更強大</title>
+      <link>https://jimmylin212.github.io/post/0012_angular_i18n_with_xliffmerge/</link>
+      <pubDate>Mon, 27 Aug 2018 10:40:47 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/post/0012_angular_i18n_with_xliffmerge/</guid>
+      <description>最近這幾個月使用 Angular + Firebase 開發 side-project，想要利用 Angular 中的 i18n 的功能來完成多國語言支援。雖然不一定用的到，不過可以把語言的相關資料都存</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -20,7 +20,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Jimmy Lin" />
 
-  <meta name="generator" content="Hugo 0.30.2" />
+  <meta name="generator" content="Hugo 0.47.1" />
   <link rel="canonical" href="https://jimmylin212.github.io/post/0008_cicd_with_docker_pm2/" />
   <link rel="alternate" href="https://jimmylin212.github.io/index.xml" type="application/rss+xml" title="Jimmy Lin">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -81,12 +81,16 @@
     </div>
 </div>
 
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-2756751-14', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-2756751-14', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 </head>
 
@@ -175,7 +179,7 @@ ga('send', 'pageview');
   
   
   &nbsp;|&nbsp;
-  <i class="fa fa-clock-o"></i> 5 minutes (2295 words)
+  <i class="fa fa-clock-o"></i> 5 minutes (2276 words)
   
   
 </span>
@@ -224,7 +228,8 @@ ga('send', 'pageview');
       <span class="p">}</span>
     <span class="p">}</span>
   <span class="p">]</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span>
+</code></pre></div>
 <p>簡單解釋一下，pm2 起這個專案的時候，會開兩個 instance，就是跑兩個 service，都聽 <code>PORT_NUMBER</code>；專案的起始 script 是 <code>.server/index.js</code>；db 使用 MondoDB，分成 Development 和 Production 環境，會連到不同的 <code>IP_ADDRESS</code> 以及不同的 <code>DB_PORT_NUMBER</code>。上面這些設定全都可以寫在 <code>ecosystem.config.js</code> 裡面，詳細內容請看<a href="http://pm2.keymetrics.io/docs/usage/application-declaration/">官網</a>。這樣在下次 service 重起的時候，會根據指令後面帶的 <code>--update-env</code> 或是 <code>--env production</code> 選擇使用不同的環境變數，官網也有針對環境變數更詳細的<a href="http://pm2.keymetrics.io/docs/usage/environment/">解說</a>。根據上面的設定檔，使用下面的指令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">## 使用預設的 env 設定，也就是 NODE_ENV=development 的那組
 </span><span class="c1"></span>pm2 start ecosystem.config.js 
@@ -268,19 +273,19 @@ RUN npm install --production
 <h2 id="使用-docker-service-和-stack-達到-zero-downtime-部署">使用 Docker Service 和 Stack 達到 Zero Downtime 部署</h2>
 
 <p>Docker 上的 <a href="https://docs.docker.com/get-started/part3/">Service 教學</a>、<a href="https://docs.docker.com/get-started/part5/">Stack 教學</a>都還算清楚，我也是按照教學拼拼湊湊的。要使用 Service，要先建立 <code>docker-compose.yml</code>，這個檔案幫你管理你所需要的所有 Docker image。假設今天你的 service 需要 nginx + mongodb + nodejs 的環境，如果手動起三個不同的 image 又要根據不同的 image 給不同的參數，非常不容易管理，看起來也很凌亂，<code>docker-compose.yml</code> 就是幫你把所有你需要的 docker image 都列出來，之後只要執行簡單的 <code>docker servie on</code> 或是 <code>docker stack deploy -c docker-compose.yml SERVICE_NAME</code> 就可以一次起多個 image，另外還順便幫你把環境都設定好。我們的 service 目前只有起一個 image，看一下我們用的設定檔：</p>
-<div class="highlight"><pre class="chroma"><code class="language-yml" data-lang="yml">version: &#39;3&#39;
-services:
-  website:
-    image: USER_NAME/REPO_NAME:TAG
-    volumes:
-      - &#34;SOURCE_DIRECTORY_HOST:DESTINATION_DIRECTORY_DOCKER&#34;
-    ports:
-      - &#34;3000:3000&#34;
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 20s</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-yml" data-lang="yml">version<span class="p">:</span><span class="w"> </span><span class="s1">&#39;3&#39;</span><span class="w">
+</span><span class="w"></span>services<span class="p">:</span><span class="w">
+</span><span class="w">  </span>website<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>USER_NAME/REPO_NAME<span class="p">:</span>TAG<span class="w">
+</span><span class="w">    </span>volumes<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span><span class="s2">&#34;SOURCE_DIRECTORY_HOST:DESTINATION_DIRECTORY_DOCKER&#34;</span><span class="w">
+</span><span class="w">    </span>ports<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span><span class="s2">&#34;3000:3000&#34;</span><span class="w">
+</span><span class="w">    </span>deploy<span class="p">:</span><span class="w">
+</span><span class="w">      </span>replicas<span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span><span class="w">      </span>update_config<span class="p">:</span><span class="w">
+</span><span class="w">        </span>parallelism<span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">        </span>delay<span class="p">:</span><span class="w"> </span>20s</code></pre></div>
 <p>要讓 docker 可以執行 service，需要先把這個 node 變成 Swarm 模式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">## 初始化這台機器成為 swarm node
 </span><span class="c1"></span>docker swarm init</code></pre></div>
@@ -434,7 +439,7 @@ m0dwq97pf7vp  SERVICE_NAME_website  replicated  <span class="m">2</span>/2      
         
           <div class="disqus-comments">
             <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -538,7 +543,7 @@ m0dwq97pf7vp  SERVICE_NAME_website  replicated  <span class="m">2</span>/2      
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.30.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="http://gohugo.io">Hugo v0.47.1</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
           
         </p>
       </div>
