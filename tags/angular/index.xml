@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Mon, 27 Aug 2018 10:40:47 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 20 Dec 2018 11:17:31 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/angular/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>透過 ViewContainerRef 了解 Angular DOM 修改機制</title>
+      <link>https://jimmylin212.github.io/post/0013_exploring_angular_dom_manipulation/</link>
+      <pubDate>Thu, 20 Dec 2018 11:17:31 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/post/0013_exploring_angular_dom_manipulation/</guid>
+      <description>最近因為工作需要，要自己寫一個 Angular 專用的 UI System，這樣的好處是可以自己維護，也可以適用到公司內部其他的 Angular 專案。在開發一些簡單的 Component 像是 Bu</description>
+    </item>
     
     <item>
       <title>使用 xliffmerge 讓 Angular i18n 更強大</title>

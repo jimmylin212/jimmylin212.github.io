@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>透過 ViewContainerRef 了解 Angular DOM 修改機制</title>
+  <meta property="og:title" content="透過 ViewContainerRef 了解 Angular DOM 修改機制" />
+  <meta name="twitter:title" content="透過 ViewContainerRef 了解 Angular DOM 修改機制" />
+  <meta name="description" content="最近因為工作需要，要自己寫一個 Angular 專用的 UI System，這樣的好處是可以自己維護，也可以適用到公司內部其他的 Angular 專案。在開發一些簡單的 Component 像是 Bu">
+  <meta property="og:description" content="最近因為工作需要，要自己寫一個 Angular 專用的 UI System，這樣的好處是可以自己維護，也可以適用到公司內部其他的 Angular 專案。在開發一些簡單的 Component 像是 Bu">
+  <meta name="twitter:description" content="最近因為工作需要，要自己寫一個 Angular 專用的 UI System，這樣的好處是可以自己維護，也可以適用到公司內部其他的 Angular 專案。在開發一些簡單的 Component 像是 Bu">
+  <meta name="author" content="Jimmy Lin"/>
+  <link href='https://jimmylin212.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://jimmylin212.github.io/images/cover/0013.png" />
+  <meta name="twitter:image" content="https://jimmylin212.github.io/images/cover/0013.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="https://jimmylin212.github.io/post/0013_exploring_angular_dom_manipulation/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Jimmy Lin" />
+
+  <meta name="generator" content="Hugo 0.47.1" />
+  <link rel="canonical" href="https://jimmylin212.github.io/post/0013_exploring_angular_dom_manipulation/" />
+  <link rel="alternate" href="https://jimmylin212.github.io/index.xml" type="application/rss+xml" title="Jimmy Lin">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://jimmylin212.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://jimmylin212.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://jimmylin212.github.io/css/codeblock.css" />
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-2756751-14', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://jimmylin212.github.io">Jimmy Lin</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Jimmy Lin" href="https://jimmylin212.github.io">
+            <img class="avatar-img" src="https://jimmylin212.github.io/images/avatar.png" alt="Jimmy Lin" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>透過 ViewContainerRef 了解 Angular DOM 修改機制</h1>
+                
+                
+                  <span class="post-meta">
+  
+  
+  <i class="fa fa-calendar-o"></i>&nbsp;Posted on December 20, 2018
+  
+  
+  &nbsp;|&nbsp;
+  <i class="fa fa-clock-o"></i> 6 minutes (2723 words)
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        
+
+<p>最近因為工作需要，要自己寫一個 Angular 專用的 UI System，這樣的好處是可以自己維護，也可以適用到公司內部其他的 Angular 專案。在開發一些簡單的 Component 像是 Button、Checkbox 都蠻簡單的，只要了解如何在 Host 以及 Component 溝通就可以了，不過開發到 Modal(Dialog) 的時候碰到了一些問題，網路上找到一些解決方法，也看到一篇很厲害的文章，這篇文章主要就是翻譯那篇神文，原文在：<a href="https://blog.angularindepth.com/exploring-angular-dom-abstractions-80b3ebcfc02">Exploring Angular DOM manipulation techniques using ViewContainerRef</a>，如果有錯的話也請留言互相切磋一下。</p>
+
+<p>有別於 AngularJS，Angular2 跑在許多不同的平台上，在瀏覽器、手機或是在 Web Worker 裡面。因為這樣，需要一個中間層 (abstractions) 在平台的 API 以及 framework 的 Interface 間溝通。在 Angular 的世界裡，這些中間層就是我們常看到的 ElementRef、TemplateRef、ViewRef、ComponentRef 以及 ViewContainerRef。在這篇文章裡我們會解釋每一個不同的中間層，並且了解他們是如何操作 DOM。</p>
+
+<h2 id="viewchild">@ViewChild</h2>
+
+<p>在了解一切操作之前，我們先來看一下從 Component 或是 Directive 中如何 access 到這些中間層的。Angular 提供了一種機制叫做 DOM Queries，即是使用 <code>@ViewChild</code> 或是 <code>@ViewChildren</code> 裝飾器。這兩個的行為是一樣的，差別只在回傳的資料不同。後者回傳的是一個 <a href="https://angular.io/docs/ts/latest/api/core/index/QueryList-class.html">QueryList</a> 物件，在接下來的文章中，作者都使用 <code>@ViewChild</code>。</p>
+
+<p>這兩個裝飾器要搭配 <a href="https://angular.io/docs/ts/latest/guide/template-syntax.html#!#ref-vars">template reference variable</a> 使用。Template reference variable 是一個可以在 Template 為某一段 DOM 命名的方法。有點類似原生 <code>html</code> 中的 <code>id</code>。也就是說我們可以在 html 標記某一段 DOM 為某個變數，並且在 component 裡面拿到這段 DOM 並且操作他。這邊寫個簡單的例子：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kd">@Component</span><span class="p">({</span>
+    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;sample&#39;</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span><span class="sb">        &lt;span #tref&gt;I am span&lt;/span&gt;
+</span><span class="sb">    `</span>
+<span class="p">})</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">SampleComponent</span> <span class="kr">implements</span> <span class="nx">AfterViewInit</span> <span class="p">{</span>
+    <span class="kd">@ViewChild</span><span class="p">(</span><span class="s2">&#34;tref&#34;</span><span class="p">,</span> <span class="p">{</span><span class="nx">read</span>: <span class="kt">ElementRef</span><span class="p">})</span> <span class="nx">tref</span>: <span class="kt">ElementRef</span><span class="p">;</span>
+
+    <span class="nx">ngAfterViewInit</span><span class="p">()</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="c1">// outputs `I am span`
+</span><span class="c1"></span>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tref</span><span class="p">.</span><span class="nx">nativeElement</span><span class="p">.</span><span class="nx">textContent</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>基本的 <code>@ViewChild</code> 語法為：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kd">@ViewChild</span><span class="p">([</span><span class="nx">reference</span> <span class="nx">from</span> <span class="nx">template</span><span class="p">],</span> <span class="p">{</span><span class="nx">read</span><span class="o">:</span> <span class="p">[</span><span class="nx">reference</span> <span class="nx">type</span><span class="p">]});</span></code></pre></div>
+<p>在上面的程式碼可以看到我們使用 <code>tref</code> 在 <code>HTML</code> 裡面標了某一段 DOM，在 Component 中我們利用 <code>@ViewChild</code> 拿到了一個型別為 <code>ElementRef</code> 的資料關連到所標記的 DOM。<code>@ViewChild</code> 中的變數 <code>read</code> 並非必要，因為 Angular 會根據所標記的 DOM 推斷是哪種類別。舉例來說，若所標記的是一段簡單的 HTML 像範例中的 <code>&lt;Span&gt;</code>，Angular 回傳 <code>ElementRef</code>；若標記的是 <code>template</code>，則 Angular 回傳 <code>TemplateRef</code>。不過有些較複雜的像是 <code>ViewContainerRef</code> 就無法被 Angular 正確的猜到，因此要在 <code>read</code> 裡面特別註明。另外 <code>ViewRef</code> 無法從 DOM 回傳，因此要手動建置。</p>
+
+<h2 id="elementref">ElementRef</h2>
+
+<p>這是最基礎的中間層，如果你細看一下回傳的資料結構，可以看到他關聯到原生的 element，好用的地方在於我們可以很方便的取得原生地 DOM element，例如下面這段：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="c1">// output `I am span`
+</span><span class="c1"></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tref</span><span class="p">.</span><span class="nx">nativeElement</span><span class="p">.</span><span class="nx">textContent</span><span class="p">);</span></code></pre></div>
+<p>不過根據 Angular 官方的文件，他們<a href="https://angular.io/docs/ts/latest/api/core/index/ElementRef-class.html">不建議</a>這樣使用，不單單是有安全上的疑慮，另外也讓你的應用程式和 render layer 緊密連結，更困難跑在多平台上。</p>
+
+<p>使用 @ViewChild 裝飾器可以回傳任何的 DOM 元件，並且給定型別 <code>ElementRef</code>。不過因為所有的 Component 都 host 在 custom DOM 內，所有的 Directive 也都寫在 DOM 中，我們可以利用 DI 方法來取得 host element。</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kd">@Component</span><span class="p">({</span>
+    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;sample&#39;</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">SampleComponent</span><span class="p">{</span>
+    <span class="kr">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="nx">hostElement</span>: <span class="kt">ElementRef</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//outputs &lt;sample&gt;...&lt;/sample&gt;
+</span><span class="c1"></span>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">hostElement</span><span class="p">.</span><span class="nx">nativeElement</span><span class="p">.</span><span class="nx">outerHTML</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>因為 componet 可以藉由 DI 取得 host element，<code>@ViewChild</code> 裝飾器最常使用在拿到 DOM element 在 view 中的 reference。同樣的，在 directive 沒有 view，因此可以直接使用相對應的 element。</p>
+
+<h2 id="templateref">TemplateRef</h2>
+
+<p>template 的概念在網頁開發中屢見不鮮，template 就是 DOM 的組合，而且可以被不同的 app 重複使用。HTML5 原生支援了 <a href="https://developer.mozilla.org/en/docs/Web/HTML/Element/template"><code>template</code></a> tag，Angular 開發了 <code>TemplateRef</code> 並且可以和 template tag 一起使用。看一下怎麼使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kd">@Component</span><span class="p">({</span>
+    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;sample&#39;</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span><span class="sb">        &lt;ng-template #tpl&gt;
+</span><span class="sb">            &lt;span&gt;I am span in template&lt;/span&gt;
+</span><span class="sb">        &lt;/ng-template&gt;
+</span><span class="sb">    `</span>
+<span class="p">})</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">SampleComponent</span> <span class="kr">implements</span> <span class="nx">AfterViewInit</span> <span class="p">{</span>
+    <span class="kd">@ViewChild</span><span class="p">(</span><span class="s2">&#34;tpl&#34;</span><span class="p">)</span> <span class="nx">tpl</span>: <span class="kt">TemplateRef</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span><span class="p">;</span>
+
+    <span class="nx">ngAfterViewInit() {</span>
+        <span class="kd">let</span> <span class="nx">elementRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tpl</span><span class="p">.</span><span class="nx">elementRef</span><span class="p">;</span>
+        <span class="c1">// outputs `` (empty)
+</span><span class="c1"></span>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">elementRef</span><span class="p">.</span><span class="nx">nativeElement</span><span class="p">.</span><span class="nx">textContent</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>Angular 從 DOM 移除了 <code>template</code> element，並且新增了一段註解進去，render 的結果如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">sample</span><span class="p">&gt;</span>
+    <span class="c">&lt;!-- --&gt;</span>
+<span class="p">&lt;/</span><span class="nt">sample</span><span class="p">&gt;</span></code></pre></div>
+<p><code>TemplateRef</code> 是一個簡單的 class，他存著與其 host element 的關聯在 elementRef 內，而且有一個 method <code>createEmbededView</code>，用這個 method 可以新增 view，並且回傳 <code>ViewRef</code>。</p>
+
+<h2 id="viewref">ViewRef</h2>
+
+<p>這個中間層表示了 Angular 的 view。在 Angular 的世界中，View 是一個應用程式 UI 的基本組成。他是最小的 element 組成單位，在同一個 view 中的 element 會同時被新增或同時被摧毀 (destroyed)。Angular 建議開發者把 UI 視為 Views 的組合，而不是 HTML Tag 樹狀結構的一部分。Angular 支援兩種不同類型的 View：</p>
+
+<ol>
+<li><strong>Embeded Views</strong> 連結到 Template</li>
+<li><strong>Host Views</strong> 連結到 Component</li>
+</ol>
+
+<h3 id="新增-embeded-view">新增 Embeded View</h3>
+
+<p>View 可以透過 createEmbededView 從 template 初始化。</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="nx">ngAfterViewInit() {</span>
+    <span class="kd">let</span> <span class="nx">view</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tpl</span><span class="p">.</span><span class="nx">createEmbeddedView</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+<h3 id="新增-host-view">新增 Host View</h3>
+
+<p>Host view 在 component 初始化時同時被產生，利用 ComponentFactoryResolver 可以動態產生 component。</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="nx">injector</span>: <span class="kt">Injector</span><span class="p">,</span> <span class="kr">private</span> <span class="nx">r</span>: <span class="kt">ComponentFactoryResolver</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">factory</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">resolveComponentFactory</span><span class="p">(</span><span class="nx">ColorComponent</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">componentRef</span> <span class="o">=</span> <span class="nx">factory</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">injector</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">view</span> <span class="o">=</span> <span class="nx">componentRef</span><span class="p">.</span><span class="nx">hostView</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+<p>在 Angular 中，每一個 component 都與特定的 injector 綁定，因此當新增一個 component 時，可以把目前的 injector instance 傳進去。最重要的一點是，當 component 是動態產生的時候，一定要把這個 component 家道 <a href="https://angular.io/docs/ts/latest/cookbook/ngmodule-faq.html#!#q-entry-component-defined">EntryComponents</a> 裡面。</p>
+
+<p>這樣就清楚要如何動態的產生 view 了，一旦產生 view，這個 view 就可以使用 ViewContainer 被加入到 DOM 裡面去。</p>
+
+<h2 id="viewcontainerref">ViewContainerRef</h2>
+
+<p>ViewContainer 代表一個 Container 可以 attach 一到多個 view。首先要先知道任何的 DOM 都可以被用來當作 view container。有趣的是 Angular 並<strong>沒有</strong>在 element 中插入(not insert)  view，而是附加(but append) 到目前綁定的 ViewContainer 上。這與 <code>router-outlet</code> 的做法類似。通常我們用 <code>ng-container</code> 讓 ViewContainer 知道哪些地方可以插入 view。先看例子吧：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kd">@Component</span><span class="p">({</span>
+    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;sample&#39;</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span><span class="sb">        &lt;span&gt;I am first span&lt;/span&gt;
+</span><span class="sb">        &lt;ng-container #vc&gt;&lt;/ng-container&gt;
+</span><span class="sb">        &lt;span&gt;I am last span&lt;/span&gt;
+</span><span class="sb">    `</span>
+<span class="p">})</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">SampleComponent</span> <span class="kr">implements</span> <span class="nx">AfterViewInit</span> <span class="p">{</span>
+    <span class="kd">@ViewChild</span><span class="p">(</span><span class="s2">&#34;vc&#34;</span><span class="p">,</span> <span class="p">{</span><span class="nx">read</span>: <span class="kt">ViewContainerRef</span><span class="p">})</span> <span class="nx">vc</span>: <span class="kt">ViewContainerRef</span><span class="p">;</span>
+
+    <span class="nx">ngAfterViewInit</span><span class="p">()</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="c1">// outputs ``
+</span><span class="c1"></span>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">vc</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">nativeElement</span><span class="p">.</span><span class="nx">textContent</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>例子中可以看到 vc (ViewContainerRef) 與 ng-container 綁定，而且在 render 的時候是 render 註解，因此不會產生多餘的 HTML。</p>
+
+<h3 id="操作-views">操作 views</h3>
+
+<p>ViewContainerRef 提供許多方便的 API 讓開發者可以操作 DOM：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">class</span> <span class="nx">ViewContainerRef</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="nx">clear</span><span class="p">()</span> <span class="o">:</span> <span class="k">void</span>
+    <span class="nx">insert</span><span class="p">(</span><span class="nx">viewRef</span>: <span class="kt">ViewRef</span><span class="p">,</span> <span class="nx">index?</span>: <span class="kt">number</span><span class="p">)</span> <span class="o">:</span> <span class="nx">ViewRef</span>
+    <span class="nx">get</span><span class="p">(</span><span class="nx">index</span>: <span class="kt">number</span><span class="p">)</span> <span class="o">:</span> <span class="nx">ViewRef</span>
+    <span class="nx">indexOf</span><span class="p">(</span><span class="nx">viewRef</span>: <span class="kt">ViewRef</span><span class="p">)</span> <span class="o">:</span> <span class="kt">number</span>
+    <span class="nx">detach</span><span class="p">(</span><span class="nx">index?</span>: <span class="kt">number</span><span class="p">)</span> <span class="o">:</span> <span class="nx">ViewRef</span>
+    <span class="nx">move</span><span class="p">(</span><span class="nx">viewRef</span>: <span class="kt">ViewRef</span><span class="p">,</span> <span class="nx">currentIndex</span>: <span class="kt">number</span><span class="p">)</span> <span class="o">:</span> <span class="nx">ViewRef</span>
+<span class="p">}</span></code></pre></div>
+<p>前面提了兩種方法可以手動從 template 或 component 新增 view。一旦我們有 view，可以用 <code>insert</code> 新增到 DOM 內。下面的例子展現了如何從 template 新增一個 embeded view 並且新增到 ng-container element 中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kd">@Component</span><span class="p">({</span>
+    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;sample&#39;</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span><span class="sb">        &lt;span&gt;I am first span&lt;/span&gt;
+</span><span class="sb">        &lt;ng-container #vc&gt;&lt;/ng-container&gt;
+</span><span class="sb">        &lt;span&gt;I am last span&lt;/span&gt;
+</span><span class="sb">        &lt;ng-template #tpl&gt;
+</span><span class="sb">            &lt;span&gt;I am span in template&lt;/span&gt;
+</span><span class="sb">        &lt;/ng-template&gt;
+</span><span class="sb">    `</span>
+<span class="p">})</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">SampleComponent</span> <span class="kr">implements</span> <span class="nx">AfterViewInit</span> <span class="p">{</span>
+    <span class="kd">@ViewChild</span><span class="p">(</span><span class="s2">&#34;vc&#34;</span><span class="p">,</span> <span class="p">{</span><span class="nx">read</span>: <span class="kt">ViewContainerRef</span><span class="p">})</span> <span class="nx">vc</span>: <span class="kt">ViewContainerRef</span><span class="p">;</span>
+    <span class="kd">@ViewChild</span><span class="p">(</span><span class="s2">&#34;tpl&#34;</span><span class="p">)</span> <span class="nx">tpl</span>: <span class="kt">TemplateRef</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span><span class="p">;</span>
+
+    <span class="nx">ngAfterViewInit() {</span>
+        <span class="kd">let</span> <span class="nx">view</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tpl</span><span class="p">.</span><span class="nx">createEmbeddedView</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">vc</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">view</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>產生出來的 html 如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">sample</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>I am first span<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+    <span class="c">&lt;!-- --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>I am span in template<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>I am last span<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+    <span class="c">&lt;!-- --&gt;</span>
+<span class="p">&lt;/</span><span class="nt">sample</span><span class="p">&gt;</span></code></pre></div>
+<h3 id="新增-views">新增 views</h3>
+
+<p>ViewContainer 也有提供 API 來新增 view：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">class</span> <span class="nx">ViewContainerRef</span> <span class="p">{</span>
+    <span class="nx">element</span>: <span class="kt">ElementRef</span>
+    <span class="nx">length</span>: <span class="kt">number</span>
+
+    <span class="nx">createComponent</span><span class="p">(</span><span class="nx">componentFactory</span><span class="p">...)</span><span class="o">:</span> <span class="nx">ComponentRef</span><span class="o">&lt;</span><span class="nx">C</span><span class="o">&gt;</span>
+    <span class="nx">createEmbeddedView</span><span class="p">(</span><span class="nx">templateRef</span><span class="p">...)</span><span class="o">:</span> <span class="nx">EmbeddedViewRef</span><span class="o">&lt;</span><span class="nx">C</span><span class="o">&gt;</span>
+    <span class="p">...</span>
+<span class="p">}</span></code></pre></div>
+<p>以上就是簡單的範例可以從 template 或 component 產生 view，並且新增到 html 中特定的位置。</p>
+
+<h2 id="ngtemplateoutlet-和-ngcomponentoutlet">ngTemplateOutlet 和 ngComponentOutlet</h2>
+
+<p>身為工程師，總是希望找到更簡單的方法，所以 Angular 也很貼心的提供了兩個語法糖更易用，利用這兩個語法糖，可以少打上面那些指令。</p>
+
+<h3 id="ngtemplateoutlet">ngTemplateOutlet</h3>
+
+<p>這一個語法糖會把 DOM element 直接轉成 <code>ViewContainer</code> 接著插入一個 embeded view 到 template，這些行為完全不用寫任何的 code 在 component class 中。也就是說上面那段新增 view，然後插入到 <code>#vc</code> DOM element 的範例可以改寫成：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kd">@Component</span><span class="p">({</span>
+    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;sample&#39;</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="sb">`
+</span><span class="sb">        &lt;span&gt;I am first span&lt;/span&gt;
+</span><span class="sb">        &lt;ng-container [ngTemplateOutlet]=&#34;tpl&#34;&gt;&lt;/ng-container&gt;
+</span><span class="sb">        &lt;span&gt;I am last span&lt;/span&gt;
+</span><span class="sb">        &lt;ng-template #tpl&gt;
+</span><span class="sb">            &lt;span&gt;I am span in template&lt;/span&gt;
+</span><span class="sb">        &lt;/ng-template&gt;
+</span><span class="sb">    `</span>
+<span class="p">})</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">SampleComponent</span> <span class="p">{}</span></code></pre></div>
+<p>由上面的例子可以看到不用再 component 寫任何程式碼也可以把你要的 template 插入特定的 <code>ng-container</code> 中。</p>
+
+<h3 id="ngcomponentoutlet">ngComponentOutlet</h3>
+
+<p>這個語法糖和上一個類似，不過這個是新增一個 host view (component)，而<strong>不是</strong> embeded view，用法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="o">&lt;</span><span class="nx">ng</span><span class="o">-</span><span class="nx">container</span> <span class="o">*</span><span class="nx">ngComponentOutlet</span><span class="o">=</span><span class="s2">&#34;ColorComponent&#34;</span><span class="o">&gt;&lt;</span><span class="err">/ng-container&gt;</span></code></pre></div>
+<h2 id="最後">最後</h2>
+
+<p>其實看完原文之後就很清楚要怎麼動態產生 DOM 了，也大概可以猜到 *ngIf 底層是怎麼做的，這樣也可以在撰寫 UI system 時候有更多的掌控權，不用依賴第三方的套件。為了避免以後忘記，寫了一個範例放在 Stackblitz 上：<a href="https://stackblitz.com/edit/explore-dom">https://stackblitz.com/edit/explore-dom</a>，會更清楚喔！</p>
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="https://jimmylin212.github.io/tags/frontend/">Frontend</a>&nbsp;
+            
+              <a href="https://jimmylin212.github.io/tags/angular/">Angular</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <ul class="list-inline footer-links">
+                
+
+
+<li>
+    <a href="//twitter.com/share?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0013_exploring_angular_dom_manipulation%2f&amp;text=%e9%80%8f%e9%81%8e%20ViewContainerRef%20%e4%ba%86%e8%a7%a3%20Angular%20DOM%20%e4%bf%ae%e6%94%b9%e6%a9%9f%e5%88%b6&amp;via="
+       target="_blank" alt="" title="Share on Twitter">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//plus.google.com/share?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0013_exploring_angular_dom_manipulation%2f" target="_blank" title="Share on Google Plus">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0013_exploring_angular_dom_manipulation%2f" target="_blank" title="Share on Facebook">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//reddit.com/submit?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0013_exploring_angular_dom_manipulation%2f&amp;title=%e9%80%8f%e9%81%8e%20ViewContainerRef%20%e4%ba%86%e8%a7%a3%20Angular%20DOM%20%e4%bf%ae%e6%94%b9%e6%a9%9f%e5%88%b6" target="_blank" title="Share on Reddit">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-reddit fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0013_exploring_angular_dom_manipulation%2f&amp;title=%e9%80%8f%e9%81%8e%20ViewContainerRef%20%e4%ba%86%e8%a7%a3%20Angular%20DOM%20%e4%bf%ae%e6%94%b9%e6%a9%9f%e5%88%b6" target="_blank"
+       title="Share on LinkedIn">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0013_exploring_angular_dom_manipulation%2f&amp;title=%e9%80%8f%e9%81%8e%20ViewContainerRef%20%e4%ba%86%e8%a7%a3%20Angular%20DOM%20%e4%bf%ae%e6%94%b9%e6%a9%9f%e5%88%b6" target="_blank"
+       title="Share on StumbleUpon">
+        <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stumbleupon fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+
+<li>
+    <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0013_exploring_angular_dom_manipulation%2f&amp;description=%e9%80%8f%e9%81%8e%20ViewContainerRef%20%e4%ba%86%e8%a7%a3%20Angular%20DOM%20%e4%bf%ae%e6%94%b9%e6%a9%9f%e5%88%b6" target="_blank"
+       title="Share on Pinterest">
+         <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-pinterest fa-stack-1x fa-inverse"></i>
+              </span>
+    </a>
+</li>
+
+              </ul>
+            </section>
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://jimmylin212.github.io/post/0012_angular_i18n_with_xliffmerge/" data-toggle="tooltip" data-placement="top" title="使用 xliffmerge 讓 Angular i18n 更強大">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jimmylin212-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:jimmylin212@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/jimmylin212" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/jimmylin212" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/jimmylin212" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/users/743158/jimmy-lin" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            
+            <a href="https://jimmylin212.github.io/index.xml" title="RSS">
+            
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="jimmylin212.github.io">Jimmy Lin</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://jimmylin212.github.io">Jimmy Lin</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.47.1</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://jimmylin212.github.io/js/main.js"></script>
+<script src="https://jimmylin212.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="https://jimmylin212.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+
