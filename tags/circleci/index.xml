@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Circleci on Jimmy Lin</title>
+    <title>CircleCI on Jimmy Lin</title>
     <link>https://jimmylin212.github.io/tags/circleci/</link>
-    <description>Recent content in Circleci on Jimmy Lin</description>
+    <description>Recent content in CircleCI on Jimmy Lin</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>

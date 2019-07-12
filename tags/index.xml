@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Thu, 20 Dec 2018 11:17:31 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jul 2019 17:28:45 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,18 @@
     <item>
       <title>Angular</title>
       <link>https://jimmylin212.github.io/tags/angular/</link>
-      <pubDate>Thu, 20 Dec 2018 11:17:31 +0800</pubDate>
+      <pubDate>Thu, 11 Jul 2019 17:28:45 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/tags/angular/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Frontend</title>
+      <link>https://jimmylin212.github.io/tags/frontend/</link>
+      <pubDate>Thu, 11 Jul 2019 17:28:45 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/tags/frontend/</guid>
       <description></description>
     </item>
     
@@ -27,6 +36,33 @@
       <pubDate>Wed, 04 Jul 2018 10:06:56 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/tags/backend/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>https://jimmylin212.github.io/tags/docker/</link>
+      <pubDate>Wed, 04 Jul 2018 10:06:56 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang</title>
+      <link>https://jimmylin212.github.io/tags/golang/</link>
+      <pubDate>Thu, 28 Jun 2018 13:28:30 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GraphQL</title>
+      <link>https://jimmylin212.github.io/tags/graphql/</link>
+      <pubDate>Fri, 15 Jun 2018 21:00:00 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/tags/graphql/</guid>
       <description></description>
     </item>
     
@@ -49,65 +85,11 @@
     </item>
     
     <item>
-      <title>Circleci</title>
-      <link>https://jimmylin212.github.io/tags/circleci/</link>
-      <pubDate>Sat, 09 Dec 2017 09:51:03 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/tags/circleci/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Devops</title>
+      <title>DevOps</title>
       <link>https://jimmylin212.github.io/tags/devops/</link>
       <pubDate>Sun, 20 May 2018 21:06:13 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/tags/devops/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Docker</title>
-      <link>https://jimmylin212.github.io/tags/docker/</link>
-      <pubDate>Wed, 04 Jul 2018 10:06:56 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/tags/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Frontend</title>
-      <link>https://jimmylin212.github.io/tags/frontend/</link>
-      <pubDate>Thu, 20 Dec 2018 11:17:31 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/tags/frontend/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Github</title>
-      <link>https://jimmylin212.github.io/tags/github/</link>
-      <pubDate>Mon, 27 Nov 2017 21:53:29 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/tags/github/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Golang</title>
-      <link>https://jimmylin212.github.io/tags/golang/</link>
-      <pubDate>Thu, 28 Jun 2018 13:28:30 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/tags/golang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Graphql</title>
-      <link>https://jimmylin212.github.io/tags/graphql/</link>
-      <pubDate>Fri, 15 Jun 2018 21:00:00 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/tags/graphql/</guid>
       <description></description>
     </item>
     
@@ -117,6 +99,24 @@
       <pubDate>Mon, 22 Jan 2018 23:18:37 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CircleCI</title>
+      <link>https://jimmylin212.github.io/tags/circleci/</link>
+      <pubDate>Sat, 09 Dec 2017 09:51:03 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/tags/circleci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GitHub</title>
+      <link>https://jimmylin212.github.io/tags/github/</link>
+      <pubDate>Mon, 27 Nov 2017 21:53:29 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/tags/github/</guid>
       <description></description>
     </item>
     

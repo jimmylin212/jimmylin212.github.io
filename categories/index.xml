@@ -7,13 +7,49 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Thu, 28 Jun 2018 13:28:30 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jul 2019 17:28:45 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Back End Development</title>
+      <title>Front-end Development</title>
+      <link>https://jimmylin212.github.io/categories/front-end-development/</link>
+      <pubDate>Thu, 11 Jul 2019 17:28:45 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/categories/front-end-development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Software Development</title>
+      <link>https://jimmylin212.github.io/categories/software-development/</link>
+      <pubDate>Thu, 11 Jul 2019 17:28:45 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/categories/software-development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web App Development</title>
+      <link>https://jimmylin212.github.io/categories/web-app-development/</link>
+      <pubDate>Thu, 11 Jul 2019 17:28:45 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/categories/web-app-development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DevOps</title>
+      <link>https://jimmylin212.github.io/categories/devops/</link>
+      <pubDate>Wed, 04 Jul 2018 10:06:56 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/categories/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Back-end Development</title>
       <link>https://jimmylin212.github.io/categories/back-end-development/</link>
       <pubDate>Thu, 28 Jun 2018 13:28:30 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
@@ -27,42 +63,6 @@
       <pubDate>Sat, 09 Jun 2018 14:58:16 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/categories/books/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Devops</title>
-      <link>https://jimmylin212.github.io/categories/devops/</link>
-      <pubDate>Wed, 04 Jul 2018 10:06:56 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/categories/devops/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Front End Development</title>
-      <link>https://jimmylin212.github.io/categories/front-end-development/</link>
-      <pubDate>Thu, 20 Dec 2018 11:17:31 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/categories/front-end-development/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Software Development</title>
-      <link>https://jimmylin212.github.io/categories/software-development/</link>
-      <pubDate>Thu, 20 Dec 2018 11:17:31 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/categories/software-development/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Web App Development</title>
-      <link>https://jimmylin212.github.io/categories/web-app-development/</link>
-      <pubDate>Thu, 20 Dec 2018 11:17:31 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/categories/web-app-development/</guid>
       <description></description>
     </item>
     

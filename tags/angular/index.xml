@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Thu, 20 Dec 2018 11:17:31 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jul 2019 17:28:45 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/angular/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>在 Angular 中用 Directive 實作密碼確認表單</title>
+      <link>https://jimmylin212.github.io/post/0014_password_confirm_using_angular/</link>
+      <pubDate>Thu, 11 Jul 2019 17:28:45 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/post/0014_password_confirm_using_angular/</guid>
+      <description>這篇文章主要敘述如何使用 Directive 來做到密碼確認表單。在製作網站的時候，常常需要使用者輸入密碼，常看到的設計是會多一個輸入欄位，讓使用者確認密碼，這</description>
+    </item>
     
     <item>
       <title>透過 ViewContainerRef 了解 Angular DOM 修改機制</title>
