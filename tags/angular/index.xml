@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Thu, 11 Jul 2019 17:28:45 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 22 Jul 2019 11:20:16 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/angular/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>如何使用 Angular Schematics 自動產生程式碼</title>
+      <link>https://jimmylin212.github.io/post/0015_angular_schematics_intro/</link>
+      <pubDate>Mon, 22 Jul 2019 11:20:16 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/post/0015_angular_schematics_intro/</guid>
+      <description>2018 年在台灣的 Angular Conference 聽到 Schematics 這個東西就很想使用看看，不過一直沒有機會，最近我們專案開始有其他人加入，對於要做哪些設定或是要新增哪些檔案不是很清楚，</description>
+    </item>
     
     <item>
       <title>在 Angular 中用 Directive 實作密碼確認表單</title>

@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Thu, 11 Jul 2019 17:28:45 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 22 Jul 2019 11:20:16 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,18 @@
     <item>
       <title>Angular</title>
       <link>https://jimmylin212.github.io/tags/angular/</link>
-      <pubDate>Thu, 11 Jul 2019 17:28:45 +0800</pubDate>
+      <pubDate>Mon, 22 Jul 2019 11:20:16 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/tags/angular/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Frentend</title>
+      <link>https://jimmylin212.github.io/tags/frentend/</link>
+      <pubDate>Mon, 22 Jul 2019 11:20:16 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/tags/frentend/</guid>
       <description></description>
     </item>
     
