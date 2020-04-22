@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jimmy Lin</title>
@@ -90,7 +90,7 @@
       <pubDate>Sun, 20 May 2018 22:05:42 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/post/0008_cicd_with_docker_pm2/</guid>
-      <description>簡單來說，我們最終的目的是：CICD + Zero Downtime 佈署 Nextjs 的服務。其實網路上找找有蠻多方法的，像是利用 Kubernetes _(K8S)_，或是直接整合 AWS、GCP 或是</description>
+      <description>簡單來說，我們最終的目的是：CICD + Zero Downtime 佈署 Nextjs 的服務。其實網路上找找有蠻多方法的，像是利用 Kubernetes (K8S)，或是直接整合 AWS、GCP 或是 Az</description>
     </item>
     
     <item>

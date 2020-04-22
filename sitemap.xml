@@ -1,53 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
     <loc>https://jimmylin212.github.io/tags/angular/</loc>
     <lastmod>2019-07-22T11:20:16+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/categories/</loc>
     <lastmod>2019-07-22T11:20:16+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://jimmylin212.github.io/tags/frentend/</loc>
+    <loc>https://jimmylin212.github.io/tags/frontend/</loc>
     <lastmod>2019-07-22T11:20:16+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/</loc>
     <lastmod>2019-07-22T11:20:16+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/post/</loc>
     <lastmod>2019-07-22T11:20:16+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/categories/software-development/</loc>
     <lastmod>2019-07-22T11:20:16+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/tags/</loc>
     <lastmod>2019-07-22T11:20:16+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/categories/web-app-development/</loc>
     <lastmod>2019-07-22T11:20:16+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -58,13 +50,6 @@
   <url>
     <loc>https://jimmylin212.github.io/categories/front-end-development/</loc>
     <lastmod>2019-07-11T17:28:45+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://jimmylin212.github.io/tags/frontend/</loc>
-    <lastmod>2019-07-11T17:28:45+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -85,19 +70,16 @@
   <url>
     <loc>https://jimmylin212.github.io/tags/backend/</loc>
     <lastmod>2018-07-04T10:06:56+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/categories/devops/</loc>
     <lastmod>2018-07-04T10:06:56+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/tags/docker/</loc>
     <lastmod>2018-07-04T10:06:56+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -108,13 +90,11 @@
   <url>
     <loc>https://jimmylin212.github.io/categories/back-end-development/</loc>
     <lastmod>2018-06-28T13:28:30+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/tags/golang/</loc>
     <lastmod>2018-06-28T13:28:30+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -125,7 +105,6 @@
   <url>
     <loc>https://jimmylin212.github.io/tags/graphql/</loc>
     <lastmod>2018-06-15T21:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -139,21 +118,18 @@
   </url>
   
   <url>
-    <loc>https://jimmylin212.github.io/categories/books/</loc>
+    <loc>https://jimmylin212.github.io/tags/books/</loc>
     <lastmod>2018-06-09T14:58:16+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://jimmylin212.github.io/tags/books/</loc>
+    <loc>https://jimmylin212.github.io/categories/books/</loc>
     <lastmod>2018-06-09T14:58:16+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jimmylin212.github.io/tags/build/</loc>
     <lastmod>2018-05-20T22:05:42+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -164,7 +140,6 @@
   <url>
     <loc>https://jimmylin212.github.io/tags/devops/</loc>
     <lastmod>2018-05-20T21:06:13+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -180,7 +155,6 @@
   <url>
     <loc>https://jimmylin212.github.io/tags/hugo/</loc>
     <lastmod>2018-01-22T23:18:37+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -191,7 +165,6 @@
   <url>
     <loc>https://jimmylin212.github.io/tags/circleci/</loc>
     <lastmod>2017-12-09T09:51:03+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -207,7 +180,6 @@
   <url>
     <loc>https://jimmylin212.github.io/tags/github/</loc>
     <lastmod>2017-11-27T21:53:29+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

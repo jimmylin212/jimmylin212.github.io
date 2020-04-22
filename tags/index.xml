@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Jimmy Lin</title>
@@ -22,18 +22,9 @@
     </item>
     
     <item>
-      <title>Frentend</title>
-      <link>https://jimmylin212.github.io/tags/frentend/</link>
-      <pubDate>Mon, 22 Jul 2019 11:20:16 +0800</pubDate>
-      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
-      <guid>https://jimmylin212.github.io/tags/frentend/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Frontend</title>
       <link>https://jimmylin212.github.io/tags/frontend/</link>
-      <pubDate>Thu, 11 Jul 2019 17:28:45 +0800</pubDate>
+      <pubDate>Mon, 22 Jul 2019 11:20:16 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/tags/frontend/</guid>
       <description></description>

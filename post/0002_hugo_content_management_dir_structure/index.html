@@ -90,7 +90,7 @@
   <meta name="twitter:image" content="https://jimmylin212.github.io/images/avatar.png" />
   <meta name="twitter:card" content="summary" />
   <link href='https://jimmylin212.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.55.6" />
+  <meta name="generator" content="Hugo 0.69.1" />
   <link rel="alternate" href="https://jimmylin212.github.io/index.xml" type="application/rss+xml" title="Jimmy Lin"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://jimmylin212.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -273,24 +273,17 @@ if (!doNotTrack) {
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
-        
-
-<p>建立完個人網站之後，最重要的就是開始寫文章，或是讓充實網頁的內容，像是加上個人介紹頁面，或是為自己的網站建立一些基本部落格應該要有的功能，像是標籤，這些功能其實 Hugo 都已經有提供了，不過到底要怎麼用呢？那就要仔細閱讀一下 <a href="https://gohugo.io/content-management/">Hugo Content Management</a>，這邊我就針對一些特定的功能紀錄一下，以後也方便參照。</p>
-
+        <p>建立完個人網站之後，最重要的就是開始寫文章，或是讓充實網頁的內容，像是加上個人介紹頁面，或是為自己的網站建立一些基本部落格應該要有的功能，像是標籤，這些功能其實 Hugo 都已經有提供了，不過到底要怎麼用呢？那就要仔細閱讀一下 <a href="https://gohugo.io/content-management/">Hugo Content Management</a>，這邊我就針對一些特定的功能紀錄一下，以後也方便參照。</p>
 <h3 id="資料夾結構">資料夾結構</h3>
-
 <p>每一個不同的 theme，會有不同的資料夾結構，不過大同小異，有些只會抓在 <code>content/post</code> 底的文章，有些只會抓 <code>content/posts</code> 下的文章，所以如果文章沒有出現，那要先去看一下 theme 的說明文件。</p>
-
 <p>在 Hugo 當中，把頁面分成兩種: <strong>List Page</strong> 以及 <strong>Single Page</strong>，另外有一個特殊的頁面 <code>_index.md</code>。簡介如下：</p>
-
 <ul>
 <li>List Page: 列出所有在這個資料夾底下的所有 <code>*.md</code> 檔的頁面。</li>
 <li>Single Page: 某一個特定的 <code>*.md</code>的頁面。</li>
 <li>_index.md: 可用來控制以及增加一些特定的內容於 List Page 之頂端的頁面。</li>
 </ul>
-
 <p>直接看官網所提供的例子</p>
-<div class="highlight"><pre class="chroma">.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">.
 └── content
     └── about
     |   └── _index.md  // &lt;- https://example.com/about
@@ -301,74 +294,57 @@ if (!doNotTrack) {
     |   |   └── b.md  // &lt;- https://example.com/post/happy/b
     |   └── c.md  // &lt;- https://example.com/post/c
     └── quote     // &lt;- https://example.com/quote
-        └── d.md  // &lt;- https://example.com/quote/d</pre></div>
-<p>按照上面的資料夾結構，跑<code>hugo server -D</code>，連到 <code>http://localhost:1313</code>，應該會看到四篇文章，分別是 A, B, C, D。因為 <code>hugo</code> 會把 <code>content</code> 資料夾下面的除了 <code>_index.md</code> 以外的所有 <code>*.md</code> 都列出來，這也就是我們上面所提到的 <strong>List Page</strong>。再來我們嘗試連到 <code>http://localhost:1313/post/</code> ，這時候應該只會看到三篇文章: A, B, C。同樣如果我們連到 <code>http://localhost:1313/quote/</code> 只會看到一篇文章: D。因為 <strong>List Page</strong> 會列出在這個資料夾下面除了 <code>_index.md</code> 以外所有的 <code>*.md</code> 檔。一起來看下面的截圖:</p>
-
+        └── d.md  // &lt;- https://example.com/quote/d
+</code></pre></div><p>按照上面的資料夾結構，跑<code>hugo server -D</code>，連到 <code>http://localhost:1313</code>，應該會看到四篇文章，分別是 A, B, C, D。因為 <code>hugo</code> 會把 <code>content</code> 資料夾下面的除了 <code>_index.md</code> 以外的所有 <code>*.md</code> 都列出來，這也就是我們上面所提到的 <strong>List Page</strong>。再來我們嘗試連到 <code>http://localhost:1313/post/</code> ，這時候應該只會看到三篇文章: A, B, C。同樣如果我們連到 <code>http://localhost:1313/quote/</code> 只會看到一篇文章: D。因為 <strong>List Page</strong> 會列出在這個資料夾下面除了 <code>_index.md</code> 以外所有的 <code>*.md</code> 檔。一起來看下面的截圖:</p>
 <p>連線至 <code>http://localhost:1313</code></p>
-
-<p><img src="/images/0002/home_directory.PNG" alt="" /></p>
-
+<p><img src="/images/0002/home_directory.PNG" alt=""></p>
 <p>連線至 <code>http://localhost:1313/post/</code>
-<img src="/images/0002/post_directory.PNG" alt="" /></p>
-
+<img src="/images/0002/post_directory.PNG" alt=""></p>
 <p>連線至 <code>http://localhost:1313/quote/</code>
-<img src="/images/0002/quote_directory.PNG" alt="" /></p>
-
+<img src="/images/0002/quote_directory.PNG" alt=""></p>
 <p>值得注意的是 Hugo 建立 List Page 只會會抓第一層的資料夾，第二層不會抓，所以連到 <code>http://localhost:1313/post/happy</code> 是看不到東西的，這時候就要用手動的方式讓 Hugo 知道要來抓其他層的資料夾，怎麼做？我們可以用這個特殊的檔案 <code>_index.md</code> 來辦到。</p>
-
 <p>連線至 <code>http://localhost:1313/post/happy</code>
-<img src="/images/0002/post_happy_directory.PNG" alt="" /></p>
-
+<img src="/images/0002/post_happy_directory.PNG" alt=""></p>
 <p>新增一篇 <code>_index.md</code> 再試試看，執行指令 <code>hugo new post/happy/_index.md</code>
 再次連線到 <code>http://localhost:1313/post/happy</code>
-<img src="/images/0002/post_happy_success.PNG" alt="" /></p>
-
+<img src="/images/0002/post_happy_success.PNG" alt=""></p>
 <p>這個特別的檔案功能不只如此，我們可以利用這個檔案來設定針對個別的資料夾下的文章設定專屬的 template 或是 標籤，也可以加上一些專屬的文字於所有文章或是頁面最上面，像下面的例子。</p>
-
 <p>先在所有的資料夾下面都建立 <code>_index.md</code>:</p>
-
 <p><code>hugo new post/_index.md</code></p>
-
 <p><code>hugo new quote/_index.md</code></p>
-
 <p>記得要修改 <code>_index.md</code> 裡面的 title，發現如果 title 都一樣，會無法正確執行。</p>
-
 <p>編輯 <code>post/_index.md</code> 加入下面文字</p>
-<div class="highlight"><pre class="chroma">---
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">---
 title: &#34;post_Index&#34;
 date: 2017-12-08T14:45:37+08:00
 draft: true
 ---
 
-下面這些文章都在 post 裡面</pre></div>
-<p>編輯 <code>quote/_index.md</code> 加入下面文字</p>
-<div class="highlight"><pre class="chroma">---
+下面這些文章都在 post 裡面
+</code></pre></div><p>編輯 <code>quote/_index.md</code> 加入下面文字</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">---
 title: &#34;quote_index&#34;
 date: 2017-12-08T14:42:41+08:00
 draft: true
 ---
 
-下面文章都在 quote 裡面</pre></div>
-<p>編輯 <code>post/happy/_index.md</code> 加入下面文字</p>
-<div class="highlight"><pre class="chroma">---
+下面文章都在 quote 裡面
+</code></pre></div><p>編輯 <code>post/happy/_index.md</code> 加入下面文字</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">---
 title: &#34;post/happy_Index&#34;
 date: 2017-12-08T14:35:58+08:00
 draft: true
 ---
 
-下面這些文章都在 post/happy 裡面</pre></div>
-<p>再次執行 <code>hugo server -D</code>，看一下結果
+下面這些文章都在 post/happy 裡面
+</code></pre></div><p>再次執行 <code>hugo server -D</code>，看一下結果
 連線至 <code>http://localhost:1313/post/</code>
-<img src="/images/0002/post_index.PNG" alt="" /></p>
-
+<img src="/images/0002/post_index.PNG" alt=""></p>
 <p>連線至 <code>http://localhost:1313/post/happy/</code>
-<img src="/images/0002/post_happy_index.PNG" alt="" /></p>
-
+<img src="/images/0002/post_happy_index.PNG" alt=""></p>
 <p>連線至 <code>http://localhost:1313/quote/</code>
-<img src="/images/0002/quote_index.PNG" alt="" /></p>
-
+<img src="/images/0002/quote_index.PNG" alt=""></p>
 <p>可以看到每一個 List Page 都被加上剛剛所編輯的文字，可以讓讀者更清楚現在的所在的位置，我相信 <code>_index.md</code> 應該有更多的用法，等我之後發現再來補。</p>
-
 <p>原始連結: <a href="https://gohugo.io/content-management/organization/">Hugo 資料夾結構原文介紹</a></p>
 
 
@@ -567,7 +543,7 @@ draft: true
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.55.6</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.69.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>

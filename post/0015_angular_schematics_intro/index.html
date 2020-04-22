@@ -59,11 +59,11 @@
   "headline": "如何使用 Angular Schematics 自動產生程式碼",
   "description" : "2018 年在台灣的 Angular Conference 聽到 Schematics 這個東西就很想使用看看，不過一直沒有機會，最近我們專案開始有其他人加入，對於要做哪些設定或是要新增哪些檔案不是很清楚，",
   "inLanguage" : "en",
-  "wordCount":  3614 ,
+  "wordCount":  3612 ,
   "datePublished" : "2019-07-22T11:20:16",
   "dateModified" : "2019-07-22T11:20:16",
   "image" : "https:\/\/jimmylin212.github.io\/images\/avatar.png",
-  "keywords" : [ "Angular, Frentend" ],
+  "keywords" : [ "Angular, Frontend" ],
   "mainEntityOfPage" : "https:\/\/jimmylin212.github.io\/post\/0015_angular_schematics_intro\/",
   "publisher" : {
     "@type": "Organization",
@@ -90,7 +90,7 @@
   <meta name="twitter:image" content="https://jimmylin212.github.io/images/avatar.png" />
   <meta name="twitter:card" content="summary" />
   <link href='https://jimmylin212.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.55.6" />
+  <meta name="generator" content="Hugo 0.69.1" />
   <link rel="alternate" href="https://jimmylin212.github.io/index.xml" type="application/rss+xml" title="Jimmy Lin"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://jimmylin212.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -273,12 +273,8 @@ if (!doNotTrack) {
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
-        
-
-<p>2018 年在台灣的 Angular Conference 聽到 Schematics 這個東西就很想使用看看，不過一直沒有機會，最近我們專案開始有其他人加入，對於要做哪些設定或是要新增哪些檔案不是很清楚，為了增加團隊的生產力，立刻想到可以用 Schematics 這個懶人工具，可以自動產生程式碼，也可以省去 email 或口頭溝通的時間，網路上找到一篇不錯的教學，這篇文章有點像翻譯，不過加上一些自己的使用情境，希望可以幫到一些懶人工程師。</p>
-
+        <p>2018 年在台灣的 Angular Conference 聽到 Schematics 這個東西就很想使用看看，不過一直沒有機會，最近我們專案開始有其他人加入，對於要做哪些設定或是要新增哪些檔案不是很清楚，為了增加團隊的生產力，立刻想到可以用 Schematics 這個懶人工具，可以自動產生程式碼，也可以省去 email 或口頭溝通的時間，網路上找到一篇不錯的教學，這篇文章有點像翻譯，不過加上一些自己的使用情境，希望可以幫到一些懶人工程師。</p>
 <p>這篇文章會涵蓋下列的這些主題</p>
-
 <ol>
 <li>新增一個 schematics 的 workspace</li>
 <li>schematics 概念簡介，包含 Factory, Rule, Tree 等等</li>
@@ -289,18 +285,15 @@ if (!doNotTrack) {
 <li>在 schematics 使用 template</li>
 <li>整合 schematics 的指令到 angular cli workspace</li>
 </ol>
-
 <h2 id="前置作業">前置作業</h2>
-
 <p>在開始之前，先安裝 <code>@angular-devkit/schematics-cli</code> 才可以使用 schematics 指令，建議用 global 安裝，因為這個程式和 Angular 獨立的，我們可以使用 schematics 來產生各種樣板程式碼，減少時間。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># install schematics-cli globally</span>
-npm install -g @angular-devkit/schematics-cli</code></pre></div>
-<h2 id="新增-schematics-的-workspace">新增 schematics 的 workspace</h2>
-
+npm install -g @angular-devkit/schematics-cli
+</code></pre></div><h2 id="新增-schematics-的-workspace">新增 schematics 的 workspace</h2>
 <p>先新增一個空白的 schematic 吧。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 新增 schematics</span>
-schematics blank hello</code></pre></div>
-<p>新增完之後會看到在我們的專案中有個新的資料夾 <code>hello</code>，裡面有些預設的檔案，來看一下一些比較重要的檔案。第一個是 <code>collection.json</code>，這個檔案主要的 definition 檔，裡面包含了所有定義的 schematics。<code>collection.json</code> 的內容如下：</p>
+schematics blank hello
+</code></pre></div><p>新增完之後會看到在我們的專案中有個新的資料夾 <code>hello</code>，裡面有些預設的檔案，來看一下一些比較重要的檔案。第一個是 <code>collection.json</code>，這個檔案主要的 definition 檔，裡面包含了所有定義的 schematics。<code>collection.json</code> 的內容如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">//</span> <span class="err">collection.json</span>
 <span class="p">{</span>
   <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;../node_modules/@angular-devkit/schematics/collection-schema.json&#34;</span><span class="p">,</span>
@@ -310,8 +303,8 @@ schematics blank hello</code></pre></div>
       <span class="nt">&#34;factory&#34;</span><span class="p">:</span> <span class="s2">&#34;./hello/index#hello&#34;</span>     <span class="err">//</span> <span class="err">scehmatics</span> <span class="err">要執行的</span> <span class="err">function</span> <span class="err">的路徑以及</span> <span class="err">function</span> <span class="err">名稱</span>
     <span class="p">}</span>                                      <span class="err">//</span> <span class="err">在這邊就是要去執行</span> <span class="err">./hello/index</span> <span class="err">檔內的</span> <span class="err">hello</span> <span class="err">function</span>
   <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>接下來看一下程式的本體吧，看一下 <code>./hello/index.ts</code> 的內容</p>
+<span class="p">}</span>
+</code></pre></div><p>接下來看一下程式的本體吧，看一下 <code>./hello/index.ts</code> 的內容</p>
 <div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Rule</span><span class="p">,</span> <span class="nx">SchematicContext</span><span class="p">,</span> <span class="nx">Tree</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@angular-devkit/schematics&#39;</span><span class="p">;</span>
 
 <span class="c1">// You don&#39;t have to export the function as default. You can also have more than one rule factory
@@ -320,43 +313,32 @@ schematics blank hello</code></pre></div>
   <span class="k">return</span> <span class="p">(</span><span class="nx">tree</span>: <span class="kt">Tree</span><span class="p">,</span> <span class="nx">_context</span>: <span class="kt">SchematicContext</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">tree</span><span class="p">;</span>
   <span class="p">};</span>
-<span class="p">}</span></code></pre></div>
-<h2 id="schematics-概念簡介">schematics 概念簡介</h2>
-
+<span class="p">}</span>
+</code></pre></div><h2 id="schematics-概念簡介">schematics 概念簡介</h2>
 <h3 id="schematic-factory">Schematic Factory</h3>
-
 <p>首先，hello 這個 function 就是一個 factory，這個 factory 回傳一個 Rule。可能有人會質疑為什麼我們需要一個 factory，而不直接實作 rule 就好了。因為我們會在不同的情況下使用 schematics ，所以我們需要視情況做調整。</p>
-
 <h3 id="rule">Rule</h3>
-
 <p>另外一個重要的部分就是 Rule，Rule 被呼叫時需要 <code>tree</code> 以及 <code>SchematicContext</code>。當被呼叫時，Rule 會做 tree 做調整，並且回傳調整後的 tree，以便後續使用。</p>
-
 <h3 id="tree">Tree</h3>
-
 <p>Tree 是一個虛擬的資料夾結構，使用虛擬的資料夾結構有幾個優點</p>
-
 <ol>
 <li>只會在 schematic 成功結束後才真的做出改變</li>
 <li>可以使用 <code>--dry-run</code> 來預先看一下產出，而不用真的新增/修改檔案</li>
 <li>提供更好的效能，因為並不是在流程中對檔案作操作</li>
 </ol>
-
 <h2 id="建置-schematics">建置 schematics</h2>
-
 <p>我們的 schematics 用 typescript 撰寫，不過我們是跑在 node 環境下，所以在執行之前要記得編譯所有的 <code>.ts</code> 檔，不然執行是會失敗的。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">npm run build</code></pre></div>
-<p>因為需要編譯，如果在開發的過程當中每一個小修改都要編譯一次有點麻煩，也可以新增一個新的 command 到 package.json 內，就可以支援 hot-loading 了。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">npm run build
+</code></pre></div><p>因為需要編譯，如果在開發的過程當中每一個小修改都要編譯一次有點麻煩，也可以新增一個新的 command 到 package.json 內，就可以支援 hot-loading 了。</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
   <span class="nt">&#34;scripts&#34;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&#34;build-watch&#34;</span><span class="p">:</span> <span class="s2">&#34;tsc -p tsconfig.json --watch&#34;</span>
   <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<h2 id="執行-schematics">執行 schematics</h2>
-
+<span class="p">}</span>
+</code></pre></div><h2 id="執行-schematics">執行 schematics</h2>
 <p>可以直接使用 schematics cli 來執行特定的 schematic，指令格式為 <code>schematics &lt;package-name&gt;:&lt;schematic-name&gt; [...options]</code>。Package name 可以是類似 <code>@schematics/angular</code>，而 schematic name 可以為 <code>component</code>。schematic cli 預設會去 <code>node_modules</code> 裡面找到對應的 package 以及 schematic 執行。不過因為我們的 hello 還不是一個 package，這種情況下我們可以用以下指令執行</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">schematics .:hello</code></pre></div>
-<p>執行結果如下：</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">schematics .:hello
+</code></pre></div><p>執行結果如下：</p>
 
 <link rel="stylesheet" href="https://jimmylin212.github.io/css/hugo-easy-gallery.css" />
 <div class="box" >
@@ -368,9 +350,7 @@ schematics blank hello</code></pre></div>
   </figure>
 </div>
 
-
 <p>當然也可以在其他層的資料夾透過相對路徑來執行，例如我們現在回到前一層資料夾，再次執行</p>
-
 
 
 <div class="box" >
@@ -382,9 +362,7 @@ schematics blank hello</code></pre></div>
   </figure>
 </div>
 
-
 <h2 id="實作簡單的-schematics">實作簡單的 schematics</h2>
-
 <p>終於到重頭戲了，要開始實作第一個 schematic 了。來小小修改一下 <code>hello</code> schematic，當執行 hello schematic 的時候產生一個 <code>hello.js</code> 的檔案，內容為 <code>console.log('Hello World');</code>，要做到這件事情，可以用 <code>.create()</code>，程式碼如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Rule</span><span class="p">,</span> <span class="nx">SchematicContext</span><span class="p">,</span> <span class="nx">Tree</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@angular-devkit/schematics&#39;</span><span class="p">;</span>
 
@@ -393,9 +371,8 @@ schematics blank hello</code></pre></div>
     <span class="nx">tree</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;hello.js&#39;</span><span class="p">,</span> <span class="sb">`console.log(&#39;Hello World&#39;);`</span><span class="p">);</span>  <span class="c1">// 新增這行
 </span><span class="c1"></span>    <span class="k">return</span> <span class="nx">tree</span><span class="p">;</span>
   <span class="p">};</span>
-<span class="p">}</span></code></pre></div>
-<p>再次執行 hello，執行結果如下</p>
-
+<span class="p">}</span>
+</code></pre></div><p>再次執行 hello，執行結果如下</p>
 
 
 <div class="box" >
@@ -407,9 +384,7 @@ schematics blank hello</code></pre></div>
   </figure>
 </div>
 
-
 <p>詭異的事情發生了，明明就寫了 CREATE 不過為什麼在資料夾內沒有新增檔案呢？因為當我們使用相對路徑 <code>.</code> 的時候，schematics 會用 debug mode 執行。debug mode 執行的結果和使用 <code>--dry-run</code> 一樣，並不會真的有檔案的 IO，可以使用 <code>--debug=false</code> 或是 <code>--dry-run=false</code> 來關閉，再執行一次就可以看到真的有個 <code>hello.js</code> 被新增出來了，執行結果也如預期印出了 <code>Hello World</code>。</p>
-
 
 
 <div class="box" >
@@ -421,9 +396,7 @@ schematics blank hello</code></pre></div>
   </figure>
 </div>
 
-
 <h2 id="讓-schematics-使用參數">讓 schematics 使用參數</h2>
-
 <p>不過這樣還不算是個有用的 schematic，現在我們加點東西，讓 schematic 讀參數。schematic 的 <code>_options</code> 包含了一起傳進來的 flags，假設我們的指令會是 <code>schematics .:hello --name=Jimmy --debug=false</code>，修改一下 schematic 的程式碼：</p>
 <div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Rule</span><span class="p">,</span> <span class="nx">SchematicContext</span><span class="p">,</span> <span class="nx">Tree</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@angular-devkit/schematics&#39;</span><span class="p">;</span>
 
@@ -435,8 +408,8 @@ schematics blank hello</code></pre></div>
     <span class="nx">tree</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;hello.js&#39;</span><span class="p">,</span> <span class="sb">`console.log(&#39;Hello </span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb">&#39;);`</span><span class="p">);</span>
     <span class="k">return</span> <span class="nx">tree</span><span class="p">;</span>
   <span class="p">};</span>
-<span class="p">}</span></code></pre></div>
-<p>上面的做法沒有問題，不過這會把所有的 flags 都傳進來，有些參數可能不是我們需要的，或是格式錯誤，這種情況可以新增 Schema 來描述參數的格式以及做驗證。在 <code>./src/hello</code> 資料夾新增檔案 <code>schema.json</code>，內容如下：</p>
+<span class="p">}</span>
+</code></pre></div><p>上面的做法沒有問題，不過這會把所有的 flags 都傳進來，有些參數可能不是我們需要的，或是格式錯誤，這種情況可以新增 Schema 來描述參數的格式以及做驗證。在 <code>./src/hello</code> 資料夾新增檔案 <code>schema.json</code>，內容如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
   <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;http://json-schema.org/schema&#34;</span><span class="p">,</span>
   <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;HelloSchematics&#34;</span><span class="p">,</span>
@@ -456,8 +429,8 @@ schematics blank hello</code></pre></div>
   <span class="nt">&#34;required&#34;</span><span class="p">:</span> <span class="p">[</span>
     <span class="s2">&#34;name&#34;</span>
   <span class="p">]</span>
-<span class="p">}</span></code></pre></div>
-<p>檔案中 <code>properties</code> 就是要傳進來的參數，<code>type</code> 可以接受不同種類比方 <code>string</code>、<code>boolean</code> 或是 <code>enum</code>，另外這邊使用了 positional option 的方式，因此不一定要寫 <code>--name</code>，只要是第一個參數，就會被 assign 到 name 上。接下來要讓 <code>collection.json</code> 知道要去哪邊找這個 <code>schema.json</code>，修改 <code>collection.json</code> 內容如下：</p>
+<span class="p">}</span>
+</code></pre></div><p>檔案中 <code>properties</code> 就是要傳進來的參數，<code>type</code> 可以接受不同種類比方 <code>string</code>、<code>boolean</code> 或是 <code>enum</code>，另外這邊使用了 positional option 的方式，因此不一定要寫 <code>--name</code>，只要是第一個參數，就會被 assign 到 name 上。接下來要讓 <code>collection.json</code> 知道要去哪邊找這個 <code>schema.json</code>，修改 <code>collection.json</code> 內容如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
   <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;../node_modules/@angular-devkit/schematics/collection-schema.json&#34;</span><span class="p">,</span>
   <span class="nt">&#34;schematics&#34;</span><span class="p">:</span> <span class="p">{</span>
@@ -467,12 +440,12 @@ schematics blank hello</code></pre></div>
       <span class="nt">&#34;schema&#34;</span><span class="p">:</span> <span class="s2">&#34;./hello/schema.json&#34;</span>
     <span class="p">}</span>
   <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>再來可以用 typescript 的 interface 幫我們做類別驗證，新增 <code>schema.d.ts</code>：</p>
+<span class="p">}</span>
+</code></pre></div><p>再來可以用 typescript 的 interface 幫我們做類別驗證，新增 <code>schema.d.ts</code>：</p>
 <div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">Schema</span> <span class="p">{</span>
   <span class="nx">name</span>: <span class="kt">string</span>
-<span class="p">}</span></code></pre></div>
-<p>修改 schematic 的 <code>_options</code> 類別為 Schema：</p>
+<span class="p">}</span>
+</code></pre></div><p>修改 schematic 的 <code>_options</code> 類別為 Schema：</p>
 <div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Rule</span><span class="p">,</span> <span class="nx">SchematicContext</span><span class="p">,</span> <span class="nx">Tree</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@angular-devkit/schematics&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Schema</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./schema&#39;</span><span class="p">;</span>
 
@@ -482,8 +455,8 @@ schematics blank hello</code></pre></div>
     <span class="nx">tree</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;hello.js&#39;</span><span class="p">,</span> <span class="sb">`console.log(&#39;Hello </span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb">&#39;);`</span><span class="p">);</span>
     <span class="k">return</span> <span class="nx">tree</span><span class="p">;</span>
   <span class="p">};</span>
-<span class="p">}</span></code></pre></div>
-<p>甚至新增 prompt 增加 UX，再次修改 <code>schema.json</code>，增加 <code>x-prompt</code> 於 <code>name</code> 下</p>
+<span class="p">}</span>
+</code></pre></div><p>甚至新增 prompt 增加 UX，再次修改 <code>schema.json</code>，增加 <code>x-prompt</code> 於 <code>name</code> 下</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
   <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;http://json-schema.org/schema&#34;</span><span class="p">,</span>
   <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;HelloSchematics&#34;</span><span class="p">,</span>
@@ -504,9 +477,8 @@ schematics blank hello</code></pre></div>
   <span class="nt">&#34;required&#34;</span><span class="p">:</span> <span class="p">[</span>
     <span class="s2">&#34;name&#34;</span>
   <span class="p">]</span>
-<span class="p">}</span></code></pre></div>
-<p>一切都完成之後再次執行 <code>schematics .:hello --debug=false</code></p>
-
+<span class="p">}</span>
+</code></pre></div><p>一切都完成之後再次執行 <code>schematics .:hello --debug=false</code></p>
 
 
 <div class="box" >
@@ -518,20 +490,17 @@ schematics blank hello</code></pre></div>
   </figure>
 </div>
 
-
 <h2 id="在-schematics-使用-template">在 schematics 使用 template</h2>
-
 <p>到目前為止都是很基本的使用方法，在真實使用情境下，我們不可能在 schematic 的 function 寫所有的 code，這時候 Angular 提供的 template 就派上用場了。要使用 template，可以新增一個 <code>./files/</code> 資料夾，當然也可以取名其他的，不過可以看一下 <code>tsconfig.ts</code>，可以發現 <code>src/*/files/**/*</code> 已經被 exclude 掉了，所以編譯的時候不會編譯到這些檔案。</p>
-
 <p>首先先增加一個資料夾叫做 <code>hello-__name@dasherize__</code>，乍看之下是個奇怪的名稱，不過其來有自。其中 <code>__</code> 是特定的 delimiter 可以分開 <code>name</code> 變數和其他的部分。<code>dasherizer</code> 是一個 helper function，會收到 name 的值，做特定的轉換，<code>@</code> 是特殊字元讓 name 使用 <code>dasherizer</code> helper function。這整段的意思是說，假設我們的名稱是 <code>AwesomeWrap</code> 會自動幫我轉換成 <code>hello-awesome-wrap</code>。接下來在這個資料夾中再新增一個類似的文件取名叫 <code>hello-__name@dasherize__.ts</code>，內容如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello &lt;%= name %&gt;&#39;</span><span class="p">);</span></code></pre></div>
-<p>有點像 Django 的 template 語法，用 <code>&lt;%=</code> 和 <code>%&gt;</code> 把參數夾起來，再 template 裡面也可以寫其他的 helper function，比如說：</p>
+<div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello &lt;%= name %&gt;&#39;</span><span class="p">);</span>
+</code></pre></div><p>有點像 Django 的 template 語法，用 <code>&lt;%=</code> 和 <code>%&gt;</code> 把參數夾起來，再 template 裡面也可以寫其他的 helper function，比如說：</p>
 <div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello &lt;%= dasherize(name) %&gt;&#39;</span><span class="p">);</span>
 
 <span class="c1">// or
 </span><span class="c1"></span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello &lt;%= classify(name) %&gt;&#39;</span><span class="p">);</span></code></pre></div>
-<p>接下來要讓 schematic 的 fuction 和 template 串聯在一起。修改 <code>./hello/index.js</code> 內容如下：</p>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello &lt;%= classify(name) %&gt;&#39;</span><span class="p">);</span>
+</code></pre></div><p>接下來要讓 schematic 的 fuction 和 template 串聯在一起。修改 <code>./hello/index.js</code> 內容如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Rule</span><span class="p">,</span> <span class="nx">SchematicContext</span><span class="p">,</span> <span class="nx">Tree</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">apply</span><span class="p">,</span> <span class="nx">template</span><span class="p">,</span> <span class="nx">mergeWith</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@angular-devkit/schematics&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Schema</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./schema&#39;</span><span class="p">;</span>
 
@@ -549,9 +518,8 @@ schematics blank hello</code></pre></div>
 
     <span class="k">return</span> <span class="nx">mergeWith</span><span class="p">(</span><span class="nx">sourceParameterizedTemplates</span><span class="p">);</span> <span class="c1">// merge the template into tree
 </span><span class="c1"></span>  <span class="p">};</span>
-<span class="p">}</span></code></pre></div>
-<p>接下來在執行一次指令 <code>schematic .:hello 'jimmy lin' --debug=false</code></p>
-
+<span class="p">}</span>
+</code></pre></div><p>接下來在執行一次指令 <code>schematic .:hello 'jimmy lin' --debug=false</code></p>
 
 
 <div class="box" >
@@ -563,22 +531,16 @@ schematics blank hello</code></pre></div>
   </figure>
 </div>
 
-
 <p>可以看到新的資料夾 <code>hello-jimmy-lin</code> 以及新的檔案 <code>hello-jimmy-lin.ts</code>，執行過後也丟出正確的歡迎訊息。</p>
-
 <p>這個歡迎的訊息只是簡單的教學，實際上使用可能有很多情境，像是</p>
-
 <ul>
 <li>針對不同的 endpoint 產生類似的 service 檔案</li>
 <li>針對不同的 module 給同樣的 dependencies</li>
 <li>&hellip;</li>
 </ul>
-
 <p>因為是 template 語言，所以常見的 if-else 或是 for-loop 也都有支援，詳細可以看一下他們的文件。未來如果有機會再補上。</p>
-
 <h2 id="整合-schematics-的指令到-angular-cli-workspace">整合 schematics 的指令到 angular cli workspace</h2>
-
-<p>目前都只是在 hello 這個 schematic 資料夾中操作，要懶就要懶到底，如果還要把產生的檔案手動複製到特定資料夾，那真得太麻煩了，來看一下怎麼整合 Angular CLI 吧。Angular CLI 通常都包含零到多個專案 _(project)_，每一次當我們執行 <code>ng generate component</code> 時，都是在某個專案中執行。<code>angular.json</code> 中有指明了 <code>defaultProject</code> 是哪一個，當然下指令時也可以用 <code>--project some-app</code> 來指定要跑在哪個專案下。要整合在一起就首先修改 <code>scehma.json</code>:</p>
+<p>目前都只是在 hello 這個 schematic 資料夾中操作，要懶就要懶到底，如果還要把產生的檔案手動複製到特定資料夾，那真得太麻煩了，來看一下怎麼整合 Angular CLI 吧。Angular CLI 通常都包含零到多個專案 <em>(project)</em>，每一次當我們執行 <code>ng generate component</code> 時，都是在某個專案中執行。<code>angular.json</code> 中有指明了 <code>defaultProject</code> 是哪一個，當然下指令時也可以用 <code>--project some-app</code> 來指定要跑在哪個專案下。要整合在一起就首先修改 <code>scehma.json</code>:</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
   <span class="err">...</span>
   <span class="nt">&#34;properties&#34;</span><span class="p">:</span> <span class="p">{</span>
@@ -587,13 +549,13 @@ schematics blank hello</code></pre></div>
       <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;Generate in specific Angular CLI workspace project&#34;</span><span class="p">,</span>
     <span class="p">}</span>
   <span class="err">...</span>
-<span class="p">}</span></code></pre></div>
-<p>以及 <code>schema.d.ts</code></p>
+<span class="p">}</span>
+</code></pre></div><p>以及 <code>schema.d.ts</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">Schema</span> <span class="p">{</span>
   <span class="nx">name</span>: <span class="kt">string</span><span class="p">;</span>
   <span class="nx">project?</span>: <span class="kt">string</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-<p>接下來要修改一下 <code>./hello/index.ts</code>，看起來有點多不過簡單來說就是在找正確的路徑以及複製到正確的路徑下。</p>
+<span class="p">}</span>
+</code></pre></div><p>接下來要修改一下 <code>./hello/index.ts</code>，看起來有點多不過簡單來說就是在找正確的路徑以及複製到正確的路徑下。</p>
 <div class="highlight"><pre class="chroma"><code class="language-typescript" data-lang="typescript"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Rule</span><span class="p">,</span> <span class="nx">SchematicContext</span><span class="p">,</span> <span class="nx">Tree</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">apply</span><span class="p">,</span> <span class="nx">template</span><span class="p">,</span> <span class="nx">mergeWith</span><span class="p">,</span> <span class="nx">SchematicsException</span><span class="p">,</span> <span class="nx">move</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@angular-devkit/schematics&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Schema</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./schema&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">strings</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@angular-devkit/core&#39;</span><span class="p">;</span>
@@ -633,9 +595,8 @@ schematics blank hello</code></pre></div>
 
     <span class="k">return</span> <span class="nx">mergeWith</span><span class="p">(</span><span class="nx">sourceParameterizedTemplates</span><span class="p">)(</span><span class="nx">tree</span><span class="p">,</span> <span class="nx">_context</span><span class="p">);</span>
   <span class="p">};</span>
-<span class="p">}</span></code></pre></div>
-<p>上面都設定好之後，就可以嘗試在 Angular workspace 執行看看</p>
-
+<span class="p">}</span>
+</code></pre></div><p>上面都設定好之後，就可以嘗試在 Angular workspace 執行看看</p>
 
 
 <div class="box" >
@@ -647,9 +608,7 @@ schematics blank hello</code></pre></div>
   </figure>
 </div>
 
-
 <p>可以看到新增了檔案在 <code>./src/feature/hello-jimmy-lin</code> 下。更酷的是已經直接幫我們把 help message 都寫好了:</p>
-
 
 
 <div class="box" >
@@ -661,11 +620,9 @@ schematics blank hello</code></pre></div>
   </figure>
 </div>
 
-
 <p>我覺得每次都要下 <code>./hello/src/collection.json</code> 實在有點難記，有一招可以把他跟 schematics 指令整合在一起，首先安裝<code>@schematics/angular</code>，再來使用 <code>npm link</code></p>
-<div class="highlight"><pre class="chroma">npm link ./hello</pre></div>
-<p>之後就可以直接使用 <code>ng generate hello:hello</code> 執行。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">npm link ./hello
+</code></pre></div><p>之後就可以直接使用 <code>ng generate hello:hello</code> 執行。</p>
 
 
 <div class="box" >
@@ -677,11 +634,9 @@ schematics blank hello</code></pre></div>
   </figure>
 </div>
 
-
 <p>以上就是第一階段的 Angular Schematics 教學，其實發現蠻多專案都會使用到，像是 Angular 本身就是使用 Schematics 產生 component 那些相依的檔案，另外 Angular Material 也會用 Schematics 來產生一些特定檔案，文件在<a href="https://material.angular.io/guide/schematics">這邊</a>，比如說 drag-and-drop 可能有一些基本設定要設，Angular Material 就都先寫好了。</p>
-
 <p>本文主要是參考<a href="https://medium.com/@tomastrajan/total-guide-to-custom-angular-schematics-5c50cf90cdb4">這篇文章</a>的，如有問題也可留言討論。
-另外原碼在這邊：<a href="https://github.com/jimmylin212/ex-angular-schematics">https://github.com/jimmylin212/ex-angular-schematics</a> 也歡迎參考</p>
+另外原碼在這邊：https://github.com/jimmylin212/ex-angular-schematics 也歡迎參考</p>
 
 
         
@@ -689,7 +644,7 @@ schematics blank hello</code></pre></div>
             
               <a href="https://jimmylin212.github.io/tags/angular/">Angular</a>&nbsp;
             
-              <a href="https://jimmylin212.github.io/tags/frentend/">Frentend</a>&nbsp;
+              <a href="https://jimmylin212.github.io/tags/frontend/">Frontend</a>&nbsp;
             
           </div>
         
@@ -877,7 +832,7 @@ schematics blank hello</code></pre></div>
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.55.6</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.69.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
