@@ -8,11 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <title>利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付 - Jimmy Lin</title>
-  <meta property="og:title" content="利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付" />
-  <meta name="twitter:title" content="利用 pm2 管理 node 服務，結合 Docker Image 達到持續交付" />
   <meta name="description" content="簡單來說，我們最終的目的是：CICD &#43; Zero Downtime 佈署 Nextjs 的服務。其實網路上找找有蠻多方法的，像是利用 Kubernetes _(K8S)_，或是直接整合 AWS、GCP 或是">
-  <meta property="og:description" content="簡單來說，我們最終的目的是：CICD &#43; Zero Downtime 佈署 Nextjs 的服務。其實網路上找找有蠻多方法的，像是利用 Kubernetes _(K8S)_，或是直接整合 AWS、GCP 或是">
-  <meta name="twitter:description" content="簡單來說，我們最終的目的是：CICD &#43; Zero Downtime 佈署 Nextjs 的服務。其實網路上找找有蠻多方法的，像是利用 Kubernetes _(K8S)_，或是直接整合 AWS、GCP 或是">
   <meta name="author" content="Jimmy Lin"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -94,13 +90,6 @@
   <meta name="twitter:image" content="https://jimmylin212.github.io/images/avatar.png" />
   <meta name="twitter:card" content="summary" />
   <link href='https://jimmylin212.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta property="og:image" content="https://jimmylin212.github.io/images/avatar.png" />
-  <meta name="twitter:image" content="https://jimmylin212.github.io/images/avatar.png" />
-  <meta name="twitter:card" content="summary" />
-  <meta property="og:url" content="https://jimmylin212.github.io/post/0008_cicd_with_docker_pm2/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Jimmy Lin" />
-
   <meta name="generator" content="Hugo 0.55.6" />
   <link rel="alternate" href="https://jimmylin212.github.io/index.xml" type="application/rss+xml" title="Jimmy Lin"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
@@ -262,7 +251,9 @@ if (!doNotTrack) {
   
   
   
-    &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Jimmy Lin
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Jimmy Lin
+    
   
   
 </span>
@@ -434,13 +425,6 @@ m0dwq97pf7vp  SERVICE_NAME_website  replicated  <span class="m">2</span>/2      
   
       
       <li>
-        <a href="//plus.google.com/share?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0008_cicd_with_docker_pm2%2f" target="_blank" title="Share on Google Plus">
-          <i class="fab fa-google-plus"></i>
-        </a>
-      </li>
-  
-      
-      <li>
         <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0008_cicd_with_docker_pm2%2f" target="_blank" title="Share on Facebook">
           <i class="fab fa-facebook"></i>
         </a>
@@ -476,6 +460,7 @@ m0dwq97pf7vp  SERVICE_NAME_website  replicated  <span class="m">2</span>/2      
     </ul>
   </div>
   
+
               </div>
             </section>
         
@@ -533,7 +518,8 @@ m0dwq97pf7vp  SERVICE_NAME_website  replicated  <span class="m">2</span>/2      
   </div>
 </div>
 
-    <footer>
+      
+<footer>
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -609,7 +595,7 @@ m0dwq97pf7vp  SERVICE_NAME_website  replicated  <span class="m">2</span>/2      
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.55.6</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="https://gohugo.io">Hugo v0.55.6</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
@@ -634,6 +620,7 @@ m0dwq97pf7vp  SERVICE_NAME_website  replicated  <span class="m">2</span>/2      
 
 
 
+    
   </body>
 </html>
 

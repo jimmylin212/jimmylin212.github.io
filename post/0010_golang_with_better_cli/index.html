@@ -8,11 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <title>為 Golang CLI 打造漂亮的 Help Message - Jimmy Lin</title>
-  <meta property="og:title" content="為 Golang CLI 打造漂亮的 Help Message" />
-  <meta name="twitter:title" content="為 Golang CLI 打造漂亮的 Help Message" />
   <meta name="description" content="Golang 提供了簡單的方法產生 Help Message 以及支援使用者輸入，不過如果你的 CLI Tool 功能較多，或是有階層性的，那要怎麼辦？我們可以利用 Cobra 以及 Viper，這兩個其實">
-  <meta property="og:description" content="Golang 提供了簡單的方法產生 Help Message 以及支援使用者輸入，不過如果你的 CLI Tool 功能較多，或是有階層性的，那要怎麼辦？我們可以利用 Cobra 以及 Viper，這兩個其實">
-  <meta name="twitter:description" content="Golang 提供了簡單的方法產生 Help Message 以及支援使用者輸入，不過如果你的 CLI Tool 功能較多，或是有階層性的，那要怎麼辦？我們可以利用 Cobra 以及 Viper，這兩個其實">
   <meta name="author" content="Jimmy Lin"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -94,13 +90,6 @@
   <meta name="twitter:image" content="https://jimmylin212.github.io/images/cover/0010.png" />
   <meta name="twitter:card" content="summary" />
   <link href='https://jimmylin212.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta property="og:image" content="https://jimmylin212.github.io/images/cover/0010.png" />
-  <meta name="twitter:image" content="https://jimmylin212.github.io/images/cover/0010.png" />
-  <meta name="twitter:card" content="summary" />
-  <meta property="og:url" content="https://jimmylin212.github.io/post/0010_golang_with_better_cli/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Jimmy Lin" />
-
   <meta name="generator" content="Hugo 0.55.6" />
   <link rel="alternate" href="https://jimmylin212.github.io/index.xml" type="application/rss+xml" title="Jimmy Lin"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
@@ -262,7 +251,9 @@ if (!doNotTrack) {
   
   
   
-    &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Jimmy Lin
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Jimmy Lin
+    
   
   
 </span>
@@ -287,7 +278,7 @@ if (!doNotTrack) {
 <p>Golang 提供了簡單的方法產生 Help Message 以及支援使用者輸入，不過如果你的 CLI Tool 功能較多，或是有階層性的，那要怎麼辦？我們可以利用 <a href="https://github.com/spf13/cobra">Cobra</a> 以及 <a href="https://github.com/spf13/viper">Viper</a>，這兩個其實是完全不相關的 module，可以單獨使用，不過我覺得結合再一起真的是非常不錯。Cobra 是用來產生漂亮的 CLI 介面以及支援處理使用者的輸入；Viper 則是負責處理 config 檔。想像一下，一個常見的 CLI，程式輸入不外乎就是從這兩個入口進來，所以一起來看一下吧！</p>
 
 
-<link rel="stylesheet" href="/css/hugo-easy-gallery.css" />
+<link rel="stylesheet" href="https://jimmylin212.github.io/css/hugo-easy-gallery.css" />
 <div class="box" >
   <figure  itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
     <div class="img">
@@ -520,13 +511,6 @@ http://google.com/a123b456c789</pre></div>
   
       
       <li>
-        <a href="//plus.google.com/share?url=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0010_golang_with_better_cli%2f" target="_blank" title="Share on Google Plus">
-          <i class="fab fa-google-plus"></i>
-        </a>
-      </li>
-  
-      
-      <li>
         <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fjimmylin212.github.io%2fpost%2f0010_golang_with_better_cli%2f" target="_blank" title="Share on Facebook">
           <i class="fab fa-facebook"></i>
         </a>
@@ -562,6 +546,7 @@ http://google.com/a123b456c789</pre></div>
     </ul>
   </div>
   
+
               </div>
             </section>
         
@@ -619,7 +604,8 @@ http://google.com/a123b456c789</pre></div>
   </div>
 </div>
 
-    <footer>
+      
+<footer>
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -695,7 +681,7 @@ http://google.com/a123b456c789</pre></div>
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.55.6</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="https://gohugo.io">Hugo v0.55.6</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
@@ -720,6 +706,7 @@ http://google.com/a123b456c789</pre></div>
 
 
 
+    
   </body>
 </html>
 
