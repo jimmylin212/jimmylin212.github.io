@@ -7,24 +7,42 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Wed, 22 Apr 2020 21:32:07 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 20 Jan 2021 23:10:28 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Android</title>
+      <link>https://jimmylin212.github.io/tags/android/</link>
+      <pubDate>Wed, 20 Jan 2021 23:10:28 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Angular</title>
       <link>https://jimmylin212.github.io/tags/angular/</link>
-      <pubDate>Wed, 22 Apr 2020 21:32:07 +0800</pubDate>
+      <pubDate>Wed, 20 Jan 2021 23:10:28 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/tags/angular/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Cordova</title>
+      <link>https://jimmylin212.github.io/tags/cordova/</link>
+      <pubDate>Wed, 20 Jan 2021 23:10:28 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/tags/cordova/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Firebase</title>
       <link>https://jimmylin212.github.io/tags/firebase/</link>
-      <pubDate>Wed, 22 Apr 2020 21:32:07 +0800</pubDate>
+      <pubDate>Wed, 20 Jan 2021 23:10:28 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/tags/firebase/</guid>
       <description></description>
@@ -33,7 +51,7 @@
     <item>
       <title>Frontend</title>
       <link>https://jimmylin212.github.io/tags/frontend/</link>
-      <pubDate>Wed, 22 Apr 2020 21:32:07 +0800</pubDate>
+      <pubDate>Wed, 20 Jan 2021 23:10:28 +0800</pubDate>
       <author>jimmylin212@gmail.com (Jimmy Lin)</author>
       <guid>https://jimmylin212.github.io/tags/frontend/</guid>
       <description></description>

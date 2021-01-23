@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>jimmylin212@gmail.com (Jimmy Lin)</managingEditor>
     <webMaster>jimmylin212@gmail.com (Jimmy Lin)</webMaster>
-    <lastBuildDate>Wed, 22 Apr 2020 21:32:07 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 20 Jan 2021 23:10:28 +0800</lastBuildDate>
     
 	<atom:link href="https://jimmylin212.github.io/tags/angular/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Anfular &#43; Firebase &#43; Cordova 完成 Andoird 程式</title>
+      <link>https://jimmylin212.github.io/post/0017_angular_cordova_to_android/</link>
+      <pubDate>Wed, 20 Jan 2021 23:10:28 +0800</pubDate>
+      <author>jimmylin212@gmail.com (Jimmy Lin)</author>
+      <guid>https://jimmylin212.github.io/post/0017_angular_cordova_to_android/</guid>
+      <description>一直對同一份程式碼可以在不同的環境下執行很著迷，也覺得這是未來發展方向，因此當初做了 Angular + PWA 以為這樣就夠了，沒想到客戶一定要手機版的 APP ，PWA</description>
+    </item>
     
     <item>
       <title>Angular &#43; Firebase 以角色為基礎的權限管理</title>
