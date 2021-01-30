@@ -59,7 +59,7 @@
   "headline": "Anfular \x2b Firebase \x2b Cordova 完成 Andoird 程式",
   "description" : "一直對同一份程式碼可以在不同的環境下執行很著迷，也覺得這是未來發展方向，因此當初做了 Angular \x2b PWA 以為這樣就夠了，沒想到客戶一定要手機版的 APP ，PWA",
   "inLanguage" : "en",
-  "wordCount":  1851 ,
+  "wordCount":  1972 ,
   "datePublished" : "2021-01-20T23:10:28",
   "dateModified" : "2021-01-20T23:10:28",
   "image" : "https:\/\/jimmylin212.github.io\/images\/avatar.png",
@@ -306,7 +306,7 @@ cordova plugin add cordova-plugin-device
 <p>接下來輸入</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cordova build android
 </code></pre></div><p>然後就會開始出錯&hellip;.</p>
-<h2 id="build-time-遇到的錯誤">Build time 遇到的錯誤</h2>
+<h2 id="遇到的錯誤們">遇到的錯誤們</h2>
 <h3 id="androidx-dependencies">AndroidX dependencies</h3>
 <p>遇到的第一個錯誤</p>
 <blockquote>
@@ -372,7 +372,24 @@ C:\PATH\platforms\android\app\src\main\res\xml\config.xml: AAPT: error: file fai
 <p>簡單搜尋一下 Stackoverflow 這篇 (<a href="https://stackoverflow.com/a/57035086/743158">https://stackoverflow.com/a/57035086/743158</a>) 提到，需要在 <code>config.xml</code> 再加上</p>
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;preference</span> <span class="na">name=</span><span class="s">&#34;OverrideUserAgent&#34;</span> <span class="na">value=</span><span class="s">&#34;Mozilla/5.0 Google&#34;</span> <span class="nt">/&gt;</span>
 </code></pre></div><p>終於可以順利登入看到畫面了。</p>
-<h2 id="打包">打包</h2>
+<h3 id="上一頁破圖">上一頁破圖</h3>
+<p>在使用的過程當中發現按下手機上的返回鍵，畫面會卡在中間，簡單搜尋一下找到 Github issue <a href="https://github.com/angular/angular/issues/22509">Bug router angular v5.2.4+ with cordova (BrowserAnimationsModule bug)</a> 發現是 <code>BrowserAnimationsModule</code> 的問題，結果有條 comment (<a href="https://github.com/angular/angular/issues/22509#issuecomment-382297711">https://github.com/angular/angular/issues/22509#issuecomment-382297711</a>) 提供了 workaround 的作法，在 <code>index.html</code> 中，引入 <code>cordova.js</code> 的前面加上：</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">EventTarget</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+  <span class="p">};</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">removeEventListener</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">EventTarget</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+  <span class="p">};</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">EventTarget</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+  <span class="p">};</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nx">removeEventListener</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">EventTarget</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;cordova.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div><h2 id="打包">打包</h2>
 <p>打包 Android 也是很重要的一環，不過這部分網路上有蠻多教學，我就只列出會用到的指令</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">## Build release version</span>
 cordova build android --release
